@@ -26,5 +26,5 @@ if (YII_ENV == 'dev' || YII_ENV == 'test') {
     define('DOMAIN_APP', 'app.' . DOMAIN_BASE); //二级域名，APP接口，生产环境
 }
 
-echo YII_ENV;
+define('USER_PASSWORD_STR', 'BJZHONGTENG');
 

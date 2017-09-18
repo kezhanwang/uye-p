@@ -9,7 +9,10 @@
 namespace frontend\models;
 
 
+use common\models\ar\UyeUser;
 use components\CheckUtil;
+use components\CookieUtil;
+use components\UException;
 use Yii;
 
 class DataBus
@@ -26,7 +29,10 @@ class DataBus
         self::$data['ip_address'] = Yii::$app->request->userIP;
         self::$data['cookie'] = $_COOKIE;
         self::$data['plat'] = CheckUtil::checkIsMobile();
-        self::$data['uid'] = self::checkCookie();
+        $checkCookie = self::checkCookie();
+        self::$data['uid'] = $checkCookie['uid'];
+        self::$data['phone'] = $checkCookie['phone'];
+        self::$data['username'] = $checkCookie['username'];
         self::$data['user'] = self::getUserInfo();
         self::$data['isLogin'] = self::checkIsLogin();
         Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . ']: DATABUS INFO:' . json_encode(self::$data));
@@ -52,14 +58,25 @@ class DataBus
 
     private static function checkCookie()
     {
-        if (!isset($_COOKIE[self::COOKIE_KEY]) || empty($_COOKIE[self::COOKIE_KEY])) {
-            return 0;
+        $cookieValue = CookieUtil::getCookie(self::COOKIE_KEY);
+        if (empty($cookieValue)) {
+            return ['uid' => 0, 'phone' => '', 'username' => ''];
         }
+
+        $userInfo = CookieUtil::strCode($cookieValue, 'DECODE');
+        list($uid, $username, $phone, $safecv) = explode('|', $userInfo);
+        return ['uid' => $uid, 'phone' => $phone, 'username' => $username];
     }
 
     private static function getUserInfo()
     {
-        return true;
+        $uid = self::$data['uid'];
+        if ($uid < 1) {
+            return false;
+        }
+
+        $userInfo = UyeUser::getUserByUid($uid);
+        return $userInfo;
     }
 
     private static function checkIsLogin()
