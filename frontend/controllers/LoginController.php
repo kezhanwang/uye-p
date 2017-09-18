@@ -20,7 +20,21 @@ class LoginController extends UController
 
     public function actionLogin()
     {
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if (strtolower($method) != 'post') {
+                throw new UException();
+            }
 
+            $phone = \Yii::$app->request->post('phone');
+            $password = \Yii::$app->request->post('password');
+
+            UyeUserModel::login($phone, $password);
+
+            Output::info(SUCCESS, '登录成功');
+        } catch (\Exception $exception) {
+            Output::err($exception->getCode(), $exception->getMessage());
+        }
     }
 
     /**
