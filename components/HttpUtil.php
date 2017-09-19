@@ -107,4 +107,250 @@ class HttpUtil
         $url .= 'jumpurl=' . urlencode(("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']));
         self::goUrl($url);
     }
+
+
+    public static function doPost($url, $optArr = array(), $needThrow = true)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        if (isset($optArr['ua'])) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $optArr['ua']);
+        } else {
+            curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36');
+        }
+        if (isset($optArr['referer'])) {
+            curl_setopt($ch, CURLOPT_REFERER, $optArr['referer']);
+        }
+        if (isset($optArr['header'])) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $optArr['header']);
+        }
+        $timeOut = 3;
+        if (isset($optArr['timeout'])) {
+            $timeOut = intval($optArr['timeout']);
+        }
+
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeOut); //conn timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeOut); //execute timeout
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        if (isset($optArr['cookie'])) {
+            curl_setopt($ch, CURLOPT_COOKIE, $optArr['cookie']);
+        }
+        if (isset($optArr['request'])) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $optArr['request']);
+        }
+        if (isset($optArr['proxy'])) {
+            curl_setopt($ch, CURLOPT_PROXY, $optArr['proxy']);
+        }
+
+        $tryCnt = 1;
+        $success = true;
+        do {
+            $data = curl_exec($ch);
+            $errno = curl_errno($ch);
+            if ($errno != 0) {
+                usleep(10000);
+                $success = false;
+                if ($tryCnt >= 3) {
+                    $error = curl_error($ch);
+                    $message = "curl erron:{$errno},error:{$error},url:{$url}";
+                    curl_close($ch);
+                    throw new \Exception($message, $errno);
+                }
+            } else {
+                $success = true;
+            }
+        } while (!$success && $tryCnt++ < 3);
+
+        $errno = curl_errno($ch);
+        if ($errno != 0) {
+            $error = curl_error($ch);
+            $message = "curl erron:{$errno},error:{$error},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $errno);
+        }
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($needThrow && $httpCode != 200) {
+            $message = "http code:{$httpCode},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $httpCode);
+        }
+        curl_close($ch);
+        return $data;
+    }
+
+    public static function doGet($url, $optionArray = array())
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, false); //CURLOPT_HEADER
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36');
+        if (isset($optionArray['referer'])) {
+            curl_setopt($ch, CURLOPT_REFERER, $optionArray['referer']);
+        }
+        $timeOut = 3;
+        if (isset($optionArray['timeout'])) {
+            $timeOut = intval($optionArray['timeout']);
+        }
+
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeOut); //conn timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeOut); //execute timeout
+        if (isset($optionArray['proxy'])) {
+            curl_setopt($ch, CURLOPT_PROXY, $optionArray['proxy']);
+        }
+        if (isset($optionArray['header'])) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $optionArray['header']);
+        }
+        if (isset($optionArray['cookie'])) {
+            curl_setopt($ch, CURLOPT_COOKIE, $optionArray['cookie']);
+        }
+        if (isset($optionArray['raw'])) {
+            curl_setopt($ch, CURLOPT_HEADER, $optionArray['raw']);
+        }
+
+        if (isset($optionArray['referer'])) {
+            curl_setopt($ch, CURLOPT_REFERER, $optionArray['referer']);
+        }
+
+        $tryCnt = 1;
+        $success = true;
+        do {
+            $data = curl_exec($ch);
+            $errno = curl_errno($ch);
+            if ($errno != 0) {
+                usleep(10000);
+                $success = false;
+                if ($tryCnt >= 1) {
+                    $error = curl_error($ch);
+                    $message = "curl erron:{$errno},error:{$error},url:{$url}";
+                    curl_close($ch);
+                    throw new \Exception($message, $errno);
+                }
+            } else {
+                $success = true;
+            }
+        } while (!$success && $tryCnt++ < 1);
+
+        $errno = curl_errno($ch);
+        if ($errno != 0) {
+            $error = curl_error($ch);
+            $message = "curl erron:{$errno},error:{$error},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $errno);
+        }
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        if ($httpCode != 200) {
+            $message = "http code:{$httpCode},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $httpCode);
+        }
+        curl_close($ch);
+        return $data;
+    }
+
+    public static function doGetWithHeader($url, $optionArray = array())
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, true); //CURLOPT_HEADER
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+
+        $timeOut = 3;
+        if (isset($optionArray['timeout'])) {
+            $timeOut = intval($optionArray['timeout']);
+        }
+
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeOut); //conn timeout
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeOut); //execute timeout
+        if (isset($optionArray['proxy'])) {
+            curl_setopt($ch, CURLOPT_PROXY, $optionArray['proxy']);
+        }
+        if (isset($optionArray['header'])) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $optionArray['header']);
+        }
+        if ($optionArray['cookie']) {
+            curl_setopt($ch, CURLOPT_COOKIE, $optionArray['cookie']);
+        }
+        if ($optionArray['raw']) {
+            curl_setopt($ch, CURLOPT_HEADER, $optionArray['raw']);
+        }
+
+        $tryCnt = 1;
+        $success = true;
+        do {
+            $data = curl_exec($ch);
+            $errno = curl_errno($ch);
+            if ($errno != 0) {
+                usleep(10000);
+                $success = false;
+                if ($tryCnt >= 1) {
+                    $error = curl_error($ch);
+                    $message = "curl erron:{$errno},error:{$error},url:{$url}";
+                    curl_close($ch);
+                    throw new \Exception($message, $errno);
+                }
+            } else {
+                $success = true;
+            }
+        } while (!$success && $tryCnt++ < 1);
+
+        $errno = curl_errno($ch);
+        if ($errno != 0) {
+            $error = curl_error($ch);
+            $message = "curl erron:{$errno},error:{$error},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $errno);
+        }
+
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $headerSize = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        if ($httpCode != 200) {
+            $message = "http code:{$httpCode},url:{$url}";
+            curl_close($ch);
+            throw new \Exception($message, $httpCode);
+        }
+        curl_close($ch);
+        $result['header'] = substr($data, 0, $headerSize);
+        $result['content'] = substr($data, $headerSize);
+        return $result;
+    }
+
+    public static function getContent($url, $optionArray = array())
+    {
+        return self::doGet($url, $optionArray);
+    }
+
+    public static function parseRawData($data)
+    {
+        $cookie = '';
+        $start = 0;
+        $index = strpos($data, "\r\n\r\n");
+        $header = substr($data, 0, $index);
+        $strData = substr($data, $index + 4);
+
+        do {
+            $index = strpos($header, "\r\n", $start);
+            if ($index !== false) {
+                $line = substr($header, $start, $index - $start);
+                $start = $index + 2;
+            } else {
+                $line = substr($header, $start);
+            }
+            if (0 === strncasecmp($line, "Set-Cookie: ", strlen("Set-Cookie: "))) {
+                $pos = strpos($line, ";");
+                $oneCookie = substr($line, strlen("Set-Cookie: "), $pos + 1 - strlen("Set-Cookie: "));
+                if (strpos($oneCookie, '=EXPIRED;') === false) {
+                    $cookie .= $oneCookie;
+                }
+            }
+        } while ($index && !empty($line));
+        return array('data' => $strData, 'cookie' => $cookie);
+    }
+
 }

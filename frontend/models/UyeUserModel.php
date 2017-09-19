@@ -64,6 +64,26 @@ class UyeUserModel
         }
     }
 
+    /**
+     * @param null $phone
+     * @param null $code
+     * @throws UException
+     */
+    public static function loginByPhoneCode($phone = null, $code = null)
+    {
+        if (is_null($phone) || is_null($code)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $userInfo = UyeUser::getUserByLogin($phone);
+        if (empty($userInfo)) {
+            throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
+        } else {
+            $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
+            CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+        }
+    }
+
     public static function createPasswordMd5($password)
     {
         return md5($password . USER_PASSWORD_STR);

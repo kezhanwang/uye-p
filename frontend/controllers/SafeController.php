@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 use components\CheckUtil;
+use components\SmsUtil;
 use components\UException;
 use frontend\models\DataBus;
 use Yii;
@@ -87,13 +88,7 @@ class SafeController extends UController
 
             $vcodeCheckRes = VerifyCodeUtil::checkCode($vcode);
             if ($vcodeCheckRes) {
-//            $code = SmsUtil::createCode();
-//            if (ARCode::insert($phone, $code)) {
-//                $res = SmsUtil::sendVerify($phone, $code, DataBus::get('uid'));
-//                if ($res == 0) {
-//                    $result = array('result' => 0);
-//                }
-//            }
+                $result = SmsUtil::sendVerifyCode($phone, Yii::$app->request->getUserIP(), DataBus::get('uid'));
             } else {
                 throw new UException(ERROR_VCODE_CONTENT . ":未验证通过", ERROR_VCODE);
             }

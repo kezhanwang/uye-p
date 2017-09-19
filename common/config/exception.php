@@ -31,4 +31,7 @@ define('ERROR_DB', 1006);
 define('ERROR_PHONE_CODE', 1007);
 define('ERROR_PHONE_CODE_CONTENT', '短信验证码发送异常，请稍后再试');
 
+define('ERROR_PHONE_CODE_FREQUENTLY', 1008);
+define('ERROR_PHONE_CODE_FREQUENTLY_CONTENT', '短信验证码获取过于频繁，请30分钟后重试');
+
 

@@ -37,6 +37,27 @@ class LoginController extends UController
         }
     }
 
+    public function actionLoginphone()
+    {
+        try {
+            $method = $_SERVER['REQUEST_METHOD'];
+            if (strtolower($method) != 'post') {
+                throw new UException();
+            }
+            $request = \Yii::$app->request;
+            $phone = $request->post('phone');
+            $vcode = $request->post('vcode');
+            $phone_code = $request->post('phone_code');
+
+
+            UyeUserModel::loginByPhoneCode($phone, $phone_code);
+
+            Output::info(SUCCESS, '登录成功');
+        } catch (\Exception $exception) {
+            Output::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
     /**
      * @throws UException
      */
