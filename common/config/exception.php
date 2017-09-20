@@ -55,5 +55,8 @@ define('ERROR_PASSWORD_FORMAT_CONTENT', "密码格式错误");
 define('ERROR_LOGIN_ING', 1015);
 define('ERROR_LOGIN_ING_CONTENT', '您已登录');
 
+define('ERROR_CHANGE_PASSWORD_SAME', 1016);
+define('ERROR_CHANGE_PASSWORD_SAME_CONTENT', '新旧密码相同，请勿重复修改');
+
 
 

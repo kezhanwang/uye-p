@@ -79,13 +79,33 @@ class UyeUserModel
         if (empty($userInfo)) {
             $userInfo = self::register($phone);
         }
-        
+
         $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
         CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
     }
 
+    /**
+     * @param $password
+     * @return string
+     */
     public static function createPasswordMd5($password)
     {
         return md5($password . USER_PASSWORD_STR);
+    }
+
+    public static function changePassword($uid, $old, $new)
+    {
+        if (empty($uid) || is_null($old) || is_null($new)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $userInfo = UyeUser::getUserByUidAndPassword($uid, self::createPasswordMd5($old));
+        if (empty($userInfo)) {
+            throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
+        }
+
+        $newPassword = self::createPasswordMd5($new);
+
+        return UyeUser::_updateUser($uid, $newPassword);
     }
 }

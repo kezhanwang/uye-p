@@ -9,6 +9,9 @@
 namespace frontend\controllers;
 
 
+use components\CheckUtil;
+use frontend\models\UyeUserModel;
+use Yii;
 use components\Output;
 use components\UException;
 use frontend\components\UController;
@@ -25,17 +28,22 @@ class UserController extends UController
     public function actionUpdatePassword()
     {
         try {
-            $method = $_SERVER['REQUEST_METHOD'];
-            if (strtolower($method) != 'post') {
-                throw new UException();
+            $request = Yii::$app->request;
+            $oldPassword = $request->isPost ? $request->post('old') : $request->get('old');
+            $newPassword = $request->isPost ? $request->post('new') : $request->get('new');
+
+            if (!CheckUtil::isPWD($oldPassword) || !CheckUtil::isPWD($newPassword)) {
+                throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
             }
-            $request = \Yii::$app->request;
-            $oldPassword = $request->post('old');
-            $newPassword = $request->post('new');
 
+            if ($newPassword === $oldPassword) {
+                throw new UException(ERROR_CHANGE_PASSWORD_SAME_CONTENT, ERROR_CHANGE_PASSWORD_SAME);
+            }
 
+            UyeUserModel::changePassword($this->uid, $oldPassword, $newPassword);
+            Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
     }
 }

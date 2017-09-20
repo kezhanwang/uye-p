@@ -73,6 +73,21 @@ class UyeUser extends UActiveRecord
     }
 
     /**
+     * @param $uid
+     * @return static
+     * @throws UException
+     */
+    public static function getUserByUidAndPassword($uid, $password)
+    {
+        if (is_null($uid) || !is_numeric($uid) || is_null($password)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $userInfo = static::findOne(['uid' => $uid, 'password' => $password]);
+        return $userInfo;
+    }
+
+    /**
      * @param array $info
      * @return array
      * @throws UException
@@ -98,5 +113,35 @@ class UyeUser extends UActiveRecord
         }
 
         return $ar->getAttributes();
+    }
+
+    /**
+     * @param $uid
+     * @param $info
+     * @return array
+     * @throws UException
+     */
+    public static function _updateUser($uid, $info)
+    {
+        if (empty($info) || !is_numeric($uid) || is_null($uid)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $ar = self::findOne(['uid' => $uid]);
+        $attributes = $ar->getAttributes();
+        $info = ArrayUtil::trimArray($info);
+        foreach ($attributes as $key => $attribute) {
+            if (!empty($info[$key])) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->update_time = time();
+
+        if (!$ar->save()) {
+            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+        }
+        return $ar->getAttributes();
+
     }
 }
