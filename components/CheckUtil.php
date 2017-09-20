@@ -145,7 +145,7 @@ class CheckUtil
         } else if ($detect->isMobile()) {
             $plat = 3;
         } else {
-            $plat = 4;
+            $plat = 0;
         }
         return $plat;
     }

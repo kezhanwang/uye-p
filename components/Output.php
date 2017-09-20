@@ -188,9 +188,9 @@ class Output
         return true;
     }
 
-    public static function err($code, $msg, $data = array(), $needExit = true)
+    public static function err($code, $msg, $data = array(), $uid = 0, $token, $needExit = true)
     {
-        \Yii::error("err:.url:{$_SERVER['REQUEST_URI']}.code{$code}.msg:{$msg}.", '');
+        \Yii::error("err:{$uid}.url:{$_SERVER['REQUEST_URI']}.code{$code}.msg:{$msg}.", '');
 
         if (empty($data)) {
             $data = new \stdClass();
@@ -200,14 +200,12 @@ class Output
             'code' => $code,
             'msg' => $msg,
             'data' => $data,
+            'token' => $token,
             'timestamp' => time()
         ];
         $tmpJson = json_encode($tmpArr);
         echo $tmpJson;
-        if ($needExit) {
-            \Yii::$app->end();
-            exit();
-        }
+        exit();
     }
 
     public static function info($code, $msg, $data = array(), $is_obj = true)

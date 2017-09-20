@@ -69,7 +69,7 @@ class VerifyCodeUtil
         $encode = self::encodeCode($code);
         CookieUtil::setCookie(self::KEY_NAME, $encode);
         if ($isMobile) {
-            $imageFile = PATH_AUDIT . '/vccodetmp.png';
+            $imageFile = PATH_UPLOAD_VCODE . DIRECTORY_SEPARATOR . 'vccodetmp.png';
             imagepng($im, $imageFile);
             imagedestroy($im);
             $imageFileHandle = fopen($imageFile, 'rb');

@@ -14,7 +14,7 @@ class LoginController extends UController
 {
     public function actionIndex()
     {
-        echo 1;
+        return $this->render('index');
     }
 
     public function actionLogin()
@@ -63,15 +63,15 @@ class LoginController extends UController
     public function actionRegister()
     {
         try {
-            $method = $_SERVER['REQUEST_METHOD'];
-            if (strtolower($method) != 'post') {
-                throw new UException();
-            }
             $request = \Yii::$app->request;
-            $phone = $request->post('phone');
-            $vcode = $request->post('vcode');
-            $phone_code = $request->post('phone_code');
-            $password = $request->post('password');
+            if ($request->isPost) {
+                $phone = $request->post('phone');
+                $vcode = $request->post('vcode');
+                $phone_code = $request->post('phone_code');
+                $password = $request->post('password');
+            } else {
+                throw new UException('请求方式错误');
+            }
 
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);

@@ -34,4 +34,15 @@ define('ERROR_PHONE_CODE_CONTENT', '短信验证码发送异常，请稍后再�
 define('ERROR_PHONE_CODE_FREQUENTLY', 1008);
 define('ERROR_PHONE_CODE_FREQUENTLY_CONTENT', '短信验证码获取过于频繁，请30分钟后重试');
 
+define('ERROR_TOKEN_NO_EXISTS', 1009);
+define('ERROR_TOKEN_NO_EXISTS_CONTENT', '令环牌字段缺失');
+
+define('ERROR_TOKEN_CHECK_WRONG', 1010);
+define('ERROR_TOKEN_CHECK_WRONG_CONTENT', '验证令环牌错误');
+
+define('ERROR_SIGN_NO_EXISTS', 1011);
+define('ERROR_SIGN_NO_EXISTS_CONTENT', '签名字段项丢失');
+
+define('ERROR_SIGN_CHECK_WRONG', 1012);
+define('ERROR_SIGN_CHECK_WRONG_CONTENT', '签名验证失败');
 

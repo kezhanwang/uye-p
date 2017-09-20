@@ -11,7 +11,10 @@ namespace components;
 
 class RedisUtil extends \Redis
 {
-    public static function getInstance()
+    const DB_DEFAULT = '0';
+    const DB_PHONE_TOKEN = '2';
+
+    public static function getInstance($db = self::DB_DEFAULT)
     {
         static $instance = null;
 
@@ -26,6 +29,8 @@ class RedisUtil extends \Redis
                 if ($instance->connect('127.0.0.1', '6379', 0) == false) {
                     return false;
                 }
+
+                $instance->select($db);
             } catch (\Exception $exception) {
                 return false;
             }
