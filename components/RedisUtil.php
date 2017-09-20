@@ -23,7 +23,7 @@ class RedisUtil extends \Redis
             $instance = new RedisUtil();
             $redisConfig = '';
             try {
-                if ($instance->connect() == false) {
+                if ($instance->connect('127.0.0.1', '6379', 0) == false) {
                     return false;
                 }
             } catch (\Exception $exception) {

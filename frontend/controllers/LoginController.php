@@ -1,6 +1,6 @@
 <?php
 
-namespace app\controllers;
+namespace frontend\controllers;
 
 
 use components\CheckUtil;
@@ -9,13 +9,12 @@ use components\UException;
 use components\VerifyCodeUtil;
 use frontend\components\UController;
 use frontend\models\UyeUserModel;
-use yii\db\Exception;
 
 class LoginController extends UController
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        echo 1;
     }
 
     public function actionLogin()
@@ -88,7 +87,7 @@ class LoginController extends UController
             UyeUserModel::register($phone, $password);
             UyeUserModel::login($phone, $password);
             Output::info(SUCCESS, SUCCESS_CONTENT);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
