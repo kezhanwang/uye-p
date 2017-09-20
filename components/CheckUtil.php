@@ -150,4 +150,15 @@ class CheckUtil
         return $plat;
     }
 
+
+    public static function isPWD($value, $minLen = 8, $maxLen = 16)
+    {
+        $match = '/^[\\~!@#$%^&*()-_=+|{}\[\],.?\/:;\'\"\d\w]{' . $minLen . ',' . $maxLen . '}$/';
+        $v = trim($value);
+        if (empty($v)) {
+            return false;
+        }
+        return preg_match($match, $v);
+    }
+
 }

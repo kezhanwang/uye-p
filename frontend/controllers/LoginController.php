@@ -6,9 +6,9 @@ namespace frontend\controllers;
 use components\CheckUtil;
 use components\Output;
 use components\UException;
-use components\VerifyCodeUtil;
 use frontend\components\UController;
 use frontend\models\UyeUserModel;
+use Yii;
 
 class LoginController extends UController
 {
@@ -17,78 +17,63 @@ class LoginController extends UController
         return $this->render('index');
     }
 
+    /**
+     * 普通密码登陆
+     */
     public function actionLogin()
     {
         try {
-            $method = $_SERVER['REQUEST_METHOD'];
-            if (strtolower($method) != 'post') {
-                throw new UException();
-            }
-
-            $phone = \Yii::$app->request->post('phone');
-            $password = \Yii::$app->request->post('password');
-
+            $request = Yii::$app->request;
+            $phone = $request->post() ? $request->post('phone') : $request->get('phone');
+            $password = $request->post() ? $request->post('password') : $request->get('password');
             UyeUserModel::login($phone, $password);
-
-            Output::info(SUCCESS, '登录成功');
+            Output::info(SUCCESS, '登录成功', array(), $this->token());
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
-        }
-    }
-
-    public function actionLoginphone()
-    {
-        try {
-            $method = $_SERVER['REQUEST_METHOD'];
-            if (strtolower($method) != 'post') {
-                throw new UException();
-            }
-            $request = \Yii::$app->request;
-            $phone = $request->post('phone');
-            $vcode = $request->post('vcode');
-            $phone_code = $request->post('phone_code');
-
-
-            UyeUserModel::loginByPhoneCode($phone, $phone_code);
-
-            Output::info(SUCCESS, '登录成功');
-        } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
     }
 
     /**
-     * @throws UException
+     * 短信验证码登录
+     */
+    public function actionLoginphone()
+    {
+        try {
+            $request = Yii::$app->request;
+            $phone = $request->post() ? $request->post('phone') : $request->get('phone');
+            $code = $request->post() ? $request->post('code') : $request->get('code');
+            UyeUserModel::loginByPhoneCode($phone, $code);
+            Output::info(SUCCESS, '登录成功', array(), $this->token());
+        } catch (\Exception $exception) {
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
+        }
+    }
+
+    /**
+     * 注册
      */
     public function actionRegister()
     {
         try {
-            $request = \Yii::$app->request;
-            if ($request->isPost) {
-                $phone = $request->post('phone');
-                $vcode = $request->post('vcode');
-                $phone_code = $request->post('phone_code');
-                $password = $request->post('password');
-            } else {
-                throw new UException('请求方式错误');
-            }
-
+            $request = Yii::$app->request;
+            $phone = $request->post() ? $request->post('phone') : $request->get('phone');
+            $code = $request->post() ? $request->post('code') : $request->get('code');
+            $password = $request->post() ? $request->post('password') : $request->get('password');
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);
             }
-
-            if (!VerifyCodeUtil::checkCode($vcode)) {
-                throw new UException(ERROR_VCODE_CONTENT, ERROR_VCODE);
+            if ($code) {
+                throw new UException('', '');
             }
 
-            if ($phone_code) {
-                throw new UException('', '');
+            if (!CheckUtil::isPWD($password)) {
+                throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
             }
             UyeUserModel::register($phone, $password);
             UyeUserModel::login($phone, $password);
-            Output::info(SUCCESS, SUCCESS_CONTENT);
+            Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
     }
 

@@ -46,3 +46,10 @@ define('ERROR_SIGN_NO_EXISTS_CONTENT', '签名字段项丢失');
 define('ERROR_SIGN_CHECK_WRONG', 1012);
 define('ERROR_SIGN_CHECK_WRONG_CONTENT', '签名验证失败');
 
+define('ERROR_LOGIN_NO', 1013);
+define('ERROR_LOGIN_NO_CONTENT', '暂未登录');
+
+define('ERROR_PASSWORD_FORMAT',1014);
+define('ERROR_PASSWORD_FORMAT_CONTENT',"密码格式错误");
+
+

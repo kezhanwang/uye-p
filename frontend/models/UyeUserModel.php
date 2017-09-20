@@ -24,7 +24,7 @@ class UyeUserModel
      */
     public static function register($phone = null, $password = null)
     {
-        if (is_null($phone) || is_null($password)) {
+        if (is_null($phone)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
@@ -32,13 +32,13 @@ class UyeUserModel
         if (empty($checkUser)) {
             $inster = [
                 'username' => substr($phone, 0, 3) . '****' . substr($phone, 0, -4),
-                'password' => self::createPasswordMd5($password),
+                'password' => !empty($password) ? self::createPasswordMd5($password) : '',
                 'phone' => $phone,
                 'status' => 1,
                 'created_time' => DataBus::get('request_time'),
                 'updated_time' => DataBus::get('request_time'),
             ];
-            UyeUser::_addUser($inster);
+            return UyeUser::_addUser($inster);
         } else {
             throw new UException(ERROR_REGISTER_PHONE_REPEAT_CONTENT, ERROR_REGISTER_PHONE_REPEAT);
         }
@@ -77,11 +77,11 @@ class UyeUserModel
 
         $userInfo = UyeUser::getUserByLogin($phone);
         if (empty($userInfo)) {
-            throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
-        } else {
-            $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
-            CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+            $userInfo = self::register($phone);
         }
+        
+        $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
+        CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
     }
 
     public static function createPasswordMd5($password)

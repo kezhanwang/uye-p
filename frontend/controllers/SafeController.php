@@ -19,6 +19,7 @@ use frontend\components\UController;
 
 class SafeController extends UController
 {
+
     public function actionVcode()
     {
         $request = Yii::$app->request;
@@ -30,11 +31,10 @@ class SafeController extends UController
             $h = $request->get('h');
         }
         try {
-            $isMobile = DataBus::get('plat') == 4 ? false : true;
-            $fileData = VerifyCodeUtil::getCode(null, null, $w, $h, $isMobile);
-            Output::info(SUCCESS, SUCCESS_CONTENT, ['image' => base64_encode($fileData)]);
+            $fileData = VerifyCodeUtil::getCode(null, null, $w, $h, $this->isMobile);
+            Output::info(SUCCESS, SUCCESS_CONTENT, ['image' => base64_encode($fileData)], $this->token());
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
     }
 
@@ -44,62 +44,39 @@ class SafeController extends UController
     public function actionVCodeCheck()
     {
         $request = Yii::$app->request;
-        if ($request->isPost) {
-            $code = $request->post('vcode');
-        } else if ($request->isGet) {
-            $code = $request->get('vcode');
-        }
+        $code = $request->isPost ? $request->post('vcode') : $request->get('vcode');
         try {
             if (empty($code)) {
-                throw new UException("请输入验证码");
+                throw new UException(ERROR_VCODE_CONTENT, ERROR_VCODE);
             }
             if (!VerifyCodeUtil::checkCode($code)) {
-                throw new UException('图片验证码输错啦!请重新输入。');
+                throw new UException(ERROR_VCODE_CONTENT, ERROR_VCODE);
             }
-            Output::info(SUCCESS, SUCCESS_CONTENT);
+            Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
     }
 
 
-    public function actiongetmescode()
+    public function actionGetmsgcode()
     {
         $request = Yii::$app->request;
-        if ($request->isPost) {
-            $phone = $request->post('phone');
-            $vcode = $request->post('vcode');
-        } else if ($request->isGet) {
-            $phone = $request->get('phone');
-            $vcode = $request->get('vcode');
-        } else {
-            $phone = '';
-            $vcode = '';
-        }
-
+        $phone = $request->isPost ? $request->post('phone') : $request->get('phone');
         try {
-            $result = array();
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);
             }
-            if (!empty($code) && !preg_match("/^[0-9]{4}$/", $code)) {
-                throw new UException(ERROR_VCODE_CONTENT, ERROR_VCODE);
-            }
 
-            $vcodeCheckRes = VerifyCodeUtil::checkCode($vcode);
-            if ($vcodeCheckRes) {
-                $result = SmsUtil::sendVerifyCode($phone, Yii::$app->request->getUserIP(), DataBus::get('uid'));
-            } else {
-                throw new UException(ERROR_VCODE_CONTENT . ":未验证通过", ERROR_VCODE);
-            }
+            $result = SmsUtil::sendVerifyCode($phone, Yii::$app->request->getUserIP(), DataBus::get('uid'));
 
             if (empty($result)) {
                 throw new UException(ERROR_PHONE_CODE_CONTENT, ERROR_PHONE_CODE);
             } else {
-                Output::info(SUCCESS, SUCCESS_CONTENT, $result);
+                Output::info(SUCCESS, SUCCESS_CONTENT, $result, $this->token());
             }
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
         }
 
     }
