@@ -12,9 +12,9 @@ return [
 
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=123.57.138.234;dbname=uye',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=uye',
             'username' => 'root',
-            'password' => 'DB_root_#yulan#',
+            'password' => 'wangyi',
             'charset' => 'utf8',
         ],
     ],

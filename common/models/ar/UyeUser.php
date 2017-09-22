@@ -144,4 +144,22 @@ class UyeUser extends UActiveRecord
         return $ar->getAttributes();
 
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'uid' => '用户uid',
+            'username' => '昵称',
+            'password' => '密码',
+            'phone' => '手机号',
+            'email' => '邮箱',
+            'status' => '状态',
+            'head_portrait' => '头像',
+            'created_time' => '注册时间',
+            'updated_time' => '更新时间',
+        ];
+    }
 }
