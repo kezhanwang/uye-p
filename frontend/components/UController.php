@@ -29,8 +29,8 @@ class UController extends Controller
         $this->uid = DataBus::get('uid');
         DataBus::get('plat') ? $this->isMobile = true : $this->isMobile = false;
 
-        $this->verification();
-        $this->verifySign();
+//        $this->verification();
+//        $this->verifySign();
     }
 
     public function verification()

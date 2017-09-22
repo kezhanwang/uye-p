@@ -24,36 +24,8 @@ class UyeAdminMenu extends UActiveRecord
         return self::find()->select('*')->where('status=:status', [':status' => 1])->asArray()->all();
     }
 
-    public static function createMenus()
+    public static function getMenuByRoute($route)
     {
-        $menus = self::getMenus();
-
-        $menuItems = [];
-
-        foreach ($menus as $key => $menu) {
-            if ($menu['parent'] == 0) {
-                $menuItems[$menu['id']] = array(
-                    'icon' => $menu['icon'],
-                    'label' => $menu['name'],
-                    'url' => $menu['route'],
-                    'options' => [],
-                    'item' => []
-                );
-                unset($menus[$key]);
-            }
-        }
-
-        foreach ($menus as $key => $menu) {
-            if (array_key_exists($menu['parent'], $menuItems)) {
-                $menuItems[$menu['parent']]['item'][$menu['id']] = array(
-                    'icon' => $menu['icon'],
-                    'label' => $menu['name'],
-                    'url' => $menu['route'],
-                    'options' => [],
-                    'item' => []
-                );
-            }
-        }
-        return $menuItems;
+        return self::find()->select('*')->where('route=:route', [':route' => $route])->asArray()->one();
     }
 }
