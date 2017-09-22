@@ -3,20 +3,34 @@ $params = array_merge(
     require(__DIR__ . '/../../common/config/params.php'),
     require(__DIR__ . '/params.php')
 );
-
+Yii::$container->set('mdm\admin\components\Configs',
+    [
+        'authManager' => 'authManager',
+        'db' => 'db',
+        'menuTable' => 'uye_admin_menu',
+        'userTable' => 'uye_admin_user',
+    ]
+);
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    "modules" => [
+        "admin" => [
+            "class" => "mdm\admin\Module",
+        ],
+    ],
+    "aliases" => [
+        "@mdm/admin" => "@vendor/mdmsoft/yii2-admin",
+    ],
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'asdfgh123456',
+            'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsApCB',
             'csrfParam' => '_csrf-backend',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\ar\UyeAdminUser',
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
         ],
@@ -44,6 +58,19 @@ return [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ],
         ],
+        "authManager" => [
+            "class" => 'yii\rbac\DbManager', //这里记得用单引号而不是双引号
+            "defaultRoles" => ["guest"],
+        ],
+        'language' => 'zh-CN',
+    ],
+    'as access' => [
+        'class' => 'mdm\admin\components\AccessControl',
+        'allowActions' => [
+            //这里是允许访问的action
+            //controller/action
+            '*'
+        ]
     ],
     'params' => $params,
 ];

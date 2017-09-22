@@ -23,9 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="box-body">
                 <?php Pjax::begin(); ?>    <?= GridView::widget([
                     'dataProvider' => $dataProvider,
-                    'filterModel' => $searchModel,
                     'columns' => [
-                        ['class' => 'yii\grid\SerialColumn'],
                         'uid',
                         'username',
                         'phone',
@@ -42,7 +40,11 @@ $this->params['breadcrumbs'][] = $this->title;
                             'attribute' => 'created_time',
                             'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
-                        ['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'header' => '操作',
+                            'template' => '{view} {update}',
+                        ],
                     ],
                 ]); ?>
                 <?php Pjax::end(); ?></div>

@@ -1,6 +1,8 @@
 <?php
-namespace common\models;
 
+namespace backend\models;
+
+use common\models\ar\UyeAdminUser;
 use Yii;
 use yii\base\Model;
 
@@ -70,10 +72,8 @@ class LoginForm extends Model
     protected function getUser()
     {
         if ($this->_user === null) {
-            $this->_user = User::findByUsername($this->username);
-            var_dump($this->_user);exit;
+            $this->_user = UyeAdminUser::findByUsername($this->username);
         }
-
         return $this->_user;
     }
 }
