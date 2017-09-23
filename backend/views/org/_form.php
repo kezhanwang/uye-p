@@ -7,37 +7,41 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\UyeOrg */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="uye-org-form">
-
-    <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'org_short_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'org_name')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'org_type')->textInput() ?>
-
-    <?= $form->field($model, 'parent_id')->textInput() ?>
-
-    <?= $form->field($model, 'status')->textInput() ?>
-
-    <?= $form->field($model, 'is_shelf')->textInput() ?>
-
-    <?= $form->field($model, 'is_delete')->textInput() ?>
-
-    <?= $form->field($model, 'is_employment')->textInput() ?>
-
-    <?= $form->field($model, 'is_high_salary')->textInput() ?>
-
-    <?= $form->field($model, 'created_time')->textInput() ?>
-
-    <?= $form->field($model, 'updated_time')->textInput() ?>
-
-    <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">机构信息</h3>
     </div>
-
+    <?php $form = ActiveForm::begin(); ?>
+    <div class="box-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <?= $form->field($model, 'org_name')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'org_type')->dropDownList(\common\models\ar\UyeOrg::$orgType, ['prompt' => '请选择']) ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'is_high_salary')->dropDownList(\common\models\ar\UyeOrg::$isHighSalary, ['prompt' => '请选择']) ?>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <?= $form->field($model, 'org_short_name')->textInput(['maxlength' => true]) ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'is_employment')->dropDownList(\common\models\ar\UyeOrg::$isEmployment, ['prompt' => '请选择']) ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($infoModel, 'phone')->textInput(['maxlength' => true]) ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
+        the plugin.
+    </div>
     <?php ActiveForm::end(); ?>
-
 </div>

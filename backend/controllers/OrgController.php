@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\components\UAdminController;
 use common\models\ar\UyeOrg;
+use common\models\ar\UyeOrgInfo;
 use common\models\search\UyeOrgSearch;
 use Yii;
 
@@ -65,12 +66,14 @@ class OrgController extends UAdminController
     public function actionCreate()
     {
         $model = new UyeOrg();
+        $infoModel = new UyeOrgInfo();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'infoModel' => $infoModel,
             ]);
         }
     }

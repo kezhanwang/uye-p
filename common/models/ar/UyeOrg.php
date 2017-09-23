@@ -28,6 +28,30 @@ class UyeOrg extends UActiveRecord
 {
     const TABLE_NAME = 'uye_org';
 
+    const ORG_TYPE_GENERAL = 1;
+    const ORG_TYPE_BRANCH = 2;
+    const ORG_TYPE_FRANCHISE = 3;
+    public static $orgType = [
+        self::ORG_TYPE_GENERAL => '总校',
+        self::ORG_TYPE_BRANCH => '分校',
+        self::ORG_TYPE_FRANCHISE => '加盟',
+    ];
+
+    const IS_EMPLOYMENT_SUPPORT = 1;
+    const IS_EMPLOYMENT_NOT_SUPPORT = 2;
+
+    public static $isEmployment = [
+        self::IS_EMPLOYMENT_SUPPORT => '支持就业帮',
+        self::IS_EMPLOYMENT_NOT_SUPPORT => '不支持就业帮',
+    ];
+
+    const IS_HIGH_SALARY_SUPPORT = 1;
+    const IS_HIGH_SALARY_NOT_SUPPORT = 2;
+    public static $isHighSalary = [
+        self::IS_HIGH_SALARY_SUPPORT => '支持高薪帮',
+        self::IS_HIGH_SALARY_NOT_SUPPORT => '不支持高薪帮',
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;
