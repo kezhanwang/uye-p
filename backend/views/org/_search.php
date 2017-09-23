@@ -49,6 +49,7 @@ use yii\widgets\ActiveForm;
     <div class="box-footer">
         <?= Html::submitButton('查询', ['class' => 'btn btn-primary btn-sm']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default btn-sm']) ?>
+        <?= Html::a('新加机构', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

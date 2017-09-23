@@ -8,7 +8,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel app\models\UyeOrgSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Uye Orgs';
+$this->title = '机构列表';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>

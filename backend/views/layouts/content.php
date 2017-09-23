@@ -1,12 +1,28 @@
 <?php
 
+use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
-$menu = \backend\models\AdminMenu::getMenuByRequestURI();
 ?>
 <div class="content-wrapper">
     <section class="content-header">
-        <h1><?= $menu['name']; ?></h1>
+        <h1>
+            <?php
+            if (!empty($this->params['breadcrumbs'])) {
+                echo \yii\helpers\Html::encode($this->params['breadcrumbs'][0]);
+            } else if ($this->title !== null) {
+                echo \yii\helpers\Html::encode($this->title);
+            } else {
+                echo \yii\helpers\Inflector::camel2words(
+                    \yii\helpers\Inflector::id2camel($this->context->module->id)
+                );
+                echo ($this->context->module->id !== \Yii::$app->id) ? '<small>Module</small>' : '';
+            } ?>
+        </h1>
+        <?= Breadcrumbs::widget([
+            'homeLink' => ['label' => '首页', 'url' => ['/backend/']],
+            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+        ]) ?>
     </section>
 
     <section class="content">
