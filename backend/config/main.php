@@ -27,12 +27,12 @@ return [
     'components' => [
         'request' => [
             'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsApCB',
-            'csrfParam' => '_csrf-backend',
+            'csrfParam' => '_uye_admin',
         ],
         'user' => [
             'identityClass' => 'common\models\ar\UyeAdminUser',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_uye_admin_login', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend

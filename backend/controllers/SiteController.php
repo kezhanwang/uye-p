@@ -1,4 +1,5 @@
 <?php
+
 namespace backend\controllers;
 
 use frontend\components\UController;
@@ -72,10 +73,10 @@ class SiteController extends UController
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
+        $this->layout = 'main-login.php';
         $model = new \backend\models\LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+            return $this->redirect(['/site/index']);
         } else {
             return $this->render('login', [
                 'model' => $model,

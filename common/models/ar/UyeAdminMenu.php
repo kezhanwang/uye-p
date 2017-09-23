@@ -28,4 +28,18 @@ class UyeAdminMenu extends UActiveRecord
     {
         return self::find()->select('*')->where('route=:route', [':route' => $route])->asArray()->one();
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => '菜单id',
+            'name' => '菜单名称',
+            'parent' => '父级菜单',
+            'route' => '路由',
+            'order' => '排序'
+        ];
+    }
 }

@@ -7,21 +7,16 @@ use yii\web\UrlManager;
 /**
  * @var \yii\web\View $this
  */
-$menuItems = MenuHelper::getAssignedMenu(1,null,function($menu){
-    $data = empty($menu['data'])?[]:json_decode($menu['data'], true);
-    $icon ='fa fa-circle-o';
-    if(isset($data['icon'])){
-        $icon = $data['icon'];
-        unset($data['icon']);
-    }
+$menuItems = MenuHelper::getAssignedMenu(Yii::$app->user->id, null, function ($menu) {
+    $data = empty($menu['data']) ? [] : json_decode($menu['data'], true);
     $route = parse_url($menu['route']);
     $url = [];
-    if(isset($route['query'])) {
+    if (isset($route['query'])) {
         parse_str($route['query'], $url);
     }
     array_unshift($url, $route['path']);
     return [
-        'icon' => $icon,
+        'icon' => !empty($menu['icon']) ? $menu['icon'] : 'fa fa-circle-o',
         'label' => $menu['name'],
         'url' => $url,
         'options' => $data,
