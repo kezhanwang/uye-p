@@ -8,8 +8,8 @@ use dmstr\widgets\Alert;
     <section class="content-header">
         <h1>
             <?php
-            if (!empty($this->params['breadcrumbs'])) {
-                echo \yii\helpers\Html::encode($this->params['breadcrumbs'][0]);
+            if (!empty($this->params['menu'])) {
+                echo \yii\helpers\Html::encode($this->params['menu']);
             } else if ($this->title !== null) {
                 echo \yii\helpers\Html::encode($this->title);
             } else {

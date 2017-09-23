@@ -9,6 +9,7 @@ use yii\widgets\DetailView;
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Uye Orgs', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
+$this->params['menu'] = $this->title;
 ?>
 <div class="uye-org-view">
 

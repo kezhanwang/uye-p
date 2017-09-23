@@ -10,6 +10,7 @@ use yii\widgets\Pjax;
 
 $this->title = '用户管理';
 $this->params['breadcrumbs'][] = $this->title;
+$this->params['menu'] = $this->title;
 ?>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
