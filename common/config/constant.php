@@ -30,3 +30,14 @@ if (YII_ENV == 'dev' || YII_ENV == 'test') {
 
 define('USER_PASSWORD_STR', 'BJZHONGTENG');
 
+
+/**
+ * 定义一些排序的宏
+ */
+define('SORT_DB_DESC', 'DESC');
+define('SORT_DB_ASC', 'ASC');
+
+define('SORT_DEFAULT', '');                  //无排序
+define('SORT_FOCUS', 'num_focus');           //按关注数
+define('SORT_ORDER', 'num_order');           //按报名数
+define('SORT_SCORE', 'score');           //按评分

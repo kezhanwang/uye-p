@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
     <div class="box-header with-border">
         <h3 class="box-title">机构信息</h3>
     </div>
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="box-body">
         <div class="row">
             <div class="col-md-6">
@@ -37,11 +37,15 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <?= $form->field($model, 'imageFile')->fileInput() ?>
+            </div>
+        </div>
     </div>
     <!-- /.box-body -->
     <div class="box-footer">
-        Visit <a href="https://select2.github.io/">Select2 documentation</a> for more examples and information about
-        the plugin.
+        <?= Html::submitButton('提交', ['class' => 'btn btn-primary btn-sm']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
