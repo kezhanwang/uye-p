@@ -23,7 +23,10 @@ class BaiduMap
         }
 
         $config = \Yii::$app->params['baidu_map'];
-        self::$access_key = $config;
+        if (empty($config)) {
+            throw new UException();
+        }
+        self::$access_key = $config['access_key'];
         return self::$_instance;
     }
 

@@ -15,4 +15,7 @@ return [
         'suggestName' => '',
         'options' => ['debug' => true]
     ],
+    'baidu_map' => [
+        'access_key' => '',
+    ],
 ];
