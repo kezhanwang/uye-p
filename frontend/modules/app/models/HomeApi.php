@@ -2,27 +2,26 @@
 /**
  * Created by PhpStorm.
  * User: wangyi
- * Date: 2017/9/30
- * Time: 下午5:15
+ * Date: 2017/10/7
+ * Time: 下午10:18
  */
 
-namespace app\modules\app\controllers;
+namespace frontend\modules\app\models;
 
-
-use app\modules\app\components\AppController;
 use common\models\ar\UyeCategory;
 use components\BaiduMap;
 use components\Output;
 use components\UException;
-use frontend\modules\app\models\HomeApi;
 use Yii;
 
-class IndexControllers extends AppController
+class HomeApi
 {
     /**
-     * 首页接口
+     * 第一版本接口
+     * @param array $params
+     * @return array
      */
-    public function actionIndex()
+    public static function v1_0_0($params = array())
     {
         try {
             //确定用户城市
@@ -30,23 +29,19 @@ class IndexControllers extends AppController
             $lng = $request->get('lng');
             $lat = $request->get('lat');
 
-            $version = $request->get('version');
+            $gps = BaiduMap::getPosInfo($lng, $lat);
 
-            $result = HomeApi::$version($request->get());
+            //拉取机构分类面包屑
+            $categorys = UyeCategory::find()->asArray()->all();
+
+            //获取周边的学校
 
             $templateData = [
-//                'categorys' => $categorys
+                'categorys' => $categorys
             ];
+            return $templateData;
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
-    }
-
-    /**
-     * 定位接口
-     */
-    public function actionocation()
-    {
-
     }
 }
