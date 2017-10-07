@@ -10,5 +10,5 @@ $params = [
 
 return \yii\helpers\ArrayHelper::merge(
     $params,
-    require PATH_BASE . DIRECTORY_SEPARATOR . "config" . "secret.php"
+    require PATH_BASE . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "secret.php"
 );
