@@ -15,13 +15,14 @@ use OpenSearch\Client\AppClient;
 use OpenSearch\Client\OpenSearchClient;
 use OpenSearch\Client\DocumentClient;
 use OpenSearch\Client\SearchClient;
+use OpenSearch\Util\SearchParamsBuilder;
 
 class SearchOS
 {
-    const PUSH_CMD_ADD = 'ADD';
-    const PUSH_CMD_UPDATE = 'UPDATE';
-    const PUSH_CMD_DELETE = 'DELETE';
-
+    /**
+     * 机构搜索
+     */
+    const SEARCH_ORGANIZE = 'tbl_organize';
     /**
      * 客户端链接信息
      * @var null
@@ -56,23 +57,9 @@ class SearchOS
         }
     }
 
-    /**
-     * @throws UException
-     */
-    public static function getSearchParamsBuilder()
-    {
-        if (empty(self::$client)) {
-            self::getClient();
-        }
-
-        try {
-            $appClient = new AppClient(self::$client);
-        } catch (UException $exception) {
-            throw new UException($exception->getMessage(), $exception->getCode());
-        }
-    }
 
     /**
+     * @return SearchClient
      * @throws UException
      */
     public static function getSearchClient()
@@ -83,10 +70,34 @@ class SearchOS
 
         try {
             $searchClient = new SearchClient(self::$client);
-        } catch (UException $exception) {
+            return $searchClient;
+        } catch (\Exception $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());
         }
     }
+
+    /**
+     * @return SearchParamsBuilder
+     * @throws UException
+     */
+    public static function getSearchParamsBuilder()
+    {
+        if (empty(self::$client)) {
+            self::getClient();
+        }
+
+        try {
+            $params = new SearchParamsBuilder();
+            return $params;
+        } catch (\Exception $exception) {
+            throw new UException($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+
+    const PUSH_CMD_ADD = 'ADD';
+    const PUSH_CMD_UPDATE = 'UPDATE';
+    const PUSH_CMD_DELETE = 'DELETE';
 
     /**
      * openSearch推送
@@ -99,6 +110,10 @@ class SearchOS
     public static function push($tableName, $data = array(), $cmd = self::PUSH_CMD_ADD)
     {
         if (empty($tableName) || empty($data)) {
+            throw new UException();
+        }
+
+        if (!in_array($tableName, [self::SEARCH_ORGANIZE])) {
             throw new UException();
         }
 
@@ -126,7 +141,7 @@ class SearchOS
             $json = json_encode($docs_to_upload);
             $ret = $documentClient->push($json, self::$config['appName'], $tableName);
             return $ret;
-        } catch (UException $exception) {
+        } catch (\Exception $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());
         }
     }

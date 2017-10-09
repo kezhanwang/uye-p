@@ -18,5 +18,13 @@ return [
             'password' => 'DB_root_#yulan#',
             'charset' => 'utf8',
         ],
+
+        'db2' => [
+            'class' => 'yii\db\Connection',
+            'dsn' => 'mysql:host=123.57.138.234;dbname=kz',
+            'username' => 'kz',
+            'password' => 'DB_root_#yulan#',
+            'charset' => 'utf8',
+        ],
     ],
 ];
