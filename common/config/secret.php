@@ -16,6 +16,6 @@ return [
         'options' => ['debug' => true]
     ],
     'baidu_map' => [
-        'access_key' => 'HoKT4q8zMjGraGA3kGgDkcb9',
+        'access_key' => '',
     ],
 ];
