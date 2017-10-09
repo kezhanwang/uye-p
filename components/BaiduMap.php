@@ -24,7 +24,7 @@ class BaiduMap
 
         $config = \Yii::$app->params['baidu_map'];
         if (empty($config)) {
-            throw new UException();
+            throw new UException(ERROR_SECRET_CONFIG_NO_EXISTS_CONTENT, ERROR_SECRET_CONFIG_NO_EXISTS);
         }
         self::$access_key = $config['access_key'];
         return self::$_instance;
@@ -33,11 +33,12 @@ class BaiduMap
     public static function getPosInfo($lng, $lat)
     {
         try {
+            self::getInstance();
             $url = self::$url_pos_info . "&ak=" . self::$access_key . "&location={$lat},{$lng}";
             $res = HttpUtil::doGet($url);
             $res = json_decode($res, true);
             if (!isset($res['status']) || $res['status'] != 0 || !isset($res['result'])) {
-                throw new UException("获取地图信息错误");
+                throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
             }
             $ret = $res['result'];
             return $ret;

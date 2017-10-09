@@ -182,6 +182,12 @@ class HttpUtil
         return $data;
     }
 
+    /**
+     * @param $url
+     * @param array $optionArray
+     * @return mixed
+     * @throws \Exception
+     */
     public static function doGet($url, $optionArray = array())
     {
         $ch = curl_init();
