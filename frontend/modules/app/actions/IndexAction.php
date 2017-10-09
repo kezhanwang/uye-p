@@ -62,7 +62,6 @@ class IndexAction extends AppAction
             foreach (NearbyUtil::$distanceRange as $key => $val) {
                 list($notdist, $distance) = explode('-', $key);
                 //重置
-                $dist = $key;
                 $schools = $this->getSchools($lng, $lat, $distance, $notdist);
                 $count = count($schools);
                 if ($count > $this->pageSize) {
@@ -80,9 +79,9 @@ class IndexAction extends AppAction
         $data = array_slice($list, ($page - 1) * $this->pageSize, $this->pageSize, true);
         $result = array(
             'organizes' => $data,
-            'distanceRange' => NearbyUtil::$distanceRange,
+//            'distanceRange' => NearbyUtil::$distanceRange,
             'page' => $this->getPage($page, count($list)),
-            'distance' => $dist,
+//            'distance' => $dist,
         );
         return $result;
     }
@@ -119,11 +118,12 @@ class IndexAction extends AppAction
         if (empty($points)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
-
+        $fields = "o.id,o.org_name,oi.employment_index,oi.avg_course_price,oi.category_1,c.name as category,oi.map_lng,oi.map_lat,oi.logo";
         $query = (new \yii\db\Query())
-            ->select('*')
+            ->select($fields)
             ->from(UyeOrg::TABLE_NAME . " o")
-            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id");
+            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
+            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1");
 
         if (empty($not_points)) {
             $query->where("oi.map_lng BETWEEN :lng1 AND :lng2 AND oi.map_lat BETWEEN :lat1 AND :lat2", [':lng1' => $points['lng1'], ':lng2' => $points['lng2'], ':lat1' => $points['lat2'], ':lat2' => $points['lat1']]);
@@ -146,9 +146,12 @@ class IndexAction extends AppAction
         foreach ($schools as $val) {
             $list[$val['id']]['id'] = $val['id'];
             $list[$val['id']]['org_name'] = $val['org_name'];
-            $list[$val['id']]['address'] = $val['address'];
-            $list[$val['id']]['lng'] = $val['map_lng'];
-            $list[$val['id']]['lat'] = $val['map_lat'];
+            $list[$val['id']]['logo'] = $val['logo'];
+            $list[$val['id']]['employment_index'] = $val['employment_index'];
+            $list[$val['id']]['avg_course_price'] = $val['avg_course_price'];
+            $list[$val['id']]['category'] = $val['category'];
+//            $list[$val['id']]['lng'] = $val['map_lng'];
+//            $list[$val['id']]['lat'] = $val['map_lat'];
             $list[$val['id']]['distance'] = NearbyUtil::getDistance($lng, $lat, $val['map_lng'], $val['map_lat']);
             $distances[] = $list[$val['id']]['distance'];
         }
