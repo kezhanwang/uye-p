@@ -9,12 +9,18 @@
 namespace app\modules\app\actions;
 
 
-use yii\base\Action;
+use app\modules\app\components\AppAction;
+use components\Output;
+use components\UException;
 
-class IndexAction extends Action
+class IndexAction extends AppAction
 {
     public function run()
     {
-        echo '12312';
+        try {
+
+        } catch (UException $exception) {
+            Output::err($exception->getCode(), $exception->getMessage());
+        }
     }
 }
