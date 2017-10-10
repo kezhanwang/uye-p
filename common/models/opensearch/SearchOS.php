@@ -49,7 +49,7 @@ class SearchOS
         try {
             self::$config = \Yii::$app->params['openSearch'];
             if (empty(self::$config)) {
-                throw new UException();
+                throw new UException(ERROR_SYS_PARAMS_CONTENT,ERROR_SYS_PARAMS);
             }
             self::$client = new OpenSearchClient(self::$config['accessKeyId'], self::$config['secret'], self::$config['endPoint'], self::$config['options']);
         } catch (UException $exception) {
