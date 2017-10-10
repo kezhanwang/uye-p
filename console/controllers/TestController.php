@@ -21,33 +21,16 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-//        $olds = \Yii::$app->db2->createCommand("select * from kz_school where sbid=10073")->queryAll();
+//        $olds = \Yii::$app->db2->createCommand("select id,name,areaid from kz_school where sbid=10073")->queryAll();
 //
 //        foreach ($olds as $item) {
-//            $ar = new UyeOrg();
-//            $ar->setIsNewRecord(true);
-//            $ar->org_name = $item['name'];
-//            $ar->org_short_name = $item['short_name'];
-//            $ar->created_time = time();
-//            $ar->updated_time = time();
-//            $ar->save();
-//            $data = $ar->getAttributes();
+//            if ($org=UyeOrg::findOne(['org_name'=>$item['name']])){
+//                UyeOrgInfo::_updateOrgInfo($org['id'], ['area' => $item['areaid']]);
+//            }
 //
-//            $arInfo = new UyeOrgInfo();
-//            $arInfo->setIsNewRecord(true);
-//            $arInfo->org_id = $data['id'];
-//            $arInfo->map_lat = $item['lat'];
-//            $arInfo->map_lng = $item['lng'];
-//            $arInfo->created_time = time();
-//            $arInfo->updated_time = time();
-//            $arInfo->address = $item['address'];
-//            $arInfo->phone = $item['phone'];
-//            $arInfo->logo = $item['logo'];
-//            $arInfo->description = $item['desp'];
-//            $arInfo->save();
 //        }
 
-        $fields = "o.id,o.org_name,oi.employment_index,oi.avg_course_price,oi.category_1,c.name as category,oi.map_lng,oi.map_lat,oi.logo,oi.address";
+        $fields = "o.*,oi.*,c.name as category";
         $query = (new \yii\db\Query())
             ->select($fields)
             ->from(UyeOrg::TABLE_NAME . " o")
@@ -57,6 +40,17 @@ class TestController extends Controller
 
         OrgSearch::createPush($query);
 
+//        $orgs = UyeOrgInfo::find()->select('org_id,city')->asArray()->all();
+//        foreach ($orgs as $org) {
+//            $sql = "select * from uye_areas where areaid='" . $org['city'] . "'";
+//            $result = \Yii::$app->db->createCommand($sql)->queryOne();
+//            if ($result){
+//                $result = UyeOrgInfo::_updateOrgInfo($org['org_id'], ['province' => $result['parentid']]);
+//            }
+//
+//        }
 
     }
+
+
 }

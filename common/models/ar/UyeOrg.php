@@ -28,6 +28,15 @@ class UyeOrg extends UActiveRecord
 {
     const TABLE_NAME = 'uye_org';
 
+
+    const STATUS_SAVE = 1;
+    const STATUS_NO_AUDITED = 2;
+    const STATUS_NO_PASS = 3;
+    const STATUS_OK = 4;
+
+    const IS_SHELF_ON = 1;
+    const IS_SHELF_OFF = 2;
+
     const ORG_TYPE_GENERAL = 1;
     const ORG_TYPE_BRANCH = 2;
     const ORG_TYPE_FRANCHISE = 3;

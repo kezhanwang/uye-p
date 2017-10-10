@@ -9,7 +9,7 @@
 namespace common\models\opensearch;
 
 
-use common\models\ar\UyeSearchLog;
+use common\models\ar\UyeOrg;
 use components\NearbyUtil;
 use components\UException;
 
@@ -40,6 +40,13 @@ class OrgSearch extends SearchOS
                 'avg_course_price' => $datum['avg_course_price'],
                 'category' => $datum['category'],
                 'logo' => $datum['logo'],
+                'status' => $datum['status'],
+                'is_shelf' => $datum['is_shelf'],
+                'is_employment' => $datum['is_employment'],
+                'is_high_salary' => $datum['is_high_salary'],
+                'province' => $datum['province'],
+                'city' => $datum['city'],
+                'area' => $datum['area'],
             ];
             array_push($searchData, $tmp);
         }
@@ -80,6 +87,7 @@ class OrgSearch extends SearchOS
             // 指定搜索关键词
             $params->setQuery("uye:'uye'");
             $filter = 'map_lng>=' . $points['lng1'] . ' AND map_lng<=' . $points['lng2'] . ' AND map_lat>=' . $points['lat2'] . ' AND map_lat<=' . $points['lat1'];
+            $filter .= " AND status=" . UyeOrg::STATUS_OK . " AND is_shelf=" . UyeOrg::IS_SHELF_ON;
 
             $params->setFilter($filter);
             // 指定返回的搜索结果的格式为json
@@ -122,6 +130,8 @@ class OrgSearch extends SearchOS
                 $query .= ' AND default:"' . $filterWords . '"';
             }
             $params->setQuery($query);
+            $filter = "status=" . UyeOrg::STATUS_OK . " AND is_shelf=" . UyeOrg::IS_SHELF_ON;
+            $params->setFilter($filter);
             // 指定返回的搜索结果的格式为json
             $params->setFormat("fulljson");
             //添加排序字段
@@ -160,6 +170,11 @@ class OrgSearch extends SearchOS
             array_multisort($distances, SORT_ASC, $list);
             foreach ($list as &$v) {
                 $v['distance'] = $v['distance'] > 999 ? round($v['distance'] / 1000, 2) . 'km' : $v['distance'] . 'm';
+                $search = '.cn/';
+                $pos = strpos($v['logo'], $search);
+                if ($pos === false) {
+                    $v['logo'] = "http://img.kezhanwang.cn" . $v['logo'];
+                }
             }
             $tmpArr = [
                 'page' => $getPageArr,
