@@ -38,8 +38,6 @@ class IndexAction extends AppAction
             //拉取机构分类面包屑
             $categorys = UyeCategory::find()->select('id,name,logo')->asArray()->all();
 
-            //获取周边的学校
-
             $templateData = [
                 'loaction' => $gps['addressComponent']['city'],
                 'categorys' => $categorys,

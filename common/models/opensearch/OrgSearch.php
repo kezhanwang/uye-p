@@ -9,6 +9,7 @@
 namespace common\models\opensearch;
 
 
+use common\models\ar\UyeSearchLog;
 use components\NearbyUtil;
 use components\UException;
 
@@ -44,44 +45,6 @@ class OrgSearch extends SearchOS
         }
         self::push(self::SEARCH_ORGANIZE, $searchData);
     }
-
-
-    public static function getSearch($search)
-    {
-        try {
-            $searchClient = self::getSearchClient();
-            $params = self::getSearchParamsBuilder();
-            $params->setStart(0);
-            //设置config子句的hit值
-            $params->setHits(20);
-            // 指定一个应用用于搜索
-            $params->setAppName(self::$config['appName']);
-            // 指定搜索关键词
-            $params->setQuery("default:'恒企'");
-            // 指定返回的搜索结果的格式为json
-            $params->setFormat("fulljson");
-            //添加排序字段
-            $params->addSort('RANK', 0);
-            // 执行搜索，获取搜索结果
-            $ret = $searchClient->execute($params->build());
-            // 将json类型字符串解码
-            return json_decode($ret->result, true);
-        } catch (UException $exception) {
-            throw new UException($exception->getMessage(), $exception->getCode());
-        }
-    }
-
-    /**
-     * 搜索学校范围
-     * @return type
-     */
-    public static $distanceRange = array(
-        '0-1' => '1千米以内',
-        '0-3' => '3千米以内',
-        '0-5' => '5千米以内',
-        '0-10' => '10千米以内',
-    );
-
 
     /**
      * 附近机构搜索
@@ -127,42 +90,114 @@ class OrgSearch extends SearchOS
             $ret = $searchClient->execute($params->build());
             // 将json类型字符串解码
             $result = json_decode($ret->result, true);
-            if (isset($result['status']) && $result['status'] == 'OK' && isset($result['result'])) {
-                $getPageArr = [
-                    'totalCount' => $result['result']['total'],
-                    'totalPage' => ceil($result['result']['total'] / $pageSize),
-                    'page' => $page,
-                    'pageSize' => $pageSize
-                ];
-
-                $data = $result['result']['items'];
-                $distances = [];
-                $list = [];
-                foreach ($data as $datum) {
-                    $list[$datum['fields']['id']] = $datum['fields'];
-                    $list[$datum['fields']['id']]['distance'] = NearbyUtil::getDistance($lng, $lat, $datum['fields']['map_lng'], $datum['fields']['map_lat']);
-                    unset($list[$datum['fields']['id']]['index_name']);
-                    $distances[] = $list[$datum['fields']['id']]['distance'];
-                }
-
-                array_multisort($distances, SORT_ASC, $list);
-                foreach ($list as &$v) {
-                    $v['distance'] = $v['distance'] > 999 ? round($v['distance'] / 1000, 2) . 'km' : $v['distance'] . 'm';
-                }
-                $tmpArr = [
-                    'page' => $getPageArr,
-                    'organizes' => $list
-                ];
-            } else {
-                $tmpArr = [
-                    'page' => ['totalCount' => 0, 'totalPage' => 0, 'page' => $page, 'pageSize' => $pageSize],
-                    'organizes' => [],
-                ];
-            }
+            $tmpArr = self::resultFormat($result, $lng, $lat, $page, $pageSize);
             return $tmpArr;
         } catch (UException $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());
         }
+    }
 
+    public static function getSearchOrgs($words, $lng, $lat, $page = 1)
+    {
+        if (!is_numeric($lng) || empty($lng) || !is_numeric($lat) || empty($lat)) {
+            throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
+        }
+
+        try {
+            $filterWords = self::strFilter($words);
+            $pageSize = 10;
+
+            $searchClient = self::getSearchClient();
+            $params = self::getSearchParamsBuilder();
+            $params->setStart(($page - 1) * $pageSize);
+            //设置config子句的hit值
+            $params->setHits($pageSize);
+            // 指定一个应用用于搜索
+            $params->setAppName(self::$config['appName']);
+            // 指定搜索关键词
+            $query = "uye:'uye'";
+            if (is_numeric($filterWords)) {
+                $query .= ' AND id:"' . $filterWords . '"';
+            } else {
+                $query .= ' AND default:"' . $filterWords . '"';
+            }
+            $params->setQuery($query);
+            // 指定返回的搜索结果的格式为json
+            $params->setFormat("fulljson");
+            //添加排序字段
+            $params->addSort('RANK', 0);
+            // 执行搜索，获取搜索结果
+            $ret = $searchClient->execute($params->build());
+            // 将json类型字符串解码
+            $result = json_decode($ret->result, true);
+            $tmpArr = self::resultFormat($result, $lng, $lat, $page, $pageSize);
+            return $tmpArr;
+        } catch (UException $exception) {
+            throw new UException($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    private static function resultFormat($searchResult, $lng, $lat, $page, $pageSize)
+    {
+        if (isset($searchResult['status']) && $searchResult['status'] == 'OK' && isset($searchResult['result'])) {
+            $getPageArr = [
+                'totalCount' => $searchResult['result']['total'],
+                'totalPage' => ceil($searchResult['result']['total'] / $pageSize),
+                'page' => $page,
+                'pageSize' => $pageSize
+            ];
+
+            $data = $searchResult['result']['items'];
+            $distances = [];
+            $list = [];
+            foreach ($data as $datum) {
+                $list[$datum['fields']['id']] = $datum['fields'];
+                $list[$datum['fields']['id']]['distance'] = NearbyUtil::getDistance($lng, $lat, $datum['fields']['map_lng'], $datum['fields']['map_lat']);
+                unset($list[$datum['fields']['id']]['index_name']);
+                $distances[] = $list[$datum['fields']['id']]['distance'];
+            }
+
+            array_multisort($distances, SORT_ASC, $list);
+            foreach ($list as &$v) {
+                $v['distance'] = $v['distance'] > 999 ? round($v['distance'] / 1000, 2) . 'km' : $v['distance'] . 'm';
+            }
+            $tmpArr = [
+                'page' => $getPageArr,
+                'organizes' => $list
+            ];
+        } else {
+            $tmpArr = [
+                'page' => ['totalCount' => 0, 'totalPage' => 0, 'page' => $page, 'pageSize' => $pageSize],
+                'organizes' => [],
+            ];
+        }
+        return $tmpArr;
+    }
+
+    //特殊字符串过滤
+    public static function strFilter($str)
+    {
+        if (empty($str)) {
+            return '';
+        }
+
+        $str = str_replace("!", "", $str);
+        $str = str_replace('/', "", $str);
+        $str = str_replace("\\", "", $str);
+        $str = str_replace(">", "", $str);
+        $str = str_replace("<", "", $str);
+        $str = str_replace("&", "", $str);
+        $str = str_replace(">", "", $str);
+        $str = str_replace("<", "", $str);
+        $str = str_replace("''", "", $str);
+        $str = str_replace("(", "", $str);
+        $str = str_replace("（", "", $str);
+        $str = str_replace(")", "", $str);
+        $str = str_replace("）", "", $str);
+        $str = str_replace("[", "", $str);
+        $str = str_replace("]", "", $str);
+        $str = str_replace("*", "", $str);
+        $str = str_replace("|", "", $str);
+        return $str;
     }
 }
