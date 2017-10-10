@@ -11,5 +11,6 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/../../common/config/main.php'),
     require(__DIR__ . '/../config/main.php')
 );
-
+Session_start();
+session_id();
 (new yii\web\Application($config))->run();

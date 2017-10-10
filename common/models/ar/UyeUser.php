@@ -136,7 +136,7 @@ class UyeUser extends UActiveRecord
             }
         }
 
-        $ar->update_time = time();
+        $ar->updated_time = time();
 
         if (!$ar->save()) {
             throw new UException(var_export($ar->getErrors(), true), ERROR_DB);

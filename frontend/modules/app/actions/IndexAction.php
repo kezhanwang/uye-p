@@ -8,8 +8,10 @@
 
 namespace app\modules\app\actions;
 
+use common\models\ar\UyeAppLog;
 use common\models\ar\UyeCategory;
 use components\BaiduMap;
+use components\RedisUtil;
 use components\UException;
 use frontend\models\DataBus;
 use Yii;
@@ -31,11 +33,13 @@ class IndexAction extends AppAction
             }
             $gps = BaiduMap::getPosInfo($lng, $lat);
 
+            $this->createAppLog($request->get('phoneid'), $lng, $lat, $gps);
+
             //拉取机构分类面包屑
             $categorys = UyeCategory::find()->select('id,name,logo')->asArray()->all();
 
-
             //获取周边的学校
+
             $templateData = [
                 'loaction' => $gps['addressComponent']['city'],
                 'categorys' => $categorys,
@@ -43,6 +47,37 @@ class IndexAction extends AppAction
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData, $this->token());
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), DataBus::get('uid'), $this->token());
+        }
+    }
+
+    private function createAppLog($phoneid, $lng, $lat, $gps)
+    {
+        try {
+            $data = [
+                'phoneid' => $phoneid,
+                'uid' => DataBus::get('uid'),
+                'map_lng' => $lng,
+                'map_lat' => $lat,
+                'country' => $gps['addressComponent']['country'],
+                'province' => $gps['addressComponent']['province'],
+                'city' => $gps['addressComponent']['city'],
+                'district' => $gps['addressComponent']['district'],
+                'town' => $gps['addressComponent']['town'],
+                'street' => $gps['addressComponent']['street'],
+                'street_number' => $gps['addressComponent']['street_number'],
+                'request_time' => $_SERVER['REQUEST_TIME'],
+                'login_time' => $this->isLogin() ? $_SERVER['REQUEST_TIME'] : 0
+            ];
+            $addLog = UyeAppLog::_addLog($data);
+            if (!$this->isLogin()) {
+                $redis = RedisUtil::getInstance();
+                $sessionID = session_id();
+                $redisKey = 'UYE-APP-LOG-' . md5($phoneid . $sessionID);
+                $redis->set($redisKey, $addLog['id'], 3600 * 24);
+
+            }
+        } catch (\Exception $exception) {
+            Yii::error($exception->getMessage());
         }
     }
 }

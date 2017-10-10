@@ -9,8 +9,10 @@
 namespace frontend\models;
 
 
+use common\models\ar\UyeAppLog;
 use common\models\ar\UyeUser;
 use components\CookieUtil;
+use components\RedisUtil;
 use components\UException;
 
 class UyeUserModel
@@ -47,9 +49,10 @@ class UyeUserModel
     /**
      * @param null $phone
      * @param null $password
+     * @param null $phoneid
      * @throws UException
      */
-    public static function login($phone = null, $password = null)
+    public static function login($phone = null, $password = null, $phoneid = null)
     {
         if (is_null($phone) || is_null($password)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
@@ -61,6 +64,9 @@ class UyeUserModel
         } else {
             $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
             CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+            if (DataBus::get('plat')) {
+                self::mobileAppLog($phoneid, session_id());
+            }
         }
     }
 
@@ -69,7 +75,7 @@ class UyeUserModel
      * @param null $code
      * @throws UException
      */
-    public static function loginByPhoneCode($phone = null, $code = null)
+    public static function loginByPhoneCode($phone = null, $code = null, $phoneid = null)
     {
         if (is_null($phone) || is_null($code)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
@@ -82,6 +88,9 @@ class UyeUserModel
 
         $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
         CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+        if (DataBus::get('plat')) {
+            self::mobileAppLog($phoneid, session_id());
+        }
     }
 
     /**
@@ -107,5 +116,27 @@ class UyeUserModel
         $newPassword = self::createPasswordMd5($new);
 
         return UyeUser::_updateUser($uid, $newPassword);
+    }
+
+    public static function mobileAppLog($phoneid, $sessionID)
+    {
+        if (empty($phoneid) || empty($sessionID)) {
+            return false;
+        }
+
+        $redis = RedisUtil::getInstance();
+        $redisKey = 'UYE-APP-LOG-' . md5($phoneid . $sessionID);
+        if ($redis->exists($redisKey)) {
+            $data = $redis->get($redisKey);
+            $update = [
+                'login_time' => time(),
+                'updated_time' => time(),
+            ];
+            try {
+                UyeAppLog::_updateLog($data, $update);
+            } catch (UException $exception) {
+                \Yii::error($exception->getMessage());
+            }
+        }
     }
 }

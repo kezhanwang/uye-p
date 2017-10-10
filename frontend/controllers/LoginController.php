@@ -35,7 +35,8 @@ class LoginController extends UController
             $request = Yii::$app->request;
             $phone = $request->post() ? $request->post('phone') : $request->get('phone');
             $password = $request->post() ? $request->post('password') : $request->get('password');
-            UyeUserModel::login($phone, $password);
+            $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
+            UyeUserModel::login($phone, $password, $phoneid);
             Output::info(SUCCESS, '登录成功', array(), $this->token());
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
@@ -51,7 +52,8 @@ class LoginController extends UController
             $request = Yii::$app->request;
             $phone = $request->post() ? $request->post('phone') : $request->get('phone');
             $code = $request->post() ? $request->post('code') : $request->get('code');
-            UyeUserModel::loginByPhoneCode($phone, $code);
+            $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
+            UyeUserModel::loginByPhoneCode($phone, $code, $phoneid);
             Output::info(SUCCESS, '登录成功', array(), $this->token());
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
@@ -68,6 +70,7 @@ class LoginController extends UController
             $phone = $request->post() ? $request->post('phone') : $request->get('phone');
             $code = $request->post() ? $request->post('code') : $request->get('code');
             $password = $request->post() ? $request->post('password') : $request->get('password');
+            $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);
             }
@@ -78,7 +81,7 @@ class LoginController extends UController
             if (!CheckUtil::isPWD($password)) {
                 throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
             }
-            UyeUserModel::register($phone, $password);
+            UyeUserModel::register($phone, $password, $phoneid);
             UyeUserModel::login($phone, $password);
             Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
         } catch (\Exception $exception) {
