@@ -104,7 +104,7 @@ class OrgSearch extends SearchOS
             'lng2' => $points_arr['right-bottom']['lng'],
             'lat2' => $points_arr['right-bottom']['lat'],
         );
-        $pageSize = 5;
+        $pageSize = 10;
 
         try {
             $searchClient = self::getSearchClient();
