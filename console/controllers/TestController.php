@@ -9,6 +9,7 @@
 namespace console\controllers;
 
 
+use common\models\ar\UyeCategory;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgInfo;
 use common\models\opensearch\OrgSearch;
@@ -46,7 +47,16 @@ class TestController extends Controller
 //            $arInfo->save();
 //        }
 
-        $orgs = \Yii::$app->db->createCommand("select * from uye_org o left join uye_org_info oi on oi.org_id=o.id")->queryAll();
-        OrgSearch::createPush($orgs);
+        $fields = "o.id,o.org_name,oi.employment_index,oi.avg_course_price,oi.category_1,c.name as category,oi.map_lng,oi.map_lat,oi.logo,oi.address";
+        $query = (new \yii\db\Query())
+            ->select($fields)
+            ->from(UyeOrg::TABLE_NAME . " o")
+            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
+            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
+            ->all();
+
+        OrgSearch::createPush($query);
+
+
     }
 }
