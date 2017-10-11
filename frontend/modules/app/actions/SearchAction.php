@@ -26,15 +26,20 @@ class SearchAction extends AppAction
             //拉去搜索页面缓存数据
             $cacheConfig = $this->getCacheConfig();
 
-            if (DataBus::get('uid')) {
-                $searchHistory = UyeSearchLog::find()->select('*')->where('uid=:uid', [':uid' => DataBus::get('uid')])->limit(5)->offset(0)->orderBy('id desc');
-            } else {
-                $searchHistory = [];
+//            if (DataBus::get('uid')) {
+            $searchHistory = UyeSearchLog::find()->select('words')->where('uid=:uid', [':uid' => 0])->limit(5)->offset(0)->orderBy('id desc')->asArray()->all();
+//            } else {
+//                $searchHistory = [];
+//            }
+
+            $history = [];
+            foreach ($searchHistory as $item) {
+                $history[] = $item['words'];
             }
 
             //获取周边的学校
             $templateData = [
-                'history' => $searchHistory,
+                'history' => $history,
             ];
 
             $templateData = \yii\helpers\ArrayHelper::merge($templateData, $cacheConfig);

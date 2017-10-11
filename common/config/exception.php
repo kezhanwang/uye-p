@@ -64,3 +64,6 @@ define('ERROR_SECRET_CONFIG_NO_EXISTS_CONTENT', '服务API配置异常');
 define('ERROR_GPS_LOCATION', 1018);
 define('ERROR_GPS_LOCATION_CONTENT', 'GPS定位异常');
 
+define('ERROR_ORG_NO_EXISTS', 1019);
+define('ERROR_ORG_NO_EXISTS_CONTENT', "暂未查询到机构信息");
+
