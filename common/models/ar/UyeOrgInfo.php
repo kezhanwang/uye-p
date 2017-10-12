@@ -94,14 +94,13 @@ class UyeOrgInfo extends UActiveRecord
         $ar->updated_time = time();
 
         if (!$ar->save()) {
-            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+            UException::dealAR($ar);
         }
         return $ar->getAttributes();
     }
 
     public static function _updateOrgInfo($id, $info)
     {
-        var_dump($info);
         if (empty($id) || empty($info)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
@@ -118,7 +117,7 @@ class UyeOrgInfo extends UActiveRecord
         $ar->updated_time = time();
 
         if (!$ar->save()) {
-            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+            UException::dealAR($ar);
         }
         return $ar->getAttributes();
     }

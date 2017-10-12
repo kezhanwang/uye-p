@@ -8,6 +8,8 @@
 
 namespace common\models\ar;
 
+use components\UException;
+
 /**
  * This is the model class for table "uye_search_log".
  *
@@ -59,7 +61,7 @@ class UyeSearchLog extends UActiveRecord
         $ar->created_time = time();
 
         if (!$ar->save()) {
-            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+            UException::dealAR($ar);
         }
         return true;
     }

@@ -10,6 +10,7 @@ namespace common\models\ar;
 
 
 use components\ArrayUtil;
+use components\UException;
 
 class UyeSmsRecore extends UActiveRecord
 {
@@ -42,7 +43,7 @@ class UyeSmsRecore extends UActiveRecord
         }
 
         if (!$ar->save()) {
-            return false;
+            UException::dealAR($ar);
         }
 
         return $ar->getAttributes();

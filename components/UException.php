@@ -17,4 +17,10 @@ class UException extends \Exception
     {
         parent::__construct($message, $code, $previous);
     }
+
+    public static function dealAR($ar)
+    {
+        $msg = 'error:' . var_export($ar->getErrors(), true) . "\nattrs:" . var_export($ar->getAttributes(), true);
+        throw new UException($msg, ERROR_DB);
+    }
 }

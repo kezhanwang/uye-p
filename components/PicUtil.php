@@ -11,6 +11,20 @@ namespace components;
 
 class PicUtil
 {
+    /**
+     * 获得后缀名
+     * @param $str
+     * @return bool|string
+     */
+    public static function getSuffix($str)
+    {
+        $pos = strrpos($str, '.');
+        if ($pos !== false) {
+            return substr($str, $pos + 1);
+        } else {
+            return '';
+        }
+    }
 
     public static $fontsizeArr = array(
         6.5 => 8,

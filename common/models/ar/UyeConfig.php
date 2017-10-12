@@ -75,7 +75,7 @@ class UyeConfig extends UActiveRecord
         $ar->updated_time = time();
 
         if (!$ar->save()) {
-            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+            UException::dealAR($ar);
         }
         return $ar->getAttributes();
     }
@@ -98,7 +98,7 @@ class UyeConfig extends UActiveRecord
         $ar->updated_time = time();
 
         if (!$ar->save()) {
-            throw new UException(var_export($ar->getErrors(), true), ERROR_DB);
+            UException::dealAR($ar);
         }
         return $ar->getAttributes();
     }
