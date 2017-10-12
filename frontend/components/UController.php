@@ -102,10 +102,5 @@ class UController extends Controller
             return $this->isLogin();
         }
     }
-
-    public function token()
-    {
-        $newToken = TokenUtil::refreshToken($this->key, $this->uid, $this->isMobile);
-        return $newToken;
-    }
+    
 }
