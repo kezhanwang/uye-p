@@ -41,9 +41,9 @@ class UserController extends UController
             }
 
             UyeUserModel::changePassword($this->uid, $oldPassword, $newPassword);
-            Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
+            Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
     }
 }

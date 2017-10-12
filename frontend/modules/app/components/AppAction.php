@@ -49,7 +49,7 @@ class AppAction extends Action
         }
         $requestData = $request->isPost ? $request->post() : $request->get();
         if (!array_key_exists('token', $requestData)) {
-            Output::err(ERROR_TOKEN_NO_EXISTS, ERROR_TOKEN_NO_EXISTS_CONTENT, array(), $this->uid, $this->token());
+            Output::err(ERROR_TOKEN_NO_EXISTS, ERROR_TOKEN_NO_EXISTS_CONTENT, array(), $this->uid);
         }
 
         $check = TokenUtil::checkToken($this->key, $this->uid, $requestData['token'], DataBus::get('plat'));
@@ -58,7 +58,7 @@ class AppAction extends Action
             $this->newToken = $check;
             $this->requestData = $requestData;
         } else {
-            Output::err(ERROR_TOKEN_CHECK_WRONG, ERROR_TOKEN_CHECK_WRONG_CONTENT, array(), $this->uid, $this->token());
+            Output::err(ERROR_TOKEN_CHECK_WRONG, ERROR_TOKEN_CHECK_WRONG_CONTENT, array(), $this->uid);
         }
     }
 
@@ -101,7 +101,7 @@ class AppAction extends Action
             if ($toLogin) {
                 HttpUtil::goLogin();
             } else {
-                Output::err(ERROR_LOGIN_NO, ERROR_LOGIN_NO_CONTENT, array(), 0, $this->token());
+                Output::err(ERROR_LOGIN_NO, ERROR_LOGIN_NO_CONTENT, array(), 0);
             }
             Yii::$app->end();
         } else {

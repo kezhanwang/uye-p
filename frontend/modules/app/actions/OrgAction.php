@@ -61,9 +61,9 @@ class OrgAction extends AppAction
                 ],
                 'courses' => $courses,
             ];
-            Output::info(SUCCESS, SUCCESS_CONTENT, $templateData, $this->token());
+            Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (UException $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'), $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'));
         }
     }
 }

@@ -42,9 +42,9 @@ class IndexAction extends AppAction
                 'loaction' => $gps['addressComponent']['city'],
                 'categorys' => $categorys,
             ];
-            Output::info(SUCCESS, SUCCESS_CONTENT, $templateData, $this->token());
+            Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), DataBus::get('uid'), $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), DataBus::get('uid'));
         }
     }
 

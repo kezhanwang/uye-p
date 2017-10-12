@@ -9,6 +9,7 @@
 namespace components;
 
 
+use frontend\models\DataBus;
 use yii\helpers\Html;
 
 class Output
@@ -188,7 +189,7 @@ class Output
         return true;
     }
 
-    public static function err($code, $msg, $data = array(), $uid = 0, $token)
+    public static function err($code, $msg, $data = array(), $uid = 0)
     {
         \Yii::error("err:{$uid}.url:{$_SERVER['REQUEST_URI']}.code{$code}.msg:{$msg}.", '');
 
@@ -200,7 +201,7 @@ class Output
             'code' => $code,
             'msg' => $msg,
             'data' => $data,
-            'token' => $token,
+            'token' => DataBus::getToken(),
             'timestamp' => time()
         ];
         $tmpJson = json_encode($tmpArr);
@@ -208,7 +209,7 @@ class Output
         exit();
     }
 
-    public static function info($code, $msg, $data = array(), $token)
+    public static function info($code, $msg, $data = array())
     {
         if (empty($data)) {
             $data = new \stdClass();
@@ -218,7 +219,7 @@ class Output
             'code' => $code,
             'msg' => $msg,
             'data' => $data,
-            'token' => $token,
+            'token' => DataBus::getToken(),
             'timestamp' => time()
         ];
         $tmpJson = json_encode($tmpArr);

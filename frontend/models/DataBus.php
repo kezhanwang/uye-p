@@ -12,6 +12,7 @@ namespace frontend\models;
 use common\models\ar\UyeUser;
 use components\CheckUtil;
 use components\CookieUtil;
+use components\TokenUtil;
 use components\UException;
 use Yii;
 
@@ -90,6 +91,30 @@ class DataBus
         } else {
             return true;
         }
+    }
+
+    public static function getToken()
+    {
+        if (empty(self::$data)) {
+            self::init();
+        }
+
+        if (self::$data['plat']) {
+            $isMobile = true;
+        } else {
+            $isMobile = false;
+        }
+
+        $request = Yii::$app->request;
+        $phoneID = $request->isPost ? $request->post('phoneid') : $request->get('phoneid');
+        if ($phoneID) {
+            $key = $phoneID;
+        } else {
+            $key = session_id();
+        }
+
+        $newToken = TokenUtil::refreshToken($key, self::$data['uid'], $isMobile);
+        return $newToken;
     }
 
 }

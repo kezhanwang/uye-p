@@ -32,9 +32,9 @@ class SafeController extends UController
         }
         try {
             $fileData = VerifyCodeUtil::getCode(null, null, $w, $h, $this->isMobile);
-            Output::info(SUCCESS, SUCCESS_CONTENT, ['image' => base64_encode($fileData)], $this->token());
+            Output::info(SUCCESS, SUCCESS_CONTENT, ['image' => base64_encode($fileData)]);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
     }
 
@@ -52,9 +52,9 @@ class SafeController extends UController
             if (!VerifyCodeUtil::checkCode($code)) {
                 throw new UException(ERROR_VCODE_CONTENT, ERROR_VCODE);
             }
-            Output::info(SUCCESS, SUCCESS_CONTENT, array(), $this->token());
+            Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
     }
 
@@ -73,10 +73,10 @@ class SafeController extends UController
             if (empty($result)) {
                 throw new UException(ERROR_PHONE_CODE_CONTENT, ERROR_PHONE_CODE);
             } else {
-                Output::info(SUCCESS, SUCCESS_CONTENT, $result, $this->token());
+                Output::info(SUCCESS, SUCCESS_CONTENT, $result);
             }
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid, $this->token());
+            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
 
     }
