@@ -67,3 +67,6 @@ define('ERROR_GPS_LOCATION_CONTENT', 'GPS定位异常');
 define('ERROR_ORG_NO_EXISTS', 1019);
 define('ERROR_ORG_NO_EXISTS_CONTENT', "暂未查询到机构信息");
 
+define('ERROR_USER_INFO_NO_EXISTS', 1020);
+define('ERROR_USER_INFO_NO_EXISTS_CONTENT', "暂未获取用户信息，请重新登录");
+

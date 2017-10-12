@@ -20,4 +20,9 @@ class UserController
         ];
         return $actions;
     }
+
+    public function actionIdentity()
+    {
+
+    }
 }

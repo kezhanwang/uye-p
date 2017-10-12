@@ -98,7 +98,6 @@ class UController extends Controller
             } else {
                 Output::err(ERROR_LOGIN_NO, ERROR_LOGIN_NO_CONTENT, array(), 0);
             }
-            Yii::$app->end();
         } else {
             return $this->isLogin();
         }

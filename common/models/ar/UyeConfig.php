@@ -25,20 +25,7 @@ class UyeConfig extends UActiveRecord
     {
         return 'uye_config';
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['created_time', 'updated_time'], 'integer'],
-            [['name'], 'string', 'max' => 20],
-            [['label'], 'string', 'max' => 50],
-            [['value'], 'string', 'max' => 255],
-            [['name'], 'unique'],
-        ];
-    }
+    
 
     /**
      * @inheritdoc
