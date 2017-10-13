@@ -88,7 +88,6 @@ class UController extends Controller
      * 检查是否登录,未登录直接返回错误信息
      * @param bool $toLogin
      * @return array|mixed
-     * @throws yii\base\ExitException
      */
     protected function checkLogin($toLogin = false)
     {
@@ -102,5 +101,5 @@ class UController extends Controller
             return $this->isLogin();
         }
     }
-    
+
 }

@@ -72,12 +72,11 @@ class UyeUserModel
 
     /**
      * @param null $phone
-     * @param null $code
      * @throws UException
      */
-    public static function loginByPhoneCode($phone = null, $code = null, $phoneid = null)
+    public static function loginByPhoneCode($phone = null, $phoneid = null)
     {
-        if (is_null($phone) || is_null($code)) {
+        if (is_null($phone)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 

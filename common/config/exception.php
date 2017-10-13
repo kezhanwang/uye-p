@@ -70,3 +70,5 @@ define('ERROR_ORG_NO_EXISTS_CONTENT', "暂未查询到机构信息");
 define('ERROR_USER_INFO_NO_EXISTS', 1020);
 define('ERROR_USER_INFO_NO_EXISTS_CONTENT', "暂未获取用户信息，请重新登录");
 
+define('ERROR_USER_QUESTION_EXISTS', 1021);
+define('ERROR_USER_QUESTION_EXISTS_CONTENT', "您已提交该问卷，请勿重复提交，谢谢");

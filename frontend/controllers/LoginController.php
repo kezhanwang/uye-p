@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 use components\CheckUtil;
 use components\Output;
+use components\SmsUtil;
 use components\UException;
 use frontend\components\UController;
 use frontend\models\DataBus;
@@ -13,6 +14,7 @@ use Yii;
 
 class LoginController extends UController
 {
+    private $ip = null;
 
     public function init()
     {
@@ -24,6 +26,7 @@ class LoginController extends UController
                 Output::err(ERROR_LOGIN_ING, ERROR_LOGIN_ING_CONTENT, array(), $this->uid);
             }
         }
+        $this->ip = Yii::$app->request->getUserIP();
     }
 
     /**
@@ -53,7 +56,8 @@ class LoginController extends UController
             $phone = $request->post() ? $request->post('phone') : $request->get('phone');
             $code = $request->post() ? $request->post('code') : $request->get('code');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
-            UyeUserModel::loginByPhoneCode($phone, $code, $phoneid);
+            SmsUtil::checkVerifyCode($phone, $this->ip, $code);
+            UyeUserModel::loginByPhoneCode($phone, $phoneid);
             Output::info(SUCCESS, '登录成功');
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
@@ -74,9 +78,8 @@ class LoginController extends UController
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);
             }
-            if ($code) {
-                throw new UException('', '');
-            }
+
+            SmsUtil::checkVerifyCode($phone, $this->ip, $code);
 
             if (!CheckUtil::isPWD($password)) {
                 throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
