@@ -10,6 +10,8 @@ namespace app\modules\app\actions;
 
 use common\models\ar\UyeAppLog;
 use common\models\ar\UyeCategory;
+use common\models\ar\UyeOrg;
+use common\models\ar\UyeOrgWifi;
 use components\BaiduMap;
 use components\RedisUtil;
 use components\UException;
@@ -26,21 +28,24 @@ class IndexAction extends AppAction
         try {
             //确定用户城市
             $request = Yii::$app->request;
-            $lng = $request->get('map_lng');
-            $lat = $request->get('map_lat');
+            $lng = $request->isPost ? $request->post('map_lng') : $request->get('map_lng');
+            $lat = $request->isPost ? $request->post('map_lat') : $request->get('map_lat');
+            $mac = $request->isPost ? $request->post('mac') : $request->get('mac');
+            $ssid = $request->isPost ? $request->post('ssid') : $request->get('ssid');
+            $ip = ip2long($request->getUserIP());
             if (empty($lng) || !is_numeric($lng) || empty($lat) || !is_numeric($lat)) {
                 throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
             }
             $gps = BaiduMap::getPosInfo($lng, $lat);
 
             $this->createAppLog($request->get('phoneid'), $lng, $lat, $gps);
-
-            //拉取机构分类面包屑
-            $categorys = UyeCategory::find()->select('id,name,logo')->asArray()->all();
-
+            $insuredOrder = $this->getUserInsuredOrder();
+            $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid, $ip);
             $templateData = [
                 'loaction' => $gps['addressComponent']['city'],
-                'categorys' => $categorys,
+                'count_order' => '已有1000位学院加入U业帮就业无忧计划',
+                'insured_order' => $insuredOrder,
+                'organize' => $organize,
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
@@ -78,4 +83,36 @@ class IndexAction extends AppAction
             Yii::error($exception->getMessage());
         }
     }
+
+    private function getUserInsuredOrder()
+    {
+        if ($this->isLogin()) {
+            $uid = DataBus::get('uid');
+            $compensation = 0;
+            $count = 0;
+            $paid_compensation = 0;
+        } else {
+            $compensation = 0;
+            $count = 0;
+            $paid_compensation = 0;
+        }
+        $orders = [
+            'compensation' => $compensation,
+            'count' => $count,
+            'paid_compensation' => $paid_compensation
+        ];
+        return $orders;
+    }
+
+    private function checkMacAndSSIDwihtIP($mac, $ssid, $ip)
+    {
+        $info = UyeOrgWifi::getByMacAndSSID($mac, $ssid, $ip);
+        if ($info['org_id']) {
+            $organize = UyeOrg::find()->select('id As org_id,org_name')->where('org_id=:org_id', [':org_id' => $info['org_id']])->asArray()->one();
+        } else {
+            $organize = [];
+        }
+        return $organize;
+    }
+
 }

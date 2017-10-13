@@ -40,6 +40,9 @@ class LoginController extends UController
             $password = $request->post() ? $request->post('password') : $request->get('password');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             $userInfo = UyeUserModel::login($phone, $password, $phoneid);
+            if ($this->isMobile) {
+                $userInfo['cookie'] = $this->getCookie();
+            }
             Output::info(SUCCESS, '登录成功', $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
@@ -58,6 +61,9 @@ class LoginController extends UController
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             SmsUtil::checkVerifyCode($phone, $this->ip, $code);
             $userInfo = UyeUserModel::loginByPhoneCode($phone, $phoneid);
+            if ($this->isMobile) {
+                $userInfo['cookie'] = $this->getCookie();
+            }
             Output::info(SUCCESS, '登录成功', $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
@@ -86,10 +92,22 @@ class LoginController extends UController
             }
             UyeUserModel::register($phone, $password, $phoneid);
             $userInfo = UyeUserModel::login($phone, $password);
+            if ($this->isMobile) {
+                $userInfo['cookie'] = $this->getCookie();
+            }
             Output::info(SUCCESS, SUCCESS_CONTENT, $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
+    }
+
+    private function getCookie()
+    {
+        return [
+            'PHPSESSID' => session_id(),
+            'bjzhongteng_com' => $_COOKIE['bjzhongteng_com'],
+            'b42e7_uye_user' => $_COOKIE['b42e7_uye_user'],
+        ];
     }
 
 }
