@@ -28,7 +28,7 @@ class UyeUser extends UActiveRecord
 
     /**
      * @param null $phone
-     * @return static
+     * @return array|null|\yii\db\ActiveRecord
      * @throws UException
      */
     public static function getUserByPhone($phone = null)
@@ -37,14 +37,18 @@ class UyeUser extends UActiveRecord
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $result = static::findOne(['phone' => $phone]);
-        return $result;
+        $userInfo = self::find()
+            ->select('*')
+            ->where('phone=:phone AND status=:status', [':phone' => $phone, ':status' => self::STATUS_NORMAL])
+            ->asArray()
+            ->one();
+        return $userInfo;
     }
 
     /**
      * @param null $phone
      * @param null $password
-     * @return static
+     * @return array|null|\yii\db\ActiveRecord
      * @throws UException
      */
     public static function getUserByLogin($phone = null, $password = null)
@@ -53,8 +57,15 @@ class UyeUser extends UActiveRecord
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $userInfo = static::findOne(['phone' => $phone, 'password' => $password]);
-        return $userInfo;
+        $userInfo = self::find()->select('*')
+            ->where('phone=:phone AND password=:password AND status=:status', [':phone' => $phone, ':password' => $password, ':status' => self::STATUS_NORMAL])
+            ->asArray()
+            ->one();
+        if ($userInfo) {
+            return $userInfo;
+        } else {
+            return array();
+        }
     }
 
     /**

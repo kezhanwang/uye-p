@@ -39,8 +39,8 @@ class LoginController extends UController
             $phone = $request->post() ? $request->post('phone') : $request->get('phone');
             $password = $request->post() ? $request->post('password') : $request->get('password');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
-            UyeUserModel::login($phone, $password, $phoneid);
-            Output::info(SUCCESS, '登录成功');
+            $userInfo = UyeUserModel::login($phone, $password, $phoneid);
+            Output::info(SUCCESS, '登录成功', $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
@@ -57,8 +57,8 @@ class LoginController extends UController
             $code = $request->post() ? $request->post('code') : $request->get('code');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             SmsUtil::checkVerifyCode($phone, $this->ip, $code);
-            UyeUserModel::loginByPhoneCode($phone, $phoneid);
-            Output::info(SUCCESS, '登录成功');
+            $userInfo = UyeUserModel::loginByPhoneCode($phone, $phoneid);
+            Output::info(SUCCESS, '登录成功', $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }
@@ -85,8 +85,8 @@ class LoginController extends UController
                 throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
             }
             UyeUserModel::register($phone, $password, $phoneid);
-            UyeUserModel::login($phone, $password);
-            Output::info(SUCCESS, SUCCESS_CONTENT);
+            $userInfo = UyeUserModel::login($phone, $password);
+            Output::info(SUCCESS, SUCCESS_CONTENT, $userInfo);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
         }

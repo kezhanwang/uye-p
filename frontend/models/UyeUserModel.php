@@ -22,6 +22,7 @@ class UyeUserModel
      * 注册
      * @param null $phone
      * @param null $password
+     * @return array
      * @throws UException
      */
     public static function register($phone = null, $password = null)
@@ -50,6 +51,7 @@ class UyeUserModel
      * @param null $phone
      * @param null $password
      * @param null $phoneid
+     * @return UyeUser
      * @throws UException
      */
     public static function login($phone = null, $password = null, $phoneid = null)
@@ -67,11 +69,14 @@ class UyeUserModel
             if (DataBus::get('plat')) {
                 self::mobileAppLog($phoneid, session_id());
             }
+            unset($userInfo['password']);
+            return $userInfo;
         }
     }
 
     /**
      * @param null $phone
+     * @return array|UyeUser
      * @throws UException
      */
     public static function loginByPhoneCode($phone = null, $phoneid = null)
@@ -90,6 +95,7 @@ class UyeUserModel
         if (DataBus::get('plat')) {
             self::mobileAppLog($phoneid, session_id());
         }
+        return $userInfo;
     }
 
     /**
