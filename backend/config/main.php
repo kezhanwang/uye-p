@@ -38,31 +38,10 @@ return [
             // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-        'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
-            ],
-        ],
         "authManager" => [
             "class" => 'yii\rbac\DbManager', //这里记得用单引号而不是双引号
             "defaultRoles" => ["guest"],
         ],
-        'language' => 'zh-CN',
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',
