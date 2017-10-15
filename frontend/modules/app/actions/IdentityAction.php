@@ -54,7 +54,7 @@ class IdentityAction extends AppAction
             }
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'));
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 }

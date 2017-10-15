@@ -58,7 +58,7 @@ class UdcreditController extends UController
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'));
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 

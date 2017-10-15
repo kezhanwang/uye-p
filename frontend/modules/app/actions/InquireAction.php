@@ -37,7 +37,7 @@ class InquireAction extends AppAction
             $this->addSearchLog($params['map_lng'], $params['map_lat'], DataBus::get('uid'), $params['word'], $request->get());
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'));
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 

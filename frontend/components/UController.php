@@ -43,7 +43,7 @@ class UController extends Controller
         }
         $requestData = $request->isPost ? $request->post() : $request->get();
         if (!array_key_exists('token', $requestData)) {
-            Output::err(ERROR_TOKEN_NO_EXISTS, ERROR_TOKEN_NO_EXISTS_CONTENT, array(), $this->uid);
+            Output::err(ERROR_TOKEN_NO_EXISTS, ERROR_TOKEN_NO_EXISTS_CONTENT);
         }
 
         $check = TokenUtil::checkToken($this->key, $this->uid, $requestData['token'], DataBus::get('plat'));
@@ -52,14 +52,14 @@ class UController extends Controller
             $this->newToken = $check;
             $this->requestData = $requestData;
         } else {
-            Output::err(ERROR_TOKEN_CHECK_WRONG, ERROR_TOKEN_CHECK_WRONG_CONTENT, array(), $this->uid);
+            Output::err(ERROR_TOKEN_CHECK_WRONG, ERROR_TOKEN_CHECK_WRONG_CONTENT);
         }
     }
 
     public function verifySign()
     {
         if (!array_key_exists('sign', $this->requestData)) {
-            Output::err(ERROR_SIGN_NO_EXISTS, ERROR_SIGN_NO_EXISTS_CONTENT, array(), $this->uid, $this->newToken);
+            Output::err(ERROR_SIGN_NO_EXISTS, ERROR_SIGN_NO_EXISTS_CONTENT);
         }
 
         $sign = $this->requestData['sign'];
@@ -70,7 +70,7 @@ class UController extends Controller
         if ($newSign === $sign) {
             return true;
         } else {
-            Output::err(ERROR_SIGN_CHECK_WRONG, ERROR_SIGN_CHECK_WRONG_CONTENT, array(), $this->uid, $this->newToken);
+            Output::err(ERROR_SIGN_CHECK_WRONG, ERROR_SIGN_CHECK_WRONG_CONTENT);
         }
     }
 
@@ -94,7 +94,7 @@ class UController extends Controller
             if ($toLogin) {
                 HttpUtil::goLogin();
             } else {
-                Output::err(ERROR_LOGIN_NO, ERROR_LOGIN_NO_CONTENT, array(), 0);
+                Output::err(ERROR_LOGIN_NO, ERROR_LOGIN_NO_CONTENT);
             }
         } else {
             return $this->isLogin();

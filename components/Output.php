@@ -189,9 +189,9 @@ class Output
         return true;
     }
 
-    public static function err($code, $msg, $data = array(), $uid = 0)
+    public static function err($code, $msg, $data = array())
     {
-        \Yii::error("err:{$uid}.url:{$_SERVER['REQUEST_URI']}.code{$code}.msg:{$msg}.", '');
+        \Yii::error("err:" . DataBus::get('uid') . ".url:{$_SERVER['REQUEST_URI']}.code{$code}.msg:{$msg}.", '');
 
         if (empty($data)) {
             $data = new \stdClass();

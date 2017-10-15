@@ -49,7 +49,7 @@ class IndexAction extends AppAction
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), DataBus::get('uid'));
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 

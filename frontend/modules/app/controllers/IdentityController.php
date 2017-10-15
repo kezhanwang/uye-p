@@ -52,7 +52,7 @@ class IdentityController extends AppController
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $userIdentity);
         } catch (UException $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], $uid);
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 
@@ -93,7 +93,7 @@ class IdentityController extends AppController
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), [], DataBus::get('uid'));
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 }

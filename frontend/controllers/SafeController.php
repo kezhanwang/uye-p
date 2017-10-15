@@ -34,7 +34,7 @@ class SafeController extends UController
             $fileData = VerifyCodeUtil::getCode(null, null, $w, $h, $this->isMobile);
             Output::info(SUCCESS, SUCCESS_CONTENT, ['image' => base64_encode($fileData)]);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ class SafeController extends UController
             }
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
+            Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 
@@ -76,7 +76,7 @@ class SafeController extends UController
                 Output::info(SUCCESS, SUCCESS_CONTENT, $result);
             }
         } catch (\Exception $exception) {
-            Output::err($exception->getCode(), $exception->getMessage(), array(), $this->uid);
+            Output::err($exception->getCode(), $exception->getMessage());
         }
 
     }
