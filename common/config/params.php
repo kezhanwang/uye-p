@@ -7,6 +7,7 @@ $params = [
     'user.passwordResetTokenExpire' => 3600,
     'company_name' => '北京中腾惠达投资有限公司',
     'pageSize' => 10,
+    'company_phone' => '400-1231-2323',
 ];
 
 return \yii\helpers\ArrayHelper::merge(

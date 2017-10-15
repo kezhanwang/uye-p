@@ -40,5 +40,13 @@ return [
             'maxFileSize' => 102400,
             'maxLogFiles' => 30,
         ],
+        [
+            'class' => 'yii\log\FileTarget',
+            'levels' => ['error', 'warning', 'info'],
+            'categories' => ['login'],
+            'logFile' => '@app/runtime/logs/' . date('Ymd') . '/login.log',
+            'maxFileSize' => 102400,
+            'maxLogFiles' => 30,
+        ],
     ],
 ];

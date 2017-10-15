@@ -40,6 +40,7 @@ class LoginController extends UController
             $password = $request->post() ? $request->post('password') : $request->get('password');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             $userInfo = UyeUserModel::login($phone, $password, $phoneid);
+            Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . '][phone]:' . $phone . '[password]:' . $password . '[phoneid]:' . $phoneid, 'login');
             if ($this->isMobile) {
                 $userInfo['cookie'] = $this->getCookie();
             }
@@ -60,6 +61,7 @@ class LoginController extends UController
             $code = $request->post() ? $request->post('code') : $request->get('code');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
             SmsUtil::checkVerifyCode($phone, $this->ip, $code);
+            Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . '][phone]:' . $phone . '[code]:' . $code . '[phoneid]:' . $phoneid, 'login');
             $userInfo = UyeUserModel::loginByPhoneCode($phone, $phoneid);
             if ($this->isMobile) {
                 $userInfo['cookie'] = $this->getCookie();
@@ -81,6 +83,7 @@ class LoginController extends UController
             $code = $request->post() ? $request->post('code') : $request->get('code');
             $password = $request->post() ? $request->post('password') : $request->get('password');
             $phoneid = $request->post() ? $request->post('phoneid', '') : $request->get('phoneid', '');
+            Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . '][phone]:' . $phone . '[password]:' . $password . '[code]:' . $code . '[phoneid]:' . $phoneid, 'login');
             if (!CheckUtil::phone($phone)) {
                 throw new UException(ERROR_PHONE_FORMAT_CONTENT, ERROR_PHONE_FORMAT);
             }
