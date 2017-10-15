@@ -32,7 +32,7 @@ class InsuredModel
         if (empty($organize)) {
             throw new UException();
         }
-
+        $organize['description'] = urlencode($organize['description']);
         $distance = NearbyUtil::getDistance($lng, $lat, $organize['map_lng'], $organize['map_lat']);
         $organize['distance'] = $distance > 999 ? round($distance / 1000, 2) . 'km' : $distance . 'm';
         return $organize;
@@ -47,7 +47,8 @@ class InsuredModel
             ->asArray()
             ->all();
         if (empty($courses)) {
-            throw new UException();
+//            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            $courses = [];
         }
 
         return $courses;

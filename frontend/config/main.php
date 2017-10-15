@@ -23,6 +23,14 @@ return [
             // this is the name of the session cookie used for login on the frontend
             'name' => 'bjzhongteng.com',
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+            ],
+        ],
     ],
     'modules' => [
         'app' => [

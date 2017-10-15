@@ -13,7 +13,7 @@ use common\models\ar\UyeSmsRecore;
 
 class SmsUtil
 {
-    const CONTENT_PREFIX = '【就业帮】';
+    const CONTENT_PREFIX = '【U业】';
 
     /**
      * 创建验证码
@@ -130,12 +130,14 @@ class SmsUtil
     private static function sendHaobo($mobile, $content)
     {
         // 帐号
-        $user = '';
-        $passwd = '';
-        $url = '';
+        $config = \Yii::$app->params['haobo'];
+        if (empty($config) || empty($config['user']) || empty($config['password']) || empty($config['url'])) {
+            throw new UException(ERROR_SECRET_CONFIG_NO_EXISTS_CONTENT, ERROR_SECRET_CONFIG_NO_EXISTS);
+        }
+        extract($config);
         $post_data = array(
             'un' => $user,
-            'pw' => $passwd,
+            'pw' => $password,
             'da' => $mobile,
             'sm' => bin2hex(iconv("UTf-8", "GB2312", $content)),
             'dc' => 15,

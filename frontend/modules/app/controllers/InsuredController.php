@@ -15,7 +15,7 @@ use components\Output;
 use components\UException;
 use frontend\models\DataBus;
 
-class InsuredIController extends AppController
+class InsuredController extends AppController
 {
     public function init()
     {
