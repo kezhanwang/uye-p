@@ -36,7 +36,7 @@ class DataBus
         self::$data['username'] = $checkCookie['username'];
         self::$data['user'] = self::getUserInfo();
         self::$data['isLogin'] = self::checkIsLogin();
-//        Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . ']: DATABUS INFO:' . json_encode(self::$data));
+        Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . ']: DATABUS INFO:' . var_export(self::$data, true), 'databus');
     }
 
     public static function get($key)
