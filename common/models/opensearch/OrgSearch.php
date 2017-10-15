@@ -85,15 +85,14 @@ class OrgSearch extends SearchOS
             // 指定一个应用用于搜索
             $params->setAppName(self::$config['appName']);
             // 指定搜索关键词
-            $params->setQuery("uye:'uye'");
-            $filter = 'map_lng>=' . $points['lng1'] . ' AND map_lng<=' . $points['lng2'] . ' AND map_lat>=' . $points['lat2'] . ' AND map_lat<=' . $points['lat1'];
-            $filter .= " AND status=" . UyeOrg::STATUS_OK . " AND is_shelf=" . UyeOrg::IS_SHELF_ON;
-
+            $query = "uye:'uye' && kvpairs=lng_b:{$lng},lat_b:{$lat}";
+            $params->setQuery($query);
+            $filter = "status=" . UyeOrg::STATUS_OK . " AND is_shelf=" . UyeOrg::IS_SHELF_ON;
             $params->setFilter($filter);
             // 指定返回的搜索结果的格式为json
             $params->setFormat("fulljson");
             //添加排序字段
-            $params->addSort('RANK', 0);
+            $params->addSort('RANK', 1);
             // 执行搜索，获取搜索结果
             $ret = $searchClient->execute($params->build());
             // 将json类型字符串解码
