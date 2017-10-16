@@ -126,4 +126,17 @@ class LoginController extends UController
         ];
     }
 
+    public function actionLogout()
+    {
+        try {
+            session_destroy();
+            foreach ($_COOKIE as $key => $value) {
+                setcookie($key, null);
+            }
+            Output::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            Output::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
 }
