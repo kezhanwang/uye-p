@@ -22,7 +22,7 @@ use components\UException;
  * @property string $file_name
  * @property string $file_suffix
  * @property integer $type
- * @property integer $create_time
+ * @property integer $created_time
  */
 class UyeSimg extends UActiveRecord
 {
@@ -32,6 +32,7 @@ class UyeSimg extends UActiveRecord
 
     const SIMG_TYPE_BUSINESS = 2;
 
+    const SIMG_TOKEN = 'http://simg.bjzhongteng.com/';
 
     public static function tableName()
     {
@@ -52,7 +53,7 @@ class UyeSimg extends UActiveRecord
             'file_name' => 'File Name',
             'file_suffix' => 'File Suffix',
             'type' => 'Type',
-            'create_time' => 'Create Time',
+            'created_time' => 'Create Time',
         ];
     }
 
@@ -96,6 +97,7 @@ class UyeSimg extends UActiveRecord
                 $ar->$key = $info[$key];
             }
         }
+        $ar->created_time = time();
         if (!$ar->save()) {
             UException::dealAR($ar);
         }

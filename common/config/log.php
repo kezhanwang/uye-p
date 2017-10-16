@@ -48,5 +48,13 @@ return [
             'maxFileSize' => 102400,
             'maxLogFiles' => 30,
         ],
+        [
+            'class' => 'yii\log\FileTarget',
+            'levels' => ['error', 'warning', 'info'],
+            'categories' => ['upload_file'],
+            'logFile' => '@app/runtime/logs/' . date('Ymd') . '/upload_file.log',
+            'maxFileSize' => 102400,
+            'maxLogFiles' => 30,
+        ],
     ],
 ];

@@ -72,3 +72,6 @@ define('ERROR_USER_INFO_NO_EXISTS_CONTENT', "暂未获取用户信息，请重�
 
 define('ERROR_USER_QUESTION_EXISTS', 1021);
 define('ERROR_USER_QUESTION_EXISTS_CONTENT', "您已提交该问卷，请勿重复提交，谢谢");
+
+define('ERROR_UPLOAD_CODE', 1022);
+define('ERROR_UPLOAD_CODE_CONTENT', "文件上传异常");
