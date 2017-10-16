@@ -21,6 +21,7 @@ class UException extends \Exception
     public static function dealAR($ar)
     {
         $msg = 'error:' . var_export($ar->getErrors(), true) . "\nattrs:" . var_export($ar->getAttributes(), true);
+        \Yii::error($msg, 'db');
         throw new UException($msg, ERROR_DB);
     }
 }

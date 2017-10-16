@@ -65,7 +65,7 @@ class UyeUserModel
             throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
         } else {
             $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
-            CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+            CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
             if (DataBus::get('plat')) {
                 self::mobileAppLog($phoneid, session_id());
             }
@@ -85,13 +85,13 @@ class UyeUserModel
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $userInfo = UyeUser::getUserByLoginPhone($phone);
+        $userInfo = UyeUser::getUserByPhone($phone);
         if (empty($userInfo)) {
             $userInfo = self::register($phone);
         }
 
         $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
-        CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 month'));
+        CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
         if (DataBus::get('plat')) {
             self::mobileAppLog($phoneid, session_id());
         }

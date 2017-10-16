@@ -19,7 +19,7 @@ class CookieUtil
     const db_ckdomain = '.bjzhongteng.com';
     const db_siteid = '0ae32fa90927d3d868fde52085c8aa24';
     const db_webname = 'U业';
-    const db_bbsurl = 'http://www.bjzhongteng.com';
+    const db_bbsurl = 'http://dev.bjzhongteng.com';
     const db_registerfile = 'page/confirm';
 
     public static function illegalChar()
