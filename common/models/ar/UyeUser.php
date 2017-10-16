@@ -68,6 +68,23 @@ class UyeUser extends UActiveRecord
         }
     }
 
+    public static function getUserByLoginPhone($phone = null)
+    {
+        if (is_null($phone)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $userInfo = self::find()->select('*')
+            ->where('phone=:phone AND status=:status', [':phone' => $phone, ':status' => self::STATUS_NORMAL])
+            ->asArray()
+            ->one();
+        if ($userInfo) {
+            return $userInfo;
+        } else {
+            return array();
+        }
+    }
+
     /**
      * @param $uid
      * @return static

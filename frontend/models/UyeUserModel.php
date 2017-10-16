@@ -85,7 +85,7 @@ class UyeUserModel
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $userInfo = UyeUser::getUserByLogin($phone);
+        $userInfo = UyeUser::getUserByLoginPhone($phone);
         if (empty($userInfo)) {
             $userInfo = self::register($phone);
         }

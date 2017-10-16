@@ -16,6 +16,8 @@ use components\TokenUtil;
 use components\UException;
 use Yii;
 
+require_once PATH_BASE . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
+
 class DataBus
 {
 
@@ -29,13 +31,28 @@ class DataBus
         self::$data['request_time_float'] = $_SERVER['REQUEST_TIME_FLOAT'];
         self::$data['ip_address'] = Yii::$app->request->userIP;
         self::$data['cookie'] = $_COOKIE;
-        self::$data['plat'] = CheckUtil::checkIsMobile();
+        self::$data['session'] = $_SESSION;
+
         $checkCookie = self::checkCookie();
         self::$data['uid'] = $checkCookie['uid'];
         self::$data['phone'] = $checkCookie['phone'];
         self::$data['username'] = $checkCookie['username'];
         self::$data['user'] = self::getUserInfo();
         self::$data['isLogin'] = self::checkIsLogin();
+
+        $detect = new \Mobile_Detect();
+        if ($detect->isMobile()) {
+            if ($detect->is('IOS')) {
+                $plat = 1;
+            } else if ($detect->is('AndroidOS')) {
+                $plat = 2;
+            } else {
+                $plat = 3;
+            }
+        } else {
+            $plat = 0;
+        }
+        self::$data['plat'] = $plat;
         Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . ']: DATABUS INFO:' . var_export(self::$data, true), 'databus');
     }
 

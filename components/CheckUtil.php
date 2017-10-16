@@ -8,8 +8,6 @@
 
 namespace components;
 
-use Detection\MobileDetect;
-
 require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 class CheckUtil
@@ -138,12 +136,14 @@ class CheckUtil
     public static function checkIsMobile()
     {
         $detect = new \Mobile_Detect();
-        if ($detect->isAndroidOS()) {
-            $plat = 2;
-        } else if ($detect->isIOS()) {
-            $plat = 1;
-        } else if ($detect->isMobile()) {
-            $plat = 3;
+        if ($detect->isMobile()) {
+            if ($detect->is('IOS')) {
+                $plat = 1;
+            } else if ($detect->is('AndroidOS')) {
+                $plat = 2;
+            } else {
+                $plat = 3;
+            }
         } else {
             $plat = 0;
         }

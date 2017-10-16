@@ -17,7 +17,11 @@ class CommonController extends UController
 
     public function actionGet400()
     {
-
         Output::info(SUCCESS, SUCCESS_CONTENT, array('company_phone' => \Yii::$app->params['company_phone']));
+    }
+
+    public function actionUpload()
+    {
+        
     }
 }
