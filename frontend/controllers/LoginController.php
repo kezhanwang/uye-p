@@ -106,8 +106,8 @@ class LoginController extends UController
             if (!CheckUtil::isPWD($password)) {
                 throw new UException(ERROR_PASSWORD_FORMAT_CONTENT, ERROR_PASSWORD_FORMAT);
             }
-            UyeUserModel::register($phone, $password, $phoneid);
-            $userInfo = UyeUserModel::login($phone, $password);
+            UyeUserModel::register($phone, $password);
+            $userInfo = UyeUserModel::login($phone, $password, $phoneid);
             if ($this->isMobile) {
                 $userInfo['cookie'] = $this->getCookie();
             }
