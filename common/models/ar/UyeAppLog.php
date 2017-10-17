@@ -16,6 +16,7 @@ use components\UException;
  *
  * @property integer $id
  * @property string $phoneid
+ * @property string $session_id
  * @property integer $uid
  * @property double $map_lng
  * @property double $map_lat
@@ -46,6 +47,7 @@ class UyeAppLog extends UActiveRecord
         return [
             'id' => 'id',
             'phoneid' => 'Phoneid',
+            'session_id' => 'sessionID',
             'uid' => 'Uid',
             'map_lng' => 'Map Lng',
             'map_lat' => 'Map Lat',

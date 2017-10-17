@@ -56,8 +56,10 @@ class IndexAction extends AppAction
     private function createAppLog($phoneid, $lng, $lat, $gps)
     {
         try {
+            $sessionID = session_id();
             $data = [
                 'phoneid' => $phoneid,
+                'session_id' => $sessionID,
                 'uid' => DataBus::get('uid'),
                 'map_lng' => $lng,
                 'map_lat' => $lat,
@@ -74,10 +76,8 @@ class IndexAction extends AppAction
             $addLog = UyeAppLog::_addLog($data);
             if (!$this->isLogin()) {
                 $redis = RedisUtil::getInstance();
-                $sessionID = session_id();
                 $redisKey = 'UYE-APP-LOG-' . md5($phoneid . $sessionID);
                 $redis->set($redisKey, $addLog['id'], 3600 * 24);
-
             }
         } catch (\Exception $exception) {
             Yii::error($exception->getMessage());
