@@ -329,22 +329,24 @@ class PicUtil
 
     /**
      * 获取图片地址
-     * @param type $url 相对地址
-     * @param type $secret 是否后台图片
-     * @return string 地址
+     * @param $url
+     * @param int $secret
+     * @return string
      */
     public static function getUrl($url, $secret = 0)
     {
-        if (empty($url)) return '';
-        if (strpos($url, 'http://') === 0) {
-//            return FrontEnd::calcCDNDomain($url);
+        if (empty($url)) {
+            return '';
+        }
+        if (strpos($url, DOMAIN_HTTPS) === 0) {
+            return $url;
         }
         if ($secret == self::SECRET_ADMIN) {
-//            return DOMAIN_IMG_SECRET . $url;
+            return DOMAIN_SECRET . $url;
         } elseif ($secret == self::SECRET_IMAGES) {
 //            return FrontEnd::calcCDNDomain('http://' . DOMAIN_RES . $url);
         } else {
-//            return FrontEnd::calcCDNDomain(DOMAIN_IMG . $url);
+            return DOMAIN_IMAGE . $url;
         }
     }
 }
