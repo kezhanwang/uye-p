@@ -10,6 +10,8 @@ namespace app\modules\app\actions;
 
 
 use app\modules\app\components\AppAction;
+use common\models\ar\UyeAppLog;
+use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
 use components\Output;
@@ -59,15 +61,15 @@ class InsuredAction extends AppAction
 
             $orgInfo = UyeOrg::getOrgById($params['org_id']);
             if (empty($orgInfo)) {
-                throw new UException();
+                throw new UException(ERROR_ORG_NOT_EXISTS_CONTENT, ERROR_ORG_NOT_EXISTS);
             }
 
             if ($params['insured_type'] == UyeInsuredOrder::INSURED_TYPE_EMPLOYMENT && $orgInfo['is_employment'] != UyeOrg::IS_EMPLOYMENT_SUPPORT) {
-                throw new UException();
+                throw new UException(ERROR_ORG_NO_SUPPORT_EMPLOYMENT,ERROR_ORG_NO_SUPPORT_EMPLOYMENT_CONTENT);
             }
 
             if ($params['insured_type'] == UyeInsuredOrder::INSURED_TYPE_SALARY && $orgInfo['is_high_salary'] != UyeOrg::IS_HIGH_SALARY_SUPPORT) {
-                throw new UException();
+                throw new UException(ERROR_ORG_NO_SUPPORT_HIGH_SALARY_CONTENT,ERROR_ORG_NO_SUPPORT_HIGH_SALARY);
             }
 
             $add = $params;
@@ -75,7 +77,9 @@ class InsuredAction extends AppAction
             $add['insured_order'] = Output::orderid();
             $add['insured_status'] = INSURED_STATUS_CREATE;
 
-            UyeInsuredOrder::_add($add);
+            $insuredOrder = UyeInsuredOrder::_add($add);
+
+            UyeInsuredLog::_addLog($insuredOrder['id'], $insuredOrder['insured_order'], 0, $insuredOrder['status'], DataBus::get('uid'), json_encode($insuredOrder), INSURED_STATUS_CREATE_CONTENT);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }

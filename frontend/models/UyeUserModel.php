@@ -60,9 +60,16 @@ class UyeUserModel
         }
         $passwordMd5 = self::createPasswordMd5($password);
         $userInfo = UyeUser::getUserByLogin($phone, $passwordMd5);
+
         if (empty($userInfo)) {
             throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
         } else {
+            $log = UyeAppLog::getLastLogByUid($userInfo['uid']);
+            if ($log) {
+                $userInfo['active_city'] = $log['city'];
+            } else {
+                $userInfo['active_city'] = '';
+            }
             if (DataBus::get('plat')) {
                 self::mobileAppLog($phoneid, session_id());
             }
@@ -85,6 +92,12 @@ class UyeUserModel
         $userInfo = UyeUser::getUserByPhone($phone);
         if (empty($userInfo)) {
             $userInfo = self::register($phone);
+        }
+        $log = UyeAppLog::getLastLogByUid($userInfo['uid']);
+        if ($log) {
+            $userInfo['active_city'] = $log['city'];
+        } else {
+            $userInfo['active_city'] = '';
         }
         if (DataBus::get('plat')) {
             self::mobileAppLog($phoneid, session_id());

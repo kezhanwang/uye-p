@@ -49,3 +49,5 @@ define('SORT_DEFAULT', '');                  //无排序
 define('SORT_FOCUS', 'num_focus');           //按关注数
 define('SORT_ORDER', 'num_order');           //按报名数
 define('SORT_SCORE', 'score');           //按评分
+
+require PATH_COMMON_CONFIG . DIRECTORY_SEPARATOR . "insured_status.php";

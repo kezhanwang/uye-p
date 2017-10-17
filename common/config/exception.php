@@ -75,3 +75,12 @@ define('ERROR_USER_QUESTION_EXISTS_CONTENT', "您已提交该问卷，请勿重�
 
 define('ERROR_UPLOAD_CODE', 1022);
 define('ERROR_UPLOAD_CODE_CONTENT', "文件上传异常");
+
+define('ERROR_ORG_NOT_EXISTS', 1023);
+define('ERROR_ORG_NOT_EXISTS_CONTENT', "暂未获取机构信息，请稍后重试！");
+
+define('ERROR_ORG_NO_SUPPORT_EMPLOYMENT', 1024);
+define('ERROR_ORG_NO_SUPPORT_EMPLOYMENT_CONTENT', "该机构暂不支持就业帮服务！");
+
+define('ERROR_ORG_NO_SUPPORT_HIGH_SALARY', 1025);
+define('ERROR_ORG_NO_SUPPORT_HIGH_SALARY_CONTENT', "该机构暂不支持高薪帮服务！");

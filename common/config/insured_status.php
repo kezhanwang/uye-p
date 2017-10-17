@@ -7,3 +7,4 @@
  */
 
 define('INSURED_STATUS_CREATE', 100);
+define('INSURED_STATUS_CREATE_CONTENT', "创建保单");

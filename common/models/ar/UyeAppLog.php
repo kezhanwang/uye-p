@@ -110,4 +110,24 @@ class UyeAppLog extends UActiveRecord
         }
         return $ar->getAttributes();
     }
+
+    public static function getLastLogByUid($uid)
+    {
+        if (!is_numeric($uid)) {
+            return [];
+        }
+
+        $log = self::find()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('uid=>:uid', [':uid' => $uid])
+            ->orderBy('id desc')
+            ->asArray()
+            ->one();
+        if (empty($log)) {
+            return [];
+        } else {
+            return $log;
+        }
+    }
 }
