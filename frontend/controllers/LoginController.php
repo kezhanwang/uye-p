@@ -126,10 +126,10 @@ class LoginController extends UController
         } else {
             $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
             if ($this->isMobile) {
-                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . "_uye_user" => CookieUtil::strCode($strCode)];
+                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
             } else {
                 CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
-                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . "_uye_user" => CookieUtil::strCode($strCode)];
+                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
             }
         }
         return $cookie;
@@ -138,8 +138,12 @@ class LoginController extends UController
     public function actionLogout()
     {
         try {
-            CookieUtil::Cookie(DataBus::COOKIE_KEY, 0);
+            CookieUtil::Cookie(DataBus::COOKIE_KEY, '', time() - 3600);
             session_start();
+            $_SESSION = array();
+            if (isset($_COOKIE[session_name()])) {
+                setCookie(session_name(), '', time() - 3600, '/');
+            }
             session_destroy();
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
