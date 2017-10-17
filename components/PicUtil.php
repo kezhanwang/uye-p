@@ -112,7 +112,7 @@ class PicUtil
     const ICON_MIDDLE = 120;
     const ICON_SMALL = 48;
 
-    public static function uploadPic($secret = 0, $to_thumb_keys = array(), &$fileInfo = array(), $is_small_keys = array())
+    public static function uploadPic($secret = 0, $to_thumb_keys = array(), &$fileInfo = array(), $is_small_keys = array(), $uid = 0)
     {
         $ret = array();
         if (empty($_FILES)) {
@@ -185,9 +185,13 @@ class PicUtil
             //计算保存路径
             $date_dir = DIRECTORY_SEPARATOR . date("Ym") . DIRECTORY_SEPARATOR . date("d");
             if ($secret == self::SECRET_ADMIN) {
-                $dir = PATH_UPLOAD_SECRET . $date_dir;
+                if ($uid) {
+                    $dir = PATH_UPLOAD_SECRET . DIRECTORY_SEPARATOR . $uid;
+                } else {
+                    $dir = PATH_UPLOAD_SECRET . $date_dir;
+                }
             } else {
-                $dir = PATH_UPLOAD . $date_dir;
+                $dir = PATH_UPLOAD_IMAGE . $date_dir;
             }
             if (!file_exists($dir)) {
                 mkdir($dir, 0777, true);
