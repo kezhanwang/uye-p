@@ -13,9 +13,6 @@ return [
         'db' => require PATH_BASE . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "db.php",
         'log' => require PATH_BASE . DIRECTORY_SEPARATOR . "config" . DIRECTORY_SEPARATOR . "log.php",
 
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
         'language' => 'zh-CN',
     ],
 ];

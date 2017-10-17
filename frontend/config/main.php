@@ -31,6 +31,9 @@ return [
                 '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ],
         ],
+        'errorHandler' => [
+            'errorAction' => 'site/error',
+        ],
     ],
     'modules' => [
         'app' => [

@@ -35,6 +35,10 @@ class InquireAction extends AppAction
                 $data = OrgSearch::getSearchOrgs($params['word'], $params['map_lng'], $params['map_lat'], $params['page']);
             }
             $this->addSearchLog($params['map_lng'], $params['map_lat'], DataBus::get('uid'), $params['word'], $request->get());
+            foreach ($data['organizes'] as &$organize) {
+                $organize['org_id'] = $organize['id'];
+                unset($organize['id']);
+            }
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage());

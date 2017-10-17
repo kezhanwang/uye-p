@@ -11,7 +11,6 @@ namespace frontend\models;
 
 use common\models\ar\UyeAppLog;
 use common\models\ar\UyeUser;
-use components\CookieUtil;
 use components\RedisUtil;
 use components\UException;
 
@@ -64,8 +63,6 @@ class UyeUserModel
         if (empty($userInfo)) {
             throw new UException(ERROR_LOGIN_NO_USERINFO_CONTENT, ERROR_LOGIN_NO_USERINFO);
         } else {
-            $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
-            CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
             if (DataBus::get('plat')) {
                 self::mobileAppLog($phoneid, session_id());
             }
@@ -89,9 +86,6 @@ class UyeUserModel
         if (empty($userInfo)) {
             $userInfo = self::register($phone);
         }
-
-        $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
-        CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
         if (DataBus::get('plat')) {
             self::mobileAppLog($phoneid, session_id());
         }

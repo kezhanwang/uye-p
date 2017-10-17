@@ -47,6 +47,7 @@ class OrgSearch extends SearchOS
                 'province' => $datum['province'],
                 'city' => $datum['city'],
                 'area' => $datum['area'],
+                'popular' => $datum['org_name'] . ";" . $datum['org_num'] . ";" . $datum['org_name'],
             ];
             array_push($searchData, $tmp);
         }
