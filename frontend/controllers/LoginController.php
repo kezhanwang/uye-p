@@ -126,10 +126,10 @@ class LoginController extends UController
         } else {
             $strCode = $userInfo['uid'] . "|" . $userInfo['username'] . "|" . $userInfo['phone'] . '|' . CookieUtil::createSafecv();
             if ($this->isMobile) {
-                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
+                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . "_" . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
             } else {
                 CookieUtil::Cookie(DataBus::COOKIE_KEY, CookieUtil::strCode($strCode), strtotime('+1 day'));
-                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
+                $cookie = ['PHPSESSID' => session_id(), CookieUtil::db_cookiepre . "_" . DataBus::COOKIE_KEY => CookieUtil::strCode($strCode)];
             }
         }
         return $cookie;
