@@ -4,7 +4,7 @@ require(__DIR__ . DIRECTORY_SEPARATOR . "constant.php");
 
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'name' => 'U业',
+    'name' => 'U业帮',
     'language' => 'zh-CN',
     'components' => [
         'cache' => [

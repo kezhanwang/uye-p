@@ -10,7 +10,6 @@ use yii\helpers\Html;
 
 $this->title = Yii::$app->name . "机构管理平台";
 \app\modules\e\assets\AppAsset::register($this);
-$directoryAsset = Yii::$app->assetManager->getPublishedUrl("@static/e");
 ?>
 
 <?php $this->beginPage() ?>
@@ -31,21 +30,18 @@ $directoryAsset = Yii::$app->assetManager->getPublishedUrl("@static/e");
 <?php $this->beginBody() ?>
 <section>
     <?= $this->render(
-        'left.php',
-        ['directoryAsset' => $directoryAsset]
+        'left.php'
     )
     ?>
-
     <!-- main content start-->
-    <div class="main-content" >
+    <div class="main-content">
         <?= $this->render(
-            'header.php',
-            ['directoryAsset' => $directoryAsset]
+            'header.php'
         ) ?>
 
         <?= $this->render(
             'content.php',
-            ['content' => $content, 'directoryAsset' => $directoryAsset]
+            ['content' => $content]
         ) ?>
     </div>
 </section>
