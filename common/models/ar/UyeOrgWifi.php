@@ -66,7 +66,7 @@ class UyeOrgWifi extends UActiveRecord
         return $ar->getAttributes();
     }
 
-    public static function getByMacAndSSID($mac, $ssid, $ip)
+    public static function getByMacAndSSID($mac, $ssid, $ip, $org_id = 0)
     {
         if (empty($mac) || empty($ssid) || empty($ip)) {
             return false;
@@ -79,7 +79,11 @@ class UyeOrgWifi extends UActiveRecord
             ->one();
 
         if (empty($info)) {
-            $info = self::_add(['mac' => $mac, 'ip' => $ip, 'ssid' => $ssid, 'org_id' => 0]);
+            $info = self::_add(['mac' => $mac, 'ip' => $ip, 'ssid' => $ssid, 'org_id' => $org_id]);
+        } else {
+            if ($info['mac'] != $mac){
+                $info = self::_add(['mac' => $mac, 'ip' => $ip, 'ssid' => $ssid, 'org_id' => $org_id]);
+            }
         }
         return $info;
     }

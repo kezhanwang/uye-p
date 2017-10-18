@@ -57,6 +57,13 @@ class CommonController extends UController
                 $list = json_decode($data, true);
             } else {
                 $list = UyeAreas::getAreas(0);
+
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    unset($item['joinname']);
+                    list($item['letter'], $item['name']) = explode('-', $item['name']);
+                }
+
                 $redis->set($key, json_encode($list));
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $list);
@@ -81,6 +88,11 @@ class CommonController extends UController
                 $list = json_decode($data, true);
             } else {
                 $list = UyeAreas::getAreas($province);
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    unset($item['joinname']);
+                }
+
                 $redis->set($key, json_encode($list));
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $list);
@@ -94,7 +106,7 @@ class CommonController extends UController
         try {
             $request = \Yii::$app->request;
             $city = $request->isPost ? $request->post("city") : $request->get("city");
-            if (empty($province) || !is_numeric($province)) {
+            if (empty($city) || !is_numeric($city)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }
 
@@ -105,6 +117,10 @@ class CommonController extends UController
                 $list = json_decode($data, true);
             } else {
                 $list = UyeAreas::getAreas($city);
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    $item['joinname'] = str_replace(',', '', $item['joinname']);
+                }
                 $redis->set($key, json_encode($list));
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $list);

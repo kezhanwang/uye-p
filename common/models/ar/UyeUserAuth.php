@@ -153,4 +153,26 @@ class UyeUserAuth extends UActiveRecord
         }
         return $ar->getAttributes();
     }
+
+    public static function getUserInfoByOrder($order)
+    {
+        if (empty($order)) {
+            return false;
+        }
+
+        $userInfo = self::find()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('order=:order', [':order' => $order])
+            ->orderBy('id desc')
+            ->limit(1)
+            ->asArray()
+            ->one();
+
+        if (empty($userInfo)) {
+            return false;
+        } else {
+            return $userInfo;
+        }
+    }
 }

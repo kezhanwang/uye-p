@@ -120,8 +120,9 @@ class UyeAppLog extends UActiveRecord
         $log = self::find()
             ->select('*')
             ->from(self::TABLE_NAME)
-            ->where('uid=>:uid', [':uid' => $uid])
+            ->where('uid=:uid', [':uid' => $uid])
             ->orderBy('id desc')
+            ->limit(1)
             ->asArray()
             ->one();
         if (empty($log)) {
