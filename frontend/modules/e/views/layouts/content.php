@@ -3,6 +3,7 @@
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
+var_dump($this->params);
 ?>
 <!-- page heading start-->
 <div class="page-heading">

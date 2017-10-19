@@ -57,7 +57,6 @@ class OrgAction extends AppAction
                     'map_lng' => $orgInfo['map_lng'],
                     'map_lat' => $orgInfo['map_lat'],
                     'is_employment' => $orgInfo['is_employment'],
-                    'description' => urlencode($orgInfo['description'])
                 ],
                 'courses' => $courses,
             ];
