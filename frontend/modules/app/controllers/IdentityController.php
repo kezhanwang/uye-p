@@ -101,8 +101,7 @@ class IdentityController extends AppController
     public function actionPic()
     {
         try {
-            $request = \Yii::$app->request;
-            $udcredit_order = $request->getBodyParam('udcredit_order');
+            $udcredit_order = $this->getParams('udcredit_order');
             if (empty($udcredit_order)) {
                 throw new UException();
             }

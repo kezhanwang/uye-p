@@ -19,7 +19,7 @@ class UrlUtil
         if ($url === null)
             return false;
 
-        $search = '.cn/';
+        $search = '.com/';
         $pos = strpos($url, $search);
         if ($pos !== false) {
             $path = substr($url, $pos + strlen($search) - 1);

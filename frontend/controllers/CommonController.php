@@ -36,7 +36,8 @@ class CommonController extends UController
     {
         try {
             \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic :" . var_export($_FILES, true), 'upload_file');
-            $ret = PicUtil::uploadPic(PicUtil::SECRET_ADMIN, [], [], [], $this->uid);
+            $fileInfo = [];
+            $ret = PicUtil::uploadPic(PicUtil::SECRET_ADMIN, [], $fileInfo, [], $this->uid);
             $ret = PicUtil::getUrls($ret, PicUtil::SECRET_ADMIN);
             SimgService::addSimgInfo($ret, DataBus::get('uid'));
             \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic return url:" . var_export($ret, true), 'upload_file');

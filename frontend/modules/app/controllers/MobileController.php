@@ -25,8 +25,7 @@ class MobileController extends AppController
     public function actionSubmit()
     {
         try {
-            $request = \Yii::$app->request;
-            $mobiles = $request->isPost ? $request->post('mobiles') : $request->get('mobiles');
+            $mobiles = $this->getParams('mobiles');
             $mobilesArr = json_decode($mobiles, true);
 
             $rows = [];

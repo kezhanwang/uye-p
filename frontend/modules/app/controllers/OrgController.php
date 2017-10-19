@@ -37,8 +37,7 @@ class OrgController extends AppController
     public function actionView()
     {
         $this->layout = "main_h5";
-        $request = \Yii::$app->request;
-        $org_id = $request->get('org_id');
+        $org_id = $this->getParams('org_id');
         $fields = "oi.description";
         $orgInfo = UyeOrg::find()
             ->select($fields)

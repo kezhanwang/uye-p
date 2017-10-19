@@ -30,10 +30,9 @@ class InsuredController extends AppController
     public function actionConfig()
     {
         try {
-            $request = \Yii::$app->request;
-            $org_id = $request->isPost ? $request->post('org_id') : $request->get('org_id');
-            $map_lng = $request->isPost ? $request->post('map_lng') : $request->get('map_lng');
-            $map_lat = $request->isPost ? $request->post('map_lat') : $request->get('map_lat');
+            $org_id = $this->getParams('org_id');
+            $map_lng = $this->getParams('map_lng');
+            $map_lat = $this->getParams('map_lat');
             if (empty($org_id) || !is_numeric($org_id)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }

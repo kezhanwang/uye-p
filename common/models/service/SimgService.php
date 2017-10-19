@@ -28,12 +28,17 @@ class SimgService
         return $md5;
     }
 
-    public static function addSimgInfo($urls, $uid, $lid = 0, $sid = 0, $sbid = 0)
+    public static function addSimgInfo($urls, $uid)
     {
         foreach ($urls as $key => $value) {
             $path = UrlUtil::urlForLinuxPath($value);
-            list($null, $yearMonth, $day, $fileName) = explode('/', $path);
+            if ($uid) {
+                list($null, $uid, $yearMonth, $day, $fileName) = explode('/', $path);
+            } else {
+                list($null, $yearMonth, $day, $fileName) = explode('/', $path);
+            }
             $paySimg = array(
+                'uid' => $uid,
                 'path' => $path,
                 'year_month' => $yearMonth,
                 'day' => $day,
