@@ -114,4 +114,26 @@ class AppAction extends Action
         $newToken = TokenUtil::refreshToken($this->key, $this->uid, $this->isMobile);
         return $newToken;
     }
+
+    /**
+     * @param string $key
+     * @return array|mixed
+     */
+    public function getParams($key = '')
+    {
+        $request = Yii::$app->request;
+
+        $method = strtolower($request->method);
+        switch ($method) {
+            case 'get':
+                return $request->get($key);
+                break;
+            case 'post':
+                return $request->post($key);
+                break;
+            default:
+                return '';
+                break;
+        }
+    }
 }

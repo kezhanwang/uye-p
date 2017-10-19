@@ -41,11 +41,24 @@ class IndexAction extends AppAction
             $this->createAppLog($request->get('phoneid'), $lng, $lat, $gps);
             $insuredOrder = $this->getUserInsuredOrder();
             $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid, $ip);
+
+            $adList = [
+                [
+                    'logo' => 'http://dev.img.bjzhongteng.com/201710/19/guidelines.png',
+                    'url' => '',
+                ],
+                [
+                    'logo' => 'http://dev.img.bjzhongteng.com/201710/19/guidelines.png',
+                    'url' => '',
+                ]
+            ];
+
             $templateData = [
                 'loaction' => $gps['addressComponent']['city'],
                 'count_order' => '已有1000位学院加入U业帮就业无忧计划',
                 'insured_order' => $insuredOrder,
                 'organize' => $organize,
+                'ad_list' => $adList
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
@@ -108,7 +121,7 @@ class IndexAction extends AppAction
     {
         $info = UyeOrgWifi::getByMacAndSSID($mac, $ssid, $ip);
         if ($info['org_id']) {
-            $organize = UyeOrg::find()->select('id As org_id,org_name')->where('org_id=:org_id', [':org_id' => $info['org_id']])->asArray()->one();
+            $organize = UyeOrg::find()->select('id As org_id,org_name')->where('id=:org_id', [':org_id' => $info['org_id']])->asArray()->one();
         } else {
             $organize = [];
         }
