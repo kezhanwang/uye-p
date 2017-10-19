@@ -8,7 +8,20 @@
 
 namespace common\models\ar;
 
-
+/**
+ * This is the model class for table "uye_app_version".
+ *
+ * @property integer $id
+ * @property integer $type
+ * @property integer $version_code
+ * @property string $version_name
+ * @property string $desp
+ * @property string $url
+ * @property integer $size
+ * @property integer $force_update
+ * @property integer $status
+ * @property integer $created_time
+ */
 class UyeAppVersion extends UActiveRecord
 {
     const TABLE_NAME = 'uye_app_version';
@@ -16,6 +29,38 @@ class UyeAppVersion extends UActiveRecord
     public static function tableName()
     {
         return self::TABLE_NAME;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['type', 'version_code', 'size', 'force_update', 'status', 'created_time'], 'integer'],
+            [['desp'], 'required'],
+            [['desp'], 'string'],
+            [['version_name', 'url'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'type' => '客户端',
+            'version_code' => '版本号',
+            'version_name' => '版本名称',
+            'desp' => '描述',
+            'url' => 'Url',
+            'size' => '安卓版大小',
+            'force_update' => '更新',
+            'status' => '状态',
+            'created_time' => '创建时间',
+        ];
     }
 
 

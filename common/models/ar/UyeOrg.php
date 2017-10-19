@@ -96,7 +96,7 @@ class UyeOrg extends UActiveRecord
         $org = self::find()
             ->select('*')
             ->from(self::TABLE_NAME)
-            ->where('id=:id AND status=:status AND is_shelf=:shelf ', [':id' => $id, ':status' => self::STATUS_OK, ':is_shelf' => self::IS_SHELF_ON])
+            ->where('id=:id AND status=:status AND is_shelf=:is_shelf ', [':id' => $id, ':status' => self::STATUS_OK, ':is_shelf' => self::IS_SHELF_ON])
             ->asArray()
             ->one();
         if (empty($org)) {

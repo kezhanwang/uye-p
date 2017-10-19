@@ -25,7 +25,7 @@ class InsuredAction extends AppAction
     {
         try {
             $request = \Yii::$app->request;
-            $params = $request->getBodyParams();
+            $params = $request->isPost ? $request->post() : $request->get();
 
             $checkParams = [
                 'org_id' => 'int',
@@ -48,7 +48,7 @@ class InsuredAction extends AppAction
                     throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
                 }
 
-                if ($checkParam == 'ini' && !is_numeric($params[$key])) {
+                if ($checkParam == 'int' && !is_numeric($params[$key])) {
                     throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
                 }
 
