@@ -80,8 +80,9 @@ class InsuredAction extends AppAction
 
             $insuredOrder = UyeInsuredOrder::_add($add);
 
-            UyeInsuredLog::_addLog($insuredOrder['id'], $insuredOrder['insured_order'], 0, $insuredOrder['status'], DataBus::get('uid'), json_encode($insuredOrder), INSURED_STATUS_CREATE_CONTENT);
+            UyeInsuredLog::_addLog($insuredOrder['id'], $insuredOrder['insured_order'], 0, $insuredOrder['insured_status'], DataBus::get('uid'), json_encode($insuredOrder), INSURED_STATUS_CREATE_CONTENT);
             $this->addWIFI($params['org_id'], $params['mac'], $params['ssid']);
+            Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
