@@ -54,7 +54,6 @@ class UyeInsuredOrderSearch extends UyeInsuredOrder
         ]);
 
         $this->load($params);
-
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
@@ -81,6 +80,7 @@ class UyeInsuredOrderSearch extends UyeInsuredOrder
             'created_time' => $this->created_time,
             'updated_time' => $this->updated_time,
         ]);
+
 
         $query->andFilterWhere(['like', 'insured_order', $this->insured_order])
             ->andFilterWhere(['like', 'class', $this->class])

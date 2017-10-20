@@ -26,11 +26,11 @@ class SearchAction extends AppAction
             //拉去搜索页面缓存数据
             $cacheConfig = $this->getCacheConfig();
 
-//            if (DataBus::get('uid')) {
-            $searchHistory = UyeSearchLog::find()->select('words')->where('uid=:uid', [':uid' => 0])->limit(5)->offset(0)->orderBy('id desc')->asArray()->all();
-//            } else {
-//                $searchHistory = [];
-//            }
+            if (DataBus::get('uid')) {
+                $searchHistory = UyeSearchLog::find()->select('words')->where('uid=:uid', [':uid' => 0])->limit(5)->offset(0)->orderBy('id desc')->asArray()->all();
+            } else {
+                $searchHistory = [];
+            }
 
             $history = [];
             foreach ($searchHistory as $item) {

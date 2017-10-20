@@ -28,17 +28,17 @@ class IndexAction extends AppAction
         try {
             //确定用户城市
             $request = Yii::$app->request;
-            $lng = $request->isPost ? $request->post('map_lng') : $request->get('map_lng');
-            $lat = $request->isPost ? $request->post('map_lat') : $request->get('map_lat');
-            $mac = $request->isPost ? $request->post('mac') : $request->get('mac');
-            $ssid = $request->isPost ? $request->post('ssid') : $request->get('ssid');
+            $lng = $this->getParams('map_lng');
+            $lat = $this->getParams('map_lat');
+            $mac = $this->getParams('mac');
+            $ssid = $this->getParams('ssid');
 
             $ip = ip2long($request->getUserIP());
             if (empty($lng) || !is_numeric($lng) || empty($lat) || !is_numeric($lat)) {
                 throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
             }
             $gps = BaiduMap::getPosInfo($lng, $lat);
-            $this->createAppLog($request->get('phoneid'), $lng, $lat, $gps);
+            $this->createAppLog($this->getParams('phoneid'), $lng, $lat, $gps);
             $insuredOrder = $this->getUserInsuredOrder();
             $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid, $ip);
 

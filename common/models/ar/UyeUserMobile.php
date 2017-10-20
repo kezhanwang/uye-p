@@ -20,22 +20,35 @@ class UyeUserMobile extends UActiveRecord
         return self::TABLE_NAME;
     }
 
+    public static function _add($info)
+    {
+        if (empty($info)) {
+            return false;
+        }
+
+        $ar = new UyeUserMobile();
+        $ar->setIsNewRecord(true);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+        $ar->created_time = time();
+        $ar->updated_time = time();
+
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
+
     public static function _update($uid, $info)
     {
         if (empty($uid) || !is_numeric($uid) || empty($info)) {
             return false;
         }
-        $ar = new UyeUserMobile();
-        $ar->findOne('uid=' . $uid);
 
-//        self::findOne()
-        if (empty($ar)) {
-            $ar = new UyeUserMobile();
-            $ar->setIsNewRecord(true);
-            $ar->uid = $uid;
-            $ar->created_time = time();
-            $ar->updated_time = time();
-        }
+        $ar = self::findOne('uid=' . $uid);
         foreach ($ar->getAttributes() as $key => $attribute) {
             if (array_key_exists($key, $info)) {
                 $ar->$key = $info[$key];

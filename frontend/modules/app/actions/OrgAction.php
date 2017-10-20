@@ -24,8 +24,7 @@ class OrgAction extends AppAction
     public function run()
     {
         try {
-            $request = Yii::$app->request;
-            $org_id = $request->isPost ? $request->post('org_id', '') : $request->get('org_id', '');
+            $org_id = $this->getParams('org_id', '');
             if (empty($org_id) || !is_numeric($org_id)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }

@@ -44,7 +44,8 @@ class InsuredController extends EController
     {
         $searchModel = new UyeInsuredOrderSearch();
         $queryParams = Yii::$app->request->queryParams;
-        $queryParams['org_id'] = Yii::$app->user->identity->org_id;
+
+        $queryParams['UyeInsuredOrderSearch']['org_id'] = Yii::$app->user->identity->org_id;
         $dataProvider = $searchModel->search($queryParams);
         return $this->render('list', [
             'searchModel' => $searchModel,
