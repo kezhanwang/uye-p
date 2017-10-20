@@ -1,5 +1,5 @@
 <?php
-$menus = \common\models\ar\UyeOrgManageMenu::getMenus();
+$menus = \common\models\ar\UyeEMenu::getMenus();
 ?>
 <!-- left side start-->
 <div class="left-side sticky-left-side">

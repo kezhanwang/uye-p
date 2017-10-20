@@ -9,9 +9,9 @@
 namespace common\models\ar;
 
 
-class UyeOrgManageMenu extends UActiveRecord
+class UyeEMenu extends UActiveRecord
 {
-    const TABLE_NAME = 'uye_org_manage_menu';
+    const TABLE_NAME = 'uye_e_menu';
 
     public static function tableName()
     {
