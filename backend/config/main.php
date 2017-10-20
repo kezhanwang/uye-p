@@ -45,6 +45,14 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'showScriptName' => false,
+            'rules' => [
+                '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+                '<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
+            ],
+        ],
     ],
     'as access' => [
         'class' => 'mdm\admin\components\AccessControl',

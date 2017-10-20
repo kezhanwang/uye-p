@@ -40,25 +40,6 @@ $menus = \common\models\ar\UyeOrgManageMenu::getMenus();
                 'items' => $menus
             ]
         ) ?>
-
-        <!--sidebar nav start-->
-        <!--        <ul class="nav nav-pills nav-stacked custom-nav">-->
-        <!---->
-        <!---->
-        <!--            <li class="active"><a href="index.html"><i class="fa fa-home"></i> <span>首页</span></a></li>-->
-        <!--            <li class="menu-list"><a href=""><i class="fa fa-tasks"></i> <span>保单管理</span></a>-->
-        <!--                <ul class="sub-menu-list">-->
-        <!--                    <li><a href="blank_page.html"> Blank Page</a></li>-->
-        <!--                    <li><a href="boxed_view.html"> Boxed Page</a></li>-->
-        <!--                    <li><a href="leftmenu_collapsed_view.html"> Sidebar Collapsed</a></li>-->
-        <!--                    <li><a href="horizontal_menu.html"> Horizontal Menu</a></li>-->
-        <!---->
-        <!--                </ul>-->
-        <!--            </li>-->
-        <!--            <li><a href="login.html"><i class="fa fa-sign-in"></i> <span>退出</span></a></li>-->
-        <!--        </ul>-->
-        <!--        <!--sidebar nav end-->
-
     </div>
 </div>
 <!-- left side end-->

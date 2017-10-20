@@ -2,25 +2,20 @@
 /**
  * Created by PhpStorm.
  * User: wangyi
- * Date: 2017/9/14
- * Time: 下午7:12
+ * Date: 2017/10/19
+ * Time: 下午5:08
  */
 
-namespace frontend\models;
+namespace app\modules\e\models;
 
-
-use common\models\ar\UyeUser;
+use common\models\ar\UyeEUser;
 use components\CookieUtil;
-use components\TokenUtil;
 use Yii;
 
-require_once PATH_BASE . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
-
-class DataBus
+class EDataBus
 {
-
-    private static $data = array();
-    const COOKIE_KEY = 'uye_user';
+    private static $data = [];
+    const COOKIE_KEY = "uye_e_user";
 
     private static function init()
     {
@@ -38,19 +33,6 @@ class DataBus
         self::$data['user'] = self::getUserInfo();
         self::$data['isLogin'] = self::checkIsLogin();
 
-        $detect = new \Mobile_Detect();
-        if ($detect->isMobile()) {
-            if ($detect->is('IOS')) {
-                $plat = 1;
-            } else if ($detect->is('AndroidOS')) {
-                $plat = 2;
-            } else {
-                $plat = 3;
-            }
-        } else {
-            $plat = 0;
-        }
-        self::$data['plat'] = $plat;
         Yii::info('[' . __CLASS__ . '][' . __FUNCTION__ . '][' . __LINE__ . ']: DATABUS INFO:' . var_export(self::$data, true), 'databus');
     }
 
@@ -91,8 +73,8 @@ class DataBus
             return false;
         }
 
-        $userInfo = UyeUser::getUserByUid($uid);
-        return $userInfo->getAttributes();
+        $userInfo = UyeEUser::getUserByUid($uid);
+        return $userInfo;
     }
 
     private static function checkIsLogin()
@@ -107,29 +89,4 @@ class DataBus
             return true;
         }
     }
-
-    public static function getToken()
-    {
-        if (empty(self::$data)) {
-            self::init();
-        }
-
-        if (self::$data['plat']) {
-            $isMobile = true;
-        } else {
-            $isMobile = false;
-        }
-
-        $request = Yii::$app->request;
-        $phoneID = $request->isPost ? $request->post('phoneid') : $request->get('phoneid');
-        if ($phoneID) {
-            $key = $phoneID;
-        } else {
-            $key = session_id();
-        }
-
-        $newToken = TokenUtil::refreshToken($key, self::$data['uid'], $isMobile);
-        return $newToken;
-    }
-
 }

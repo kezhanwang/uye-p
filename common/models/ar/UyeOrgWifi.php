@@ -34,13 +34,13 @@ class UyeOrgWifi extends UActiveRecord
 
         $ar = new UyeOrgWifi();
         $ar->setIsNewRecord(true);
-        $info = ArrayUtil::trimArray($ar);
-        foreach ($ar->getAttributes() as $key => $attribute) {
+        $info = ArrayUtil::trimArray($info);
+        $attrs = $ar->getAttributes();
+        foreach ($attrs as $key => $attribute) {
             if (array_key_exists($key, $info)) {
                 $ar->$key = $info[$key];
             }
         }
-
         $ar->created_time = time();
 
         if (!$ar->save()) {
@@ -71,17 +71,20 @@ class UyeOrgWifi extends UActiveRecord
         if (empty($mac) || empty($ssid) || empty($ip)) {
             return false;
         }
+        $mac = md5($mac);
 
-        $info = self::find()
-            ->select('*')
-            ->where('(mac=:mac OR ip=:ip )AND ssid=:ssid', [':mac' => $mac, ':ip' => $ip, ':ssid' => $ssid])
-            ->asArray()
-            ->one();
+//        $info = self::find()
+//            ->select('*')
+//            ->where("mac=':mac' AND ssid=':ssid'", [':mac' => $mac, ':ssid' => $ssid])
+//            ->asArray()
+//            ->all();
 
+        $ar = new UyeOrgWifi();
+        $info = $ar->findBySql("select * from ". self::TABLE_NAME. " WHERE mac = '{$mac}' AND ssid='{$ssid}'")->asArray()->one();
         if (empty($info)) {
             $info = self::_add(['mac' => $mac, 'ip' => $ip, 'ssid' => $ssid, 'org_id' => $org_id]);
         } else {
-            if ($info['mac'] != $mac){
+            if ($info['mac'] != $mac) {
                 $info = self::_add(['mac' => $mac, 'ip' => $ip, 'ssid' => $ssid, 'org_id' => $org_id]);
             }
         }

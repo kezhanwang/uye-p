@@ -32,12 +32,12 @@ class IndexAction extends AppAction
             $lat = $request->isPost ? $request->post('map_lat') : $request->get('map_lat');
             $mac = $request->isPost ? $request->post('mac') : $request->get('mac');
             $ssid = $request->isPost ? $request->post('ssid') : $request->get('ssid');
+
             $ip = ip2long($request->getUserIP());
             if (empty($lng) || !is_numeric($lng) || empty($lat) || !is_numeric($lat)) {
                 throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
             }
             $gps = BaiduMap::getPosInfo($lng, $lat);
-
             $this->createAppLog($request->get('phoneid'), $lng, $lat, $gps);
             $insuredOrder = $this->getUserInsuredOrder();
             $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid, $ip);

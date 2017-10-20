@@ -2,6 +2,8 @@
 
 namespace app\modules\e;
 
+use Yii;
+
 /**
  * e module definition class
  */
@@ -20,5 +22,6 @@ class EModule extends \yii\base\Module
         parent::init();
 
         // custom initialization code goes here
+        Yii::$app->errorHandler->errorAction = 'e/default/error';
     }
 }

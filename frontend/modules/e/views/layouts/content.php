@@ -3,12 +3,11 @@
 use yii\widgets\Breadcrumbs;
 use dmstr\widgets\Alert;
 
-var_dump($this->params);
 ?>
 <!-- page heading start-->
 <div class="page-heading">
     <h3>
-        Dashboard
+        <?= $this->params['menu'] ?>
     </h3>
 </div>
 <!-- page heading end-->
