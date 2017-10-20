@@ -161,6 +161,7 @@ class OrgSearch extends SearchOS
             ];
 
             $data = $searchResult['result']['items'];
+            $list = [];
             foreach ($data as $key => $datum) {
                 $list[$key] = $datum['fields'];
                 $list[$key]['distance'] = $datum['variableValue']['distance_value'][0] . "km";

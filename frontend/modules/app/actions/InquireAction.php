@@ -23,10 +23,10 @@ class InquireAction extends AppAction
         try {
             $request = Yii::$app->request;
             $params = [
-                'word' => OrgSearch::strFilter($request->get('word', '')),
-                'map_lng' => $request->get('map_lng', ''),
-                'map_lat' => $request->get('map_lat', ''),
-                'page' => $request->get('page', 1)
+                'word' => OrgSearch::strFilter($this->getParams('word', '')),
+                'map_lng' => $this->getParams('map_lng', ''),
+                'map_lat' => $this->getParams('map_lat', ''),
+                'page' => $this->getParams('page', 1)
             ];
 
             if ($params['word'] == 'location') {

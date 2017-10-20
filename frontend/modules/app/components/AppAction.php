@@ -119,17 +119,17 @@ class AppAction extends Action
      * @param string $key
      * @return array|mixed
      */
-    public function getParams($key = '')
+    public function getParams($key = '', $att = '')
     {
         $request = Yii::$app->request;
 
         $method = strtolower($request->method);
         switch ($method) {
             case 'get':
-                return $request->get($key);
+                return $request->get($key, $att);
                 break;
             case 'post':
-                return $request->post($key);
+                return $request->post($key, $att);
                 break;
             default:
                 return '';
