@@ -9,9 +9,9 @@
 namespace e\controllers;
 
 
-use yii\web\Controller;
+use e\components\EController;
 
-class SiteController extends Controller
+class SiteController extends EController
 {
     public function init()
     {
@@ -20,6 +20,6 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        echo 1;
+        return $this->render('index');
     }
 }
