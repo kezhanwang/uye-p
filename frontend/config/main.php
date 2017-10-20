@@ -39,9 +39,6 @@ return [
         'app' => [
             'class' => 'app\modules\app\AppModule',
         ],
-        'e' => [
-            'class' => 'app\modules\e\EModule',
-        ],
     ],
     'params' => $params,
 ];

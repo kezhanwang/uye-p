@@ -26,7 +26,5 @@
         </ul>
     </div>
     <!--notification menu end -->
-
 </div>
 <!-- header section end-->
-
