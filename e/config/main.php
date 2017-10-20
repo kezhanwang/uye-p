@@ -11,13 +11,15 @@ return [
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsApCB',
-            'csrfParam' => '_csrf-frontend',
+            'enableCookieValidation' => true,
+            'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsdcds',
+            'csrfParam' => '_csrf-e',
         ],
         'user' => [
-            'identityClass' => 'common\models\User',
+            'identityClass' => 'common\models\ar\UyeEUser',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
+            'loginUrl' => ['login/login'],
+            'identityCookie' => ['name' => '_identity-e', 'httpOnly' => true],
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend
