@@ -46,6 +46,11 @@ class UyeInsuredOrder extends UActiveRecord
     const INSURED_TYPE_EMPLOYMENT = 1;
     const INSURED_TYPE_SALARY = 2;
 
+    public static $insuredType = [
+        self::INSURED_TYPE_EMPLOYMENT => '就业帮',
+        self::INSURED_TYPE_SALARY => '高薪帮',
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;
@@ -125,5 +130,23 @@ class UyeInsuredOrder extends UActiveRecord
             'created_time' => '创建时间',
             'updated_time' => '更新时间',
         ];
+    }
+
+    public static function createInsuredOrder($uid)
+    {
+        $order_id_main = date('YmdHis') . $uid . rand(100000000, 999999999);
+        $order_id_len = strlen($order_id_main);
+        $order_id_sum = 0;
+        for ($i = 0; $i < $order_id_len; $i++) {
+            $order_id_sum += (int)(substr($order_id_main, $i, 1));
+        }
+        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT);
+        $strlen = strlen($order_id);
+        if ($strlen < 32) {
+            $order_id = str_pad($order_id, 32, "0", STR_PAD_RIGHT);
+        } else {
+            $order_id = substr($strlen, 0, 32);
+        }
+        return $order_id;
     }
 }

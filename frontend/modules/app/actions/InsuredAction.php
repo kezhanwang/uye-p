@@ -75,7 +75,7 @@ class InsuredAction extends AppAction
 
             $add = $params;
             $add['uid'] = DataBus::get('uid');
-            $add['insured_order'] = Output::orderid();
+            $add['insured_order'] = UyeInsuredOrder::createInsuredOrder($this->uid);
             $add['insured_status'] = INSURED_STATUS_CREATE;
 
             $insuredOrder = UyeInsuredOrder::_add($add);

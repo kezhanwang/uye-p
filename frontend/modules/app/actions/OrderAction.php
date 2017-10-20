@@ -26,6 +26,8 @@ class OrderAction extends AppAction
             $page = $request->getBodyParam('page', 1);
 
             $data = $this->getInsuredOrder($page);
+
+
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
@@ -35,7 +37,7 @@ class OrderAction extends AppAction
     private function getInsuredOrder($page = 1)
     {
         try {
-            $uid = DataBus::get('uid');
+            $uid = 1000003;
             $fields = "io.*,o.org_name,oc.name as c_name";
             $insuredOrder = UyeInsuredOrder::find()
                 ->select($fields)
@@ -62,9 +64,28 @@ class OrderAction extends AppAction
                 'page' => $page,
                 'pageSize' => 1
             ];
+
+            $result = [
+                'insured_order' => $insuredOrder['insured_order'],
+                'insured_status' => $insuredOrder['insured_status'],
+                'insured_status_desp' => $insuredOrder['insured_status'],
+                'org_name' => $insuredOrder['org_name'],
+                'insured_type' => UyeInsuredOrder::$insuredType[$insuredOrder['insured_type']],
+                'tuition' => $insuredOrder['tuition'],
+                'remark' => 'xxxx',
+                'premium_amount_top' => $insuredOrder['premium_amount'],
+                'career_time' => '2018-01-01~2018-03-01',
+                'repay_time' => '2018-03-01~2018-10-01',
+                'train' => [
+                    'first_train' => $insuredOrder['class_start'] . "~" . $insuredOrder['class_end'],
+                    'second_train' => '',
+                    'end_train' => '',
+                ]
+            ];
+
             return [
                 'page' => $getPageArr,
-                'insured_order' => $insuredOrder
+                'insured_order' => $result
             ];
         } catch (UException $exception) {
             \Yii::error($exception->getMessage());
