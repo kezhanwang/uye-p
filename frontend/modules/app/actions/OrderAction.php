@@ -75,7 +75,7 @@ class OrderAction extends AppAction
                 'insured_type' => UyeInsuredOrder::$insuredType[$insuredOrder['insured_type']],
                 'tuition' => $insuredOrder['tuition'],
                 'remark' => 'xxxx',
-                'premium_amount_top' => $insuredOrder['premium_amount'],
+                'premium_amount_top' => $insuredOrder['pay_ceiling'],
                 'career_time' => '2018-01-01~2018-03-01',
                 'repay_time' => '2018-03-01~2018-10-01',
                 'train' => [

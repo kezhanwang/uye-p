@@ -56,23 +56,7 @@ class UyeInsuredOrder extends UActiveRecord
         return self::TABLE_NAME;
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [
-            [['insured_order', 'uid', 'org_id', 'c_id', 'premium_amount', 'pay_ceiling', 'class', 'class_start', 'class_end', 'course_consultant', 'group_pic', 'training_pic'], 'required'],
-            [['insured_status', 'insured_type', 'uid', 'org_id', 'c_id', 'payment_method', 'created_time', 'updated_time'], 'integer'],
-            [['tuition', 'premium_amount', 'pay_ceiling', 'actual_repay_amount', 'map_lng', 'map_lat'], 'number'],
-            [['class_start', 'class_end'], 'safe'],
-            [['training_pic'], 'string'],
-            [['insured_order'], 'string', 'max' => 41],
-            [['class', 'course_consultant'], 'string', 'max' => 30],
-            [['group_pic'], 'string', 'max' => 500],
-            [['phoneid'], 'string', 'max' => 60],
-        ];
-    }
+
 
     public static function _add($info = array())
     {

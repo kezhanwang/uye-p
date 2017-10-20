@@ -10,6 +10,7 @@ namespace app\modules\app\actions;
 
 use common\models\ar\UyeAppLog;
 use common\models\ar\UyeCategory;
+use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgWifi;
 use components\BaiduMap;
@@ -55,10 +56,11 @@ class IndexAction extends AppAction
 
             $templateData = [
                 'loaction' => $gps['addressComponent']['city'],
-                'count_order' => '已有1000位学院加入U业帮就业无忧计划',
+                'count_order' => $this->getCountOrder(),
                 'insured_order' => $insuredOrder,
                 'organize' => $organize,
-                'ad_list' => $adList
+                'ad_list' => $adList,
+                'premium_amount_top' => 2000000,
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
@@ -100,10 +102,10 @@ class IndexAction extends AppAction
     private function getUserInsuredOrder()
     {
         if ($this->isLogin()) {
-            $uid = DataBus::get('uid');
-            $compensation = 0;
-            $count = 0;
-            $paid_compensation = 0;
+            $total = UyeInsuredOrder::find()->select("COUNT(id) AS count,SUM(pay_ceiling) AS pay_ceiling,SUM(actual_repay_amount) AS actual_repay_amount")->from(UyeInsuredOrder::TABLE_NAME)->where('uid=:uid', [':uid' => $this->uid])->asArray()->one();
+            $compensation = $total['pay_ceiling'];
+            $count = $total['count'];
+            $paid_compensation = $total['actual_repay_amount'];
         } else {
             $compensation = 0;
             $count = 0;
@@ -126,6 +128,20 @@ class IndexAction extends AppAction
             $organize = [];
         }
         return $organize;
+    }
+
+    private function getCountOrder()
+    {
+        try {
+            $main = 2000;
+            $count = UyeInsuredOrder::find()->count('id');
+            $all = $main + $count;
+            $str = '已有' . $all . '位学员加入U业帮就业无忧计划';
+            return $str;
+        } catch (UException $exception) {
+            return '已有' . $main . '位学院加入U业帮就业无忧计划';
+            Yii::error();
+        }
     }
 
 }

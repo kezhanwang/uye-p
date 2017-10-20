@@ -83,6 +83,8 @@ class InsuredAction extends AppAction
             $add['uid'] = DataBus::get('uid');
             $add['insured_order'] = UyeInsuredOrder::createInsuredOrder($this->uid);
             $add['insured_status'] = INSURED_STATUS_CREATE;
+            $add['premium_amount'] = 0;
+            $add['pay_ceiling'] = $params['tuition'] * $orgInfo['employment_rate'];
 
             $insuredOrder = UyeInsuredOrder::_add($add);
 
