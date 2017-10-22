@@ -48,7 +48,7 @@ class UyeUserMobile extends UActiveRecord
             return false;
         }
 
-        $ar = self::findOne('uid=' . $uid);
+        $ar = self::findOne($uid);
         foreach ($ar->getAttributes() as $key => $attribute) {
             if (array_key_exists($key, $info)) {
                 $ar->$key = $info[$key];

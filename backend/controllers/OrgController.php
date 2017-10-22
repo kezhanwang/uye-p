@@ -25,7 +25,7 @@ class OrgController extends UAdminController
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
-                    'delete' => ['POST'],
+//                    'delete' => ['POST', 'GET'],
                 ],
             ],
         ];
@@ -39,7 +39,7 @@ class OrgController extends UAdminController
     {
         $searchModel = new UyeOrgSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->pagination->defaultPageSize = 10;
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -105,7 +105,14 @@ class OrgController extends UAdminController
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $info = [
+            'is_delete' => 1,
+            'is_shelf' => UyeOrg::IS_SHELF_OFF,
+            'is_employment' => UyeOrg::IS_EMPLOYMENT_NOT_SUPPORT,
+            'is_high_salary' => UyeOrg::IS_HIGH_SALARY_NOT_SUPPORT
+        ];
+
+        UyeOrg::_update($id, $info);
 
         return $this->redirect(['index']);
     }

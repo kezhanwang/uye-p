@@ -22,27 +22,71 @@ $this->params['menu'] = $this->title;
                 <h3 class="box-title">数据列表</h3>
             </div>
             <div class="box-body">
-                <?php Pjax::begin(); ?>    <?= GridView::widget([
+                <?php Pjax::begin(); ?>
+                <?= GridView::widget([
                     'dataProvider' => $dataProvider,
                     'columns' => [
                         'id',
-                        'org_short_name',
                         'org_name',
-                        'org_type',
+                        [
+                            'attribute' => 'org_type',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeOrg::$orgType[$model->org_type];
+                            }
+                        ],
                         'parent_id',
+                        [
+                            'attribute' => 'status',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeOrg::$orgStatus[$model->status];
+                            }
+                        ],
+                        [
+                            'attribute' => 'is_shelf',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeOrg::$isShelf[$model->is_shelf];
+                            }
+                        ],
+                        [
+                            'attribute' => 'is_employment',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeOrg::$isEmployment[$model->is_employment];
+                            }
+                        ],
+                        [
+                            'attribute' => 'is_high_salary',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeOrg::$isHighSalary[$model->is_high_salary];
+                            }
+                        ],
                         [
                             'label' => '注册时间',
                             'attribute' => 'created_time',
                             'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
-                        // 'status',
-                        // 'is_shelf',
-                        // 'is_delete',
-                        // 'is_employment',
-                        // 'is_high_salary',
-                        // 'updated_time:datetime',
-
-                        ['class' => 'yii\grid\ActionColumn'],
+                        [
+                            'header' => '操作',
+                            'class' => 'yii\grid\ActionColumn',
+                            'template' => '{view} {update} {add} {delete}',
+                            'buttons' => [
+                                'view' => function ($url, $model, $key) {
+                                    return Html::a('查看', ['/org/view', 'id' => $model->id], ['class' => "btn btn-sm btn-info", 'title' => '查看', 'target' => '_blank']);
+                                },
+                                'update' => function ($url, $model, $key) {
+                                    return Html::a('编辑', ['/org/update', 'id' => $model->id], ['class' => "btn btn-sm btn-warning", 'title' => '编辑', 'target' => '_blank']);
+                                },
+                                'add' => function ($url, $model, $key) {
+                                    return Html::a('添加课程', ['/org/addcourse', 'id' => $model->id], ['class' => "btn btn-sm btn-success", 'title' => '添加课程', 'target' => '_blank']);
+                                },
+                                'delete' => function ($url, $model, $key) {
+                                    if ($model->is_delete == \common\models\ar\UyeOrg::IS_DELETE_ON) {
+                                        return Html::a('删除', ['/org/delete', 'id' => $model->id], ['class' => "btn btn-sm btn-danger", 'title' => '删除']);
+                                    } else {
+                                        return Html::a('删除', 'javascript:void(0)', ['class' => "btn btn-sm btn-default", 'title' => '删除']);
+                                    }
+                                }
+                            ],
+                        ],
                     ],
                 ]); ?>
                 <?php Pjax::end(); ?>

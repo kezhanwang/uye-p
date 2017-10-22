@@ -26,22 +26,31 @@ use yii\widgets\ActiveForm;
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'id') ?>
+                    <?= $form->field($model, 'id')->textInput(); ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'is_shelf')->dropDownList(\common\models\ar\UyeOrg::$isShelf, ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'org_name') ?>
+                    <?= $form->field($model, 'org_name')->textInput(); ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'is_employment')->dropDownList(\common\models\ar\UyeOrg::$isEmployment, ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'org_type') ?>
+                    <?= $form->field($model, 'org_type')->dropDownList(\common\models\ar\UyeOrg::$orgType, ['prompt' => '请选择']); ?>
+                </div>
+                <div class="form-group">
+                    <?= $form->field($model, 'is_high_salary')->dropDownList(\common\models\ar\UyeOrg::$isHighSalary, ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'parent_id') ?>
+                    <?= $form->field($model, 'status')->dropDownList(\common\models\ar\UyeOrg::$orgStatus, ['prompt' => '请选择']); ?>
                 </div>
             </div>
         </div>

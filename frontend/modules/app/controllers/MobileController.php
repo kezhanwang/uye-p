@@ -68,7 +68,7 @@ class MobileController extends AppController
 
                 Output::info(SUCCESS, SUCCESS_CONTENT);
             } else {
-                throw new UException();
+                throw new UException(ERROR_LOGIN_NO_CONTENT, ERROR_LOGIN_NO);
             }
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());

@@ -8,6 +8,9 @@
 
 namespace common\models\ar;
 
+use components\ArrayUtil;
+use components\UException;
+
 /**
  * This is the model class for table "uye_org".
  *
@@ -33,9 +36,20 @@ class UyeOrg extends UActiveRecord
     const STATUS_NO_AUDITED = 2;
     const STATUS_NO_PASS = 3;
     const STATUS_OK = 4;
+    public static $orgStatus = [
+        self::STATUS_SAVE => '保存',
+        self::STATUS_NO_AUDITED => '未审核',
+        self::STATUS_NO_PASS => '审核未通过',
+        self::STATUS_OK => '审核通过',
+    ];
+
 
     const IS_SHELF_ON = 1;
     const IS_SHELF_OFF = 2;
+    public static $isShelf = [
+        self::IS_SHELF_ON => '上架',
+        self::IS_SHELF_OFF => '下架'
+    ];
 
     const ORG_TYPE_GENERAL = 1;
     const ORG_TYPE_BRANCH = 2;
@@ -61,6 +75,14 @@ class UyeOrg extends UActiveRecord
         self::IS_HIGH_SALARY_NOT_SUPPORT => '不支持高薪帮',
     ];
 
+    const IS_DELETE_ON = 1;
+    const IS_DELETE = 2;
+    public static $isDelete = [
+        self::IS_DELETE_ON => '正常',
+        self::IS_DELETE => '已删除'
+    ];
+
+
     public static function tableName()
     {
         return self::TABLE_NAME;
@@ -72,16 +94,16 @@ class UyeOrg extends UActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => '机构id',
-            'org_short_name' => '机构简称',
-            'org_name' => '机构全程',
-            'org_type' => '机构类型',
+            'id' => 'ID',
+            'org_short_name' => '简称',
+            'org_name' => '全称',
+            'org_type' => '类型',
             'parent_id' => '总校',
             'status' => '状态',
-            'is_shelf' => '是否上架',
+            'is_shelf' => '上下架',
             'is_delete' => '是否删除',
-            'is_employment' => '是否支持就业帮',
-            'is_high_salary' => '是否支持高薪帮',
+            'is_employment' => '就业帮',
+            'is_high_salary' => '高薪帮',
             'created_time' => '创建时间',
             'updated_time' => '更新时间',
         ];
@@ -104,5 +126,25 @@ class UyeOrg extends UActiveRecord
         } else {
             return $org;
         }
+    }
+
+    public static function _update($id, $info)
+    {
+        if (empty($id) || empty($info)) {
+            return false;
+        }
+        $ar = static::findOne($id);
+        $info = ArrayUtil::trimArray($info);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->updated_time = time();
+        if (!$ar->save()) {
+            throw new UException($ar);
+        }
+        return $ar->getAttributes();
     }
 }

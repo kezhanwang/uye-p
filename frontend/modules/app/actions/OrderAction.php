@@ -70,7 +70,7 @@ class OrderAction extends AppAction
             $result = [
                 'insured_order' => $insuredOrder['insured_order'],
                 'insured_status' => $insuredOrder['insured_status'],
-                'insured_status_desp' => $insuredOrder['insured_status'],
+                'insured_status_desp' => UyeInsuredOrder::getInsuredStatusDesp($insuredOrder['insured_status']),
                 'org_name' => $insuredOrder['org_name'],
                 'insured_type' => UyeInsuredOrder::$insuredType[$insuredOrder['insured_type']],
                 'tuition' => $insuredOrder['tuition'],
