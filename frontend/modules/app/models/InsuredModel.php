@@ -14,11 +14,12 @@ use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
 use components\NearbyUtil;
+use components\PicUtil;
 use components\UException;
 
 class InsuredModel
 {
-    public static function getOrganize($org_id, $lng, $lat)
+    public static function getOrganize($org_id)
     {
         $fields = "o.*,oi.*,c.name as category";
         $organize = UyeOrg::find()
@@ -32,9 +33,8 @@ class InsuredModel
         if (empty($organize)) {
             throw new UException();
         }
-        $organize['description'] = urlencode($organize['description']);
-        $distance = NearbyUtil::getDistance($lng, $lat, $organize['map_lng'], $organize['map_lat']);
-        $organize['distance'] = $distance > 999 ? round($distance / 1000, 2) . 'km' : $distance . 'm';
+        unset($organize['description']);
+        $organize['logo'] = PicUtil::getUrl($organize['logo']);
         return $organize;
     }
 

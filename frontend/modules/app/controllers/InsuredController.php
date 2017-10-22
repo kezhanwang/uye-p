@@ -35,16 +35,14 @@ class InsuredController extends AppController
     {
         try {
             $org_id = $this->getParams('org_id');
-            $map_lng = $this->getParams('map_lng');
-            $map_lat = $this->getParams('map_lat');
             if (empty($org_id) || !is_numeric($org_id)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }
 
-            $organize = InsuredModel::getOrganize($org_id, $map_lng, $map_lat);
+            $organize = InsuredModel::getOrganize($org_id);
             $courses = InsuredModel::getCourses($org_id);
             $templateData = [
-                'contract' => '',
+                'contract' => DOMAIN_WWW . '/html/contract/insured_contract.html',
                 'organize' => $organize,
                 'courses' => $courses
             ];

@@ -37,10 +37,15 @@ class UyeEMenu extends UActiveRecord
         $tree = [];
         foreach ($data as &$datum) {
             if ($datum['parent'] == $pID) {
+                if ($pID > 0){
+                    $icon = '';
+                }else{
+                    $icon = !empty($datum['icon']) ? $datum['icon'] : 'circle-o';
+                }
                 $tmpArr = [
-                    'icon' => !empty($datum['icon']) ? $datum['icon'] : 'fa fa-circle-o',
+                    'icon' => $icon,
                     'label' => $datum['name'],
-                    'url' => $datum['route'],
+                    'url' => [$datum['route']],
                     'options' => [],
                     'items' => [],
                 ];

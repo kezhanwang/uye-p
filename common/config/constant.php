@@ -23,6 +23,7 @@ define('PATH_UPLOAD_IMAGE', PATH_UPLOAD . DIRECTORY_SEPARATOR . "image");
 define('DOMAIN_BASE', 'bjzhongteng.com');   //顶级域名
 if (YII_ENV == 'dev' || YII_ENV == 'test') {
     define('DOMAIN_HTTPS', 'http://');
+    define('DOMAIN_WWW', DOMAIN_HTTPS . "dev." . DOMAIN_BASE);
     define('DOMAIN_E', DOMAIN_HTTPS . 'dev.e.' . DOMAIN_BASE);     //二级域名，机构管理平台，开发环境
     define('DOMAIN_ADMIN', DOMAIN_HTTPS . 'dev.admin.' . DOMAIN_BASE); //二级域名，运营平台，开发环境
     define('DOMAIN_APP', DOMAIN_HTTPS . 'dev.app.' . DOMAIN_BASE); //二级域名，APP接口，开发环境
@@ -30,6 +31,7 @@ if (YII_ENV == 'dev' || YII_ENV == 'test') {
     define('DOMAIN_SECRET', DOMAIN_HTTPS . 'dev.simg.' . DOMAIN_BASE);    //二级域名，个人图片资源
 } else {
     define('DOMAIN_HTTPS', 'https://');
+    define('DOMAIN_WWW', DOMAIN_HTTPS . "www." . DOMAIN_BASE);
     define('DOMAIN_E', DOMAIN_HTTPS . 'e.' . DOMAIN_BASE); //二级域名，机构管理平台，生产环境
     define('DOMAIN_ADMIN', DOMAIN_HTTPS . 'admin.' . DOMAIN_BASE); //二级域名，运营平台，生产环境
     define('DOMAIN_APP', DOMAIN_HTTPS . 'app.' . DOMAIN_BASE); //二级域名，APP接口，生产环境

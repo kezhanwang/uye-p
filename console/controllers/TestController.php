@@ -10,6 +10,8 @@ namespace console\controllers;
 
 
 use common\models\ar\UyeCategory;
+use common\models\ar\UyeConfig;
+use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgInfo;
 use common\models\opensearch\OrgSearch;
@@ -50,24 +52,61 @@ class TestController extends Controller
 //
 //        }
 
-        list($t1, $t2) = explode(' ', microtime());
-        $msectime = (float)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
-        $order_id_main = date('YmdHis') . rand(100000000, 999999999);
-        //订单号码主体长度
-        $order_id_len = strlen($order_id_main);
-        $order_id_sum = 0;
-        for ($i = 0; $i < $order_id_len; $i++) {
-            $order_id_sum += (int)(substr($order_id_main, $i, 1));
-        }
-        //唯一订单号码（YYYYMMDDHHIISSNNNNNNNNCC）
-        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT);
-        $strlen = strlen($order_id);
-        if ($strlen < 32) {
-            $order_id = str_pad($order_id, 32, "0", STR_PAD_RIGHT);
-        } else {
-            $order_id = substr($strlen, 0, 32);
-        }
-        var_dump($order_id);
+        $data = [
+            [
+                'id' => 1,
+                'type' => 1,
+                'question' => '您对自己所学行业感兴趣吗？',
+                'answer' => [
+                    '感兴趣',
+                    '一般 ',
+                    '纯粹为了找工作'
+                ],
+            ],
+            [
+                'id' => 2,
+                'type' => 1,
+                'question' => '您了解所学行业，或有相关基础吗？',
+                'answer' => [
+                    '了解并有基础',
+                    '了解没有基础',
+                    '不了解没有基础'
+                ],
+            ],
+            [
+                'id' => 3,
+                'type' => 1,
+                'question' => '您期望毕业以后的就业薪资是多少？',
+                'answer' => [
+                    '5000以内',
+                    '5000-8000',
+                    '8000-10000',
+                    '10000+'
+                ],
+            ],
+            [
+                'id' => 4,
+                'type' => 1,
+                'question' => '您期望的就业地点是？',
+                'answer' => [
+                    '北上广深',
+                    '二线省会城市',
+                    '其他'
+                ],
+            ],
+            [
+                'id' => 5,
+                'type' => 1,
+                'question' => '您学费是怎样缴纳的？',
+                'answer' => [
+                    '一次性全款',
+                    '贷款分期',
+                ],
+            ],
+        ];
+
+        $d = json_encode($data);
+        UyeConfig::_updateConfig(4,['value'=>$d]);
     }
 
 

@@ -57,7 +57,6 @@ class UyeInsuredOrder extends UActiveRecord
     }
 
 
-
     public static function _add($info = array())
     {
         if (empty($info)) {
@@ -127,10 +126,29 @@ class UyeInsuredOrder extends UActiveRecord
         $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT);
         $strlen = strlen($order_id);
         if ($strlen < 32) {
-            $order_id = str_pad($order_id, 32, "0", STR_PAD_RIGHT);
+            $new_order_id = str_pad($order_id, 32, "0", STR_PAD_RIGHT);
+        } else if ($strlen > 32) {
+            $new_order_id = substr($strlen, 0, 32);
         } else {
-            $order_id = substr($strlen, 0, 32);
+            $new_order_id = $order_id;
         }
-        return $order_id;
+        return $new_order_id;
+    }
+
+    public static function getInsuredStatusDesp($status)
+    {
+        $insuredStatus = [
+            INSURED_STATUS_CREATE => INSURED_STATUS_CREATE_CONTENT,
+            INSURED_STATUS_VERIFY_PASS => INSURED_STATUS_VERIFY_PASS_CONTENT,
+            INSURED_STATUS_VERIFY_REFUSE => INSURED_STATUS_VERIFY_REFUSE_CONTENT,
+            INSURED_STATUS_PAYMENT => INSURED_STATUS_PAYMENT,
+            INSURED_STATUS_STUDYING => INSURED_STATUS_STUDYING_CONTENT
+        ];
+
+        if (isset($insuredStatus[$status])) {
+            return $insuredStatus[$status];
+        } else {
+            return '';
+        }
     }
 }

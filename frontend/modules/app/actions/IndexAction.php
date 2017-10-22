@@ -140,7 +140,6 @@ class IndexAction extends AppAction
             return $str;
         } catch (UException $exception) {
             return '已有' . $main . '位学院加入U业帮就业无忧计划';
-            Yii::error();
         }
     }
 

@@ -24,8 +24,6 @@ class EController extends Controller
     {
         if (!Yii::$app->user->isGuest) {
             $org_id = Yii::$app->user->identity->org_id;
-            $org_id = '';
-//            var_dump($org_id);
             if (empty($org_id)) {
                 throw new BadRequestHttpException("未绑定机构信息");
             }

@@ -53,7 +53,7 @@ class UdcreditController extends UController
                 'key' => $config['merchant_key'],
                 'order' => $order,
                 'user_id' => self::USER_ID_SUFFIX . $uid,
-                'notify_url' => '',
+                'notify_url' => DOMAIN_WWW . "/udcredit/notify",
                 'safe_mode' => self::SAFE_MODE_HIGH,
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
@@ -62,7 +62,7 @@ class UdcreditController extends UController
         }
     }
 
-    public function actionUdcreditNotify()
+    public function actionNotify()
     {
         try {
             $methodType = strtolower($_SERVER['REQUEST_METHOD']);

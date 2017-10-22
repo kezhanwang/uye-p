@@ -8,10 +8,12 @@
 
 namespace e\controllers;
 
+use common\models\ar\UyeInsuredOrder;
 use Yii;
 use common\models\search\UyeInsuredOrderSearch;
 use e\components\EController;
 use yii\filters\VerbFilter;
+use yii\web\NotFoundHttpException;
 
 class InsuredController extends EController
 {
@@ -47,9 +49,26 @@ class InsuredController extends EController
 
         $queryParams['UyeInsuredOrderSearch']['org_id'] = Yii::$app->user->identity->org_id;
         $dataProvider = $searchModel->search($queryParams);
+        $dataProvider->pagination->defaultPageSize = 10;
         return $this->render('list', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+
+    public function actionView($id)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($id),
+        ]);
+    }
+
+    protected function findModel($id)
+    {
+        if (($model = UyeInsuredOrder::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
     }
 }

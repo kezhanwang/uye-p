@@ -11,6 +11,7 @@ use yii\widgets\Pjax;
 $this->title = '保单列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
+
 ?>
 <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
@@ -22,24 +23,39 @@ $this->params['menu'] = $this->title;
                 <?php Pjax::begin(); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'pager' => [
+                        'firstPageLabel' => "首页",
+                        'prevPageLabel' => '上一页',
+                        'nextPageLabel' => '下一页',
+                        'lastPageLabel' => '末页',
+                    ],
                     'columns' => [
+                        ['class' => 'yii\grid\SerialColumn'],//序列号从1自增长
                         'insured_order',
                         'uid',
-                        'insured_type',
-                        'insured_status',
+                        [
+                            'attribute' => 'insured_type',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeInsuredOrder::$insuredType[$model->insured_type];
+                            }
+                        ],
+
+                        [
+                            'attribute' => 'insured_status',
+                            'value' => function ($model) {
+                                return \common\models\ar\UyeInsuredOrder::getInsuredStatusDesp($model->insured_status);
+                            }
+                        ],
                         [
                             'label' => '申请时间',
                             'attribute' => 'created_time',
                             'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
-                        // 'status',
-                        // 'is_shelf',
-                        // 'is_delete',
-                        // 'is_employment',
-                        // 'is_high_salary',
-                        // 'updated_time:datetime',
-
-                        ['label' => '操作'],
+                        [
+                            'class' => 'yii\grid\ActionColumn',
+                            'header' => '操作',
+                            'template' => '{view} {update}',
+                        ],
                     ],
                 ]); ?>
                 <?php Pjax::end(); ?>
