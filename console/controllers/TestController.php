@@ -23,14 +23,21 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-//        $olds = \Yii::$app->db2->createCommand("select id,name,areaid from kz_school where sbid=10073")->queryAll();
-//
-//        foreach ($olds as $item) {
-//            if ($org=UyeOrg::findOne(['org_name'=>$item['name']])){
-//                UyeOrgInfo::_updateOrgInfo($org['id'], ['area' => $item['areaid']]);
-//            }
-//
-//        }
+        $olds = \Yii::$app->db2->createCommand("select * from kz_school where sbid=10065")->queryAll();
+        foreach ($olds as $item) {
+            if ($org = UyeOrg::findOne(['org_name' => $item['name']])) {
+                UyeOrgInfo::_addOrgInfo([
+                    'org_id' => $org['id'],
+                    'map_lat' => $item['lat'],
+                    'map_lng' => $item['lng'],
+                    'address' => $item['address'],
+                    'phone' => $item['phone'],
+                    'description' => $item['desp'],
+                    'logo' => $item['logo'],
+                ]);
+            }
+
+        }
 
 //        $fields = "o.*,oi.*,c.name as category";
 //        $query = (new \yii\db\Query())
@@ -52,61 +59,7 @@ class TestController extends Controller
 //
 //        }
 
-        $data = [
-            [
-                'id' => 1,
-                'type' => 1,
-                'question' => '您对自己所学行业感兴趣吗？',
-                'answer' => [
-                    '感兴趣',
-                    '一般 ',
-                    '纯粹为了找工作'
-                ],
-            ],
-            [
-                'id' => 2,
-                'type' => 1,
-                'question' => '您了解所学行业，或有相关基础吗？',
-                'answer' => [
-                    '了解并有基础',
-                    '了解没有基础',
-                    '不了解没有基础'
-                ],
-            ],
-            [
-                'id' => 3,
-                'type' => 1,
-                'question' => '您期望毕业以后的就业薪资是多少？',
-                'answer' => [
-                    '5000以内',
-                    '5000-8000',
-                    '8000-10000',
-                    '10000+'
-                ],
-            ],
-            [
-                'id' => 4,
-                'type' => 1,
-                'question' => '您期望的就业地点是？',
-                'answer' => [
-                    '北上广深',
-                    '二线省会城市',
-                    '其他'
-                ],
-            ],
-            [
-                'id' => 5,
-                'type' => 1,
-                'question' => '您学费是怎样缴纳的？',
-                'answer' => [
-                    '一次性全款',
-                    '贷款分期',
-                ],
-            ],
-        ];
 
-        $d = json_encode($data);
-        UyeConfig::_updateConfig(4,['value'=>$d]);
     }
 
 

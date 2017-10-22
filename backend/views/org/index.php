@@ -25,6 +25,12 @@ $this->params['menu'] = $this->title;
                 <?php Pjax::begin(); ?>
                 <?= GridView::widget([
                     'dataProvider' => $dataProvider,
+                    'pager' => [
+                        'firstPageLabel' => "首页",
+                        'prevPageLabel' => '上一页',
+                        'nextPageLabel' => '下一页',
+                        'lastPageLabel' => '末页',
+                    ],
                     'columns' => [
                         'id',
                         'org_name',
@@ -58,11 +64,6 @@ $this->params['menu'] = $this->title;
                             'value' => function ($model) {
                                 return \common\models\ar\UyeOrg::$isHighSalary[$model->is_high_salary];
                             }
-                        ],
-                        [
-                            'label' => '注册时间',
-                            'attribute' => 'created_time',
-                            'format' => ['date', 'php:Y-m-d H:i:s'],
                         ],
                         [
                             'header' => '操作',

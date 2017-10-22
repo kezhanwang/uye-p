@@ -105,7 +105,7 @@ class UyeOrgInfo extends UActiveRecord
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $ar = self::findOne(['org_id' => $id]);
+        $ar = self::findOne($id);
         $attributes = $ar->getAttributes();
         $info = ArrayUtil::trimArray($info);
         foreach ($attributes as $key => $attribute) {

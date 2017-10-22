@@ -64,15 +64,15 @@ class UyeOrg extends UActiveRecord
     const IS_EMPLOYMENT_NOT_SUPPORT = 2;
 
     public static $isEmployment = [
-        self::IS_EMPLOYMENT_SUPPORT => '支持就业帮',
-        self::IS_EMPLOYMENT_NOT_SUPPORT => '不支持就业帮',
+        self::IS_EMPLOYMENT_SUPPORT => '支持',
+        self::IS_EMPLOYMENT_NOT_SUPPORT => '不支持',
     ];
 
     const IS_HIGH_SALARY_SUPPORT = 1;
     const IS_HIGH_SALARY_NOT_SUPPORT = 2;
     public static $isHighSalary = [
-        self::IS_HIGH_SALARY_SUPPORT => '支持高薪帮',
-        self::IS_HIGH_SALARY_NOT_SUPPORT => '不支持高薪帮',
+        self::IS_HIGH_SALARY_SUPPORT => '支持',
+        self::IS_HIGH_SALARY_NOT_SUPPORT => '不支持',
     ];
 
     const IS_DELETE_ON = 1;
@@ -96,7 +96,7 @@ class UyeOrg extends UActiveRecord
         return [
             'id' => 'ID',
             'org_short_name' => '简称',
-            'org_name' => '全称',
+            'org_name' => '机构',
             'org_type' => '类型',
             'parent_id' => '总校',
             'status' => '状态',
