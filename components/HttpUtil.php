@@ -98,7 +98,7 @@ class HttpUtil
 
     public static function goLogin()
     {
-        $url = 'http://test.bjzhongteng.com';
+        $url = DOMAIN_WWW . '/login/login';
         if (strpos($url, '?') === false) {
             $url .= '?';
         } else {
