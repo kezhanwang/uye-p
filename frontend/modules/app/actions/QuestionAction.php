@@ -29,13 +29,18 @@ class QuestionAction extends AppAction
             $uid = DataBus::get('uid');
             $org_id = $this->getParams('org_id');
             $question = $this->getParams('question');
-            if (empty($org_id) || !is_numeric($org_id) || empty($question) || !is_array($question)) {
+            if (empty($org_id) || !is_numeric($org_id) || empty($question)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+
+            $questionArr = json_decode($question, true);
+            if (!is_array($questionArr)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT . ":数据格式无法json解析", ERROR_SYS_PARAMS);
             }
 
             $userQuestion = UyeUserQuestion::find()->select('*')->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])->asArray()->one();
             if (empty($userQuestion)) {
-                UyeUserQuestion::_add(['uid' => $uid, 'org_id' => $org_id, 'question' => json_encode($question)]);
+                UyeUserQuestion::_add(['uid' => $uid, 'org_id' => $org_id, 'question' => $question]);
             } else {
                 throw new UException(ERROR_USER_QUESTION_EXISTS_CONTENT, ERROR_USER_QUESTION_EXISTS);
             }

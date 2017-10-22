@@ -343,7 +343,7 @@ class PicUtil
         } elseif ($secret == self::SECRET_IMAGES) {
 //            return FrontEnd::calcCDNDomain('http://' . DOMAIN_RES . $url);
         } else {
-            return DOMAIN_IMAGE . $url;
+            return 'http://img.kezhanwang.com' . $url;
         }
     }
 }

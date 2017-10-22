@@ -40,6 +40,7 @@ class InsuredController extends AppController
             }
 
             $organize = InsuredModel::getOrganize($org_id);
+            $organize['org_id'] = $organize['id'];
             $courses = InsuredModel::getCourses($org_id);
             $templateData = [
                 'contract' => DOMAIN_WWW . '/html/contract/insured_contract.html',

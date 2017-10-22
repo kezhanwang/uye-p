@@ -13,7 +13,9 @@ use app\modules\app\components\AppAction;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
+use common\models\ar\UyeOrgInfo;
 use components\Output;
+use components\PicUtil;
 use components\UException;
 use frontend\models\DataBus;
 
@@ -40,11 +42,12 @@ class OrderAction extends AppAction
     {
         try {
             $uid = 1000003;
-            $fields = "io.*,o.org_name,oc.name as c_name";
+            $fields = "io.*,o.org_name,oc.name as c_name,oi.logo";
             $insuredOrder = UyeInsuredOrder::find()
                 ->select($fields)
                 ->from(UyeInsuredOrder::TABLE_NAME . " io")
                 ->leftJoin(UyeOrg::TABLE_NAME . " o", "o.id=io.org_id")
+                ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=io.org_id")
                 ->leftJoin(UyeOrgCourse::TABLE_NAME . " oc", "oc.id=io.c_id")
                 ->where('io.uid=:uid', [':uid' => $uid])
                 ->orderBy('id desc')
@@ -56,6 +59,7 @@ class OrderAction extends AppAction
                 ->select("COUNT(io.id) AS count")
                 ->from(UyeInsuredOrder::TABLE_NAME . " io")
                 ->leftJoin(UyeOrg::TABLE_NAME . " o", "o.id=io.org_id")
+                ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=io.org_id")
                 ->leftJoin(UyeOrgCourse::TABLE_NAME . " oc", "oc.id=io.c_id")
                 ->where('io.uid=:uid', [':uid' => $uid])
                 ->asArray()->one();
@@ -78,6 +82,7 @@ class OrderAction extends AppAction
                 'premium_amount_top' => $insuredOrder['pay_ceiling'],
                 'career_time' => '2018-01-01~2018-03-01',
                 'repay_time' => '2018-03-01~2018-10-01',
+                'org_logo' => PicUtil::getUrl($insuredOrder['logo']),
                 'train' => [
                     'first_train' => $insuredOrder['class_start'] . "~" . $insuredOrder['class_end'],
                     'second_train' => '',

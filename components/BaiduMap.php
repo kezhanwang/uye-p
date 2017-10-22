@@ -46,4 +46,5 @@ class BaiduMap
             \Yii::error($exception->getMessage());
         }
     }
+
 }

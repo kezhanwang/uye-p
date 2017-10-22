@@ -55,6 +55,7 @@ class OrgController extends UAdminController
     {
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'info_model' => $this->findInfoModel($id),
         ]);
     }
 
@@ -127,6 +128,15 @@ class OrgController extends UAdminController
     protected function findModel($id)
     {
         if (($model = UyeOrg::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+    }
+
+    protected function findInfoModel($org_id)
+    {
+        if (($model = UyeOrgInfo::findOne($org_id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
