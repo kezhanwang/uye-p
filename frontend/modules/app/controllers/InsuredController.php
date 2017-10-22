@@ -48,6 +48,7 @@ class InsuredController extends AppController
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (UException $exception) {
+            \Yii::error($exception->getMessage(), 'insured_order');
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }

@@ -32,7 +32,7 @@ class InsuredAction extends AppAction
         try {
             $request = \Yii::$app->request;
             $params = $request->isPost ? $request->post() : $request->get();
-
+            \Yii::info("insured submit", 'insured_order');
             $checkParams = [
                 'org_id' => 'int',
                 'c_id' => 'int',
@@ -94,6 +94,7 @@ class InsuredAction extends AppAction
             $this->addWIFI($params['org_id'], $params['mac'], $params['ssid']);
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
+            \Yii::error($exception->getMessage(), 'insured_order');
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }

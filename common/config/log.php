@@ -11,7 +11,7 @@ return [
     'targets' => [
         [
             'class' => 'yii\log\FileTarget',
-            'levels' => ['error', 'warning'],
+            'levels' => ['error'],
             'logFile' => '@app/runtime/logs/' . date('Ymd') . '/app.log',
             'maxFileSize' => 102400,
             'maxLogFiles' => 30,
@@ -53,6 +53,14 @@ return [
             'levels' => ['error', 'warning', 'info'],
             'categories' => ['upload_file'],
             'logFile' => '@app/runtime/logs/' . date('Ymd') . '/upload_file.log',
+            'maxFileSize' => 102400,
+            'maxLogFiles' => 30,
+        ],
+        [
+            'class' => 'yii\log\FileTarget',
+            'levels' => ['error', 'warning', 'info'],
+            'categories' => ['upload_file'],
+            'logFile' => '@app/runtime/logs/' . date('Ymd') . '/insured_order.log',
             'maxFileSize' => 102400,
             'maxLogFiles' => 30,
         ],
