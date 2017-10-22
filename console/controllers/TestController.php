@@ -13,6 +13,7 @@ use common\models\ar\UyeCategory;
 use common\models\ar\UyeConfig;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
+use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
 use common\models\opensearch\OrgSearch;
 use common\models\opensearch\SearchOS;
@@ -23,18 +24,30 @@ class TestController extends Controller
 
     public function actionIndex()
     {
-        $olds = \Yii::$app->db2->createCommand("select * from kz_school where sbid=10065")->queryAll();
+        $sql = "select c.name as c_name,s.name as org_name,c.logo,c.tuition from pay_course c ,kz_school s where s.id=c.sid and s.sbid=10073;";
+        $olds = \Yii::$app->db2->createCommand($sql)->queryAll();
         foreach ($olds as $item) {
-            if ($org = UyeOrg::findOne(['org_name' => $item['name']])) {
-                UyeOrgInfo::_addOrgInfo([
-                    'org_id' => $org['id'],
-                    'map_lat' => $item['lat'],
-                    'map_lng' => $item['lng'],
-                    'address' => $item['address'],
-                    'phone' => $item['phone'],
-                    'description' => $item['desp'],
-                    'logo' => $item['logo'],
-                ]);
+            $org = UyeOrg::find()->select('id')->where('org_name=:org_name', [':org_name' => $item['org_name']])->asArray()->one();
+            if ($org) {
+//                UyeOrgInfo::_addOrgInfo([
+//                    'org_id' => $org['id'],
+//                    'map_lat' => $item['lat'],
+//                    'map_lng' => $item['lng'],
+//                    'address' => $item['address'],
+//                    'phone' => $item['phone'],
+//                    'description' => $item['desp'],
+//                    'logo' => $item['logo'],
+//                ]);
+
+                $ar = new UyeOrgCourse();
+                $ar->setIsNewRecord(true);
+                $ar->name = $item['c_name'];
+                $ar->tunit_price = $item['tuition'] * 100;
+                $ar->org_id = $org['id'];
+                $ar->created_time = time();
+                $ar->updated_time = time();
+                $ar->save();
+                var_dump($ar->getAttributes());
             }
 
         }

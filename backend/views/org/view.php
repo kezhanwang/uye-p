@@ -98,7 +98,20 @@ $this->params['menu'] = $this->title;
                     </div>
                     <div class="tab-pane" id="org_course">
                         <table class="table table-bordered table-hover">
-
+                            <thead>
+                                <tr>
+                                    <td>课程id</td>
+                                    <td>课程名称</td>
+                                    <td>课程单价</td>
+                                </tr>
+                            </thead>
+                            <?php foreach ($courses as $course) { ?>
+                                <tr>
+                                    <td><?= $course['id']; ?></td>
+                                    <td><?= $course['name']; ?></td>
+                                    <td><?= '￥' . number_format(($course['unit_price'] / 100), 2) ;?></td>
+                                </tr>
+                            <?php } ?>
                         </table>
                     </div>
                 </div>

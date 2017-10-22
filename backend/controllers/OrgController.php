@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use backend\components\UAdminController;
 use common\models\ar\UyeOrg;
+use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
 use common\models\search\UyeOrgSearch;
 use Yii;
@@ -53,9 +54,11 @@ class OrgController extends UAdminController
      */
     public function actionView($id)
     {
+        $courses = UyeOrgCourse::getCoursesListByOrgID($id);
         return $this->render('view', [
             'model' => $this->findModel($id),
             'info_model' => $this->findInfoModel($id),
+            'courses' => $courses,
         ]);
     }
 
