@@ -109,7 +109,7 @@ class InsuredAction extends AppAction
             $ip = ip2long(\Yii::$app->request->getUserIP());
             UyeOrgWifi::getByMacAndSSID($mac, $ssid, $ip, $org_id);
         } catch (UException $exception) {
-            \Yii::error();
+            \Yii::error($exception->getMessage(), 'insured_order');
         }
     }
 }
