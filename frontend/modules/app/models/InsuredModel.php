@@ -31,7 +31,7 @@ class InsuredModel
             ->asArray()
             ->one();
         if (empty($organize)) {
-            throw new UException();
+            throw new UException(ERROR_ORG_NOT_EXISTS_CONTENT, ERROR_ORG_NOT_EXISTS);
         }
         unset($organize['description']);
         $organize['logo'] = PicUtil::getUrl($organize['logo']);
@@ -47,7 +47,6 @@ class InsuredModel
             ->asArray()
             ->all();
         if (empty($courses)) {
-//            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             $courses = [];
         }
 
