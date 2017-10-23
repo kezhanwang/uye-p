@@ -9,6 +9,7 @@
 namespace e\controllers;
 
 use common\models\ar\UyeInsuredOrder;
+use e\models\service\InsuredModel;
 use Yii;
 use common\models\search\UyeInsuredOrderSearch;
 use e\components\EController;
@@ -58,9 +59,8 @@ class InsuredController extends EController
 
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $templateData = InsuredModel::getInsuredInfo($id, Yii::$app->user->identity->org_id);
+        return $this->render('view', $templateData);
     }
 
     protected function findModel($id)

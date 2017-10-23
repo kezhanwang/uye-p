@@ -28,6 +28,10 @@ class EController extends Controller
                 throw new BadRequestHttpException("未绑定机构信息");
             }
         }
+
+        if (Yii::$app->user->isGuest){
+            $this->redirect('/login/login');
+        }
     }
 
     /**

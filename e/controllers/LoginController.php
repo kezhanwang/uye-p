@@ -11,8 +11,9 @@ namespace e\controllers;
 use e\models\LoginForm;
 use Yii;
 use e\components\EController;
+use yii\web\Controller;
 
-class LoginController extends EController
+class LoginController extends Controller
 {
     public function init()
     {
