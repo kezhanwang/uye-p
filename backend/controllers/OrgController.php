@@ -3,6 +3,7 @@
 namespace backend\controllers;
 
 use backend\components\UAdminController;
+use backend\models\service\OrgModel;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
@@ -90,15 +91,8 @@ class OrgController extends UAdminController
      */
     public function actionUpdate($id)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
+        $info = OrgModel::getOrgInfo($id);
+        return $this->render('update', ['info' => $info]);
     }
 
     /**

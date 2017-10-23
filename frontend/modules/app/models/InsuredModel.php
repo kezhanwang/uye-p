@@ -40,7 +40,7 @@ class InsuredModel
 
     public static function getCourses($org_id)
     {
-        $fields = "id AS cid,name AS c_name";
+        $fields = "id AS c_id,name AS c_name";
         $courses = UyeOrgCourse::find()
             ->select($fields)
             ->where('org_id=:org_id', [':org_id' => $org_id])

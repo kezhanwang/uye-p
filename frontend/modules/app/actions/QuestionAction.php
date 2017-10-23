@@ -41,8 +41,6 @@ class QuestionAction extends AppAction
             $userQuestion = UyeUserQuestion::find()->select('*')->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])->asArray()->one();
             if (empty($userQuestion)) {
                 UyeUserQuestion::_add(['uid' => $uid, 'org_id' => $org_id, 'question' => $question]);
-            } else {
-                throw new UException(ERROR_USER_QUESTION_EXISTS_CONTENT, ERROR_USER_QUESTION_EXISTS);
             }
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {

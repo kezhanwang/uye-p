@@ -135,20 +135,20 @@ class UyeInsuredOrder extends UActiveRecord
         return $new_order_id;
     }
 
-    public static function getInsuredStatusDesp($status)
+    public static function getInsuredStatusDesp($status = '')
     {
         $insuredStatus = [
             INSURED_STATUS_CREATE => INSURED_STATUS_CREATE_CONTENT,
             INSURED_STATUS_VERIFY_PASS => INSURED_STATUS_VERIFY_PASS_CONTENT,
             INSURED_STATUS_VERIFY_REFUSE => INSURED_STATUS_VERIFY_REFUSE_CONTENT,
-            INSURED_STATUS_PAYMENT => INSURED_STATUS_PAYMENT,
+            INSURED_STATUS_PAYMENT => INSURED_STATUS_PAYMENT_CONTENT,
             INSURED_STATUS_STUDYING => INSURED_STATUS_STUDYING_CONTENT
         ];
 
         if (isset($insuredStatus[$status])) {
             return $insuredStatus[$status];
         } else {
-            return '';
+            return $insuredStatus;
         }
     }
 }
