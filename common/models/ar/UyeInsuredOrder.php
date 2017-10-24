@@ -51,6 +51,13 @@ class UyeInsuredOrder extends UActiveRecord
         self::INSURED_TYPE_SALARY => '高薪帮',
     ];
 
+    const PAYMENT_METHOD_ORG = 1;
+    const PAYMENT_METHOD_USER = 2;
+    public static $paymentMethod = [
+        self::PAYMENT_METHOD_ORG => '机构付款',
+        self::PAYMENT_METHOD_USER => '学员付款',
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;

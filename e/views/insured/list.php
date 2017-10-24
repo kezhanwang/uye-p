@@ -125,8 +125,10 @@ $this->params['menu'] = $this->title;
                             <td><?= "￥" . number_format(($datum['premium_amount'] / 100), 2) ?></td>
                             <td>
                                 <?php if ($datum['insured_status'] == INSURED_STATUS_VERIFY_PASS) { ?>
-                                    <a href="<?= \yii\helpers\Url::toRoute(['/insured/view', 'id' => $datum['id']]) ?>"
-                                       class="btn btn-success btn-sm">支付</a>
+                                    <button class="btn btn-success btn-sm"
+                                            onclick="pay(<?= $datum['id']; ?>,<?= $datum['insured_order'] ?>,<?= $datum['premium_amount'] ?>);">
+                                        支付
+                                    </button>
                                     <button class="btn btn-danger btn-sm" onclick="refuse_pay(<?= $datum['id']; ?>);">
                                         拒绝
                                     </button>
@@ -164,6 +166,26 @@ $this->params['menu'] = $this->title;
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">提示窗</h4>
+            </div>
+            <div class="modal-body row">
+                <div class="col-md-12">
+                    <h4 align="center" id="pay_msg"></h4>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger btn-sm" id="pay" type="button">继续支付</button>
+                <button class="btn btn-info btn-sm" type="button" data-dismiss="modal" aria-hidden="true">取消操作</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
     window.__async.push(
         function () {
@@ -176,9 +198,7 @@ $this->params['menu'] = $this->title;
 
     function refuse_pay(id) {
         $('#myModal').modal('show');
-        //var _csrf = '<?php //echo Yii::$app->request->csrfToken; ?>//';
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        console.log(csrfToken);
         $('#refuse_pay').click(function () {
             $.ajax({
                 type: "GET",
@@ -193,6 +213,35 @@ $this->params['menu'] = $this->title;
                         });
                     } else {
                         $('#myModal').modal('hide');
+                        alert(responseData.msg, "提示", function () {
+                            history.go(0);
+                        });
+                    }
+                }
+            });
+        })
+    }
+
+    function pay(id, order, money) {
+        $('#pay_msg').html("正在支付订单" + order + ",服务费金额" + money / 100 + "元");
+        $('#myModal2').modal('show');
+        var csrfToken = $('meta[name="csrf-token"]').attr("content");
+        $('#pay').click(function () {
+            $.ajax({
+                type: "GET",
+                url: '/insured/pay',
+                data: {'id': id, '_csrf': csrfToken},
+                dataType: "json",
+                success: function (responseData) {
+                    $('#pay_msg').html("");
+                    if (responseData.code == 1000) {
+                        $('#pay_msg').html("");
+                        $('#myModal2').modal('hide');
+                        alert("操作成功", "提示", function () {
+                            history.go(0);
+                        });
+                    } else {
+                        $('#myModal2').modal('hide');
                         alert(responseData.msg, "提示", function () {
                             history.go(0);
                         });

@@ -11,6 +11,7 @@ namespace e\models\service;
 
 use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
+use common\models\ar\UyeInsuredWater;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeUser;
@@ -118,7 +119,7 @@ class InsuredModel
     public static function refusePay($id, $org_id)
     {
         if (empty($id) || empty($org_id)) {
-            return false;
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
         $insuredOrder = UyeInsuredOrder::findOne($id)->getAttributes();
@@ -140,6 +141,45 @@ class InsuredModel
         ];
         UyeInsuredOrder::_update($id, $update);
         UyeInsuredLog::_addLog($id, $insuredOrder['insured_order'], $insuredOrder['insured_status'], INSURED_STATUS_VERIFY_REFUSE, \Yii::$app->user->getId(), json_encode($update), "机构拒绝投保");
+        return true;
+    }
+
+    public static function pay($id, $org_id)
+    {
+        if (empty($id) || empty($org_id)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $insuredOrder = UyeInsuredOrder::findOne($id)->getAttributes();
+
+        if (empty($insuredOrder)) {
+            throw new UException(ERROR_INSURED_NOT_EXISTS_CONTENT, ERROR_INSURED_NOT_EXISTS);
+        }
+
+        if ($insuredOrder['org_id'] != $org_id) {
+            throw new UException(ERROR_INSURED_NOT_EXISTS_CONTENT, ERROR_INSURED_NOT_ORG);
+        }
+
+        if ($insuredOrder['insured_status'] != INSURED_STATUS_VERIFY_PASS) {
+            throw new UException(ERROR_INSURED_NOT_STATUS_CONTENT, ERROR_INSURED_NOT_STATUS);
+        }
+
+        $update = [
+            'insured_status' => INSURED_STATUS_PAYMENT,
+            'payment_time' => time(),
+            'payment_method' => UyeInsuredOrder::PAYMENT_METHOD_ORG
+        ];
+        UyeInsuredOrder::_update($id, $update);
+        UyeInsuredLog::_addLog($id, $insuredOrder['insured_order'], $insuredOrder['insured_status'], INSURED_STATUS_PAYMENT, \Yii::$app->user->getId(), json_encode($update), "机构支付，进入培训中");
+        $water = [
+            'uid' => \Yii::$app->user->getId(),
+            'user_type' => UyeInsuredWater::USER_TYPE_ORG,
+            'insured_id' => $insuredOrder['id'],
+            'pay_amount' => $insuredOrder['premium_amount'],
+            'pay_source' => UyeInsuredWater::PAY_SOURCE_OFFLINE,
+            'pay_status' => UyeInsuredWater::PAY_STATUS_SUCCESS
+        ];
+        UyeInsuredWater::_add($water);
         return true;
     }
 }

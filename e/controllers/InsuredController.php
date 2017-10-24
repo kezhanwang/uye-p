@@ -93,4 +93,15 @@ class InsuredController extends EController
             EOutput::err($exception->getCode(), $exception->getMessage());
         }
     }
+
+    public function actionPay()
+    {
+        try {
+            $id = $this->getParams('id');
+            InsuredModel::pay($id, $this->org_id);
+            EOutput::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            EOutput::err($exception->getCode(), $exception->getCode());
+        }
+    }
 }
