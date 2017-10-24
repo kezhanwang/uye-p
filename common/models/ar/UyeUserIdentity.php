@@ -70,7 +70,7 @@ class UyeUserIdentity extends UActiveRecord
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $ar = self::findOne('uid=' . $uid);
+        $ar = self::findOne($uid);
         $info = ArrayUtil::trimArray($info);
 
         foreach ($ar->getAttributes() as $key => $value) {

@@ -97,7 +97,7 @@ class UyeInsuredOrder extends UActiveRecord
             'org_id' => '机构',
             'c_id' => '课程',
             'tuition' => '学费',
-            'premium_amount' => 'Premium Amount',
+            'premium_amount' => '保费金额',
             'payment_method' => 'Payment Method',
             'pay_ceiling' => 'Pay Ceiling',
             'actual_repay_amount' => 'Actual Repay Amount',
@@ -150,5 +150,15 @@ class UyeInsuredOrder extends UActiveRecord
         } else {
             return $insuredStatus;
         }
+    }
+
+    public function getOrg()
+    {
+        return $this->hasOne(UyeOrg::className(), ['id' => 'org_id']);
+    }
+
+    public function getIdentity()
+    {
+        return $this->hasOne(UyeUserIdentity::className(), ['uid' => 'uid']);
     }
 }

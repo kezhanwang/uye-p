@@ -37,10 +37,12 @@ class UyeEMenu extends UActiveRecord
         $tree = [];
         foreach ($data as &$datum) {
             if ($datum['parent'] == $pID) {
-                if ($pID > 0){
+                if ($pID > 0) {
                     $icon = '';
-                }else{
+                    $parent = false;
+                } else {
                     $icon = !empty($datum['icon']) ? $datum['icon'] : 'circle-o';
+                    $parent = true;
                 }
                 $tmpArr = [
                     'icon' => $icon,
@@ -48,6 +50,7 @@ class UyeEMenu extends UActiveRecord
                     'url' => [$datum['route']],
                     'options' => [],
                     'items' => [],
+                    'parent' => $parent
                 ];
                 $children = self::getTree($data, $datum['id']);
                 $tmpArr['items'] = $children;
