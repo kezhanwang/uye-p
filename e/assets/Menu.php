@@ -72,26 +72,30 @@ class Menu extends \yii\widgets\Menu
     /**
      * @inheritdoc
      */
-    protected function renderItem($item)
+    protected function renderItem($item, $child = false)
     {
-        if (isset($item['items'])) {
-            $labelTemplate = '<a href="{url}">{icon} {label} </a>';
-            $linkTemplate = '<a href="{url}">{icon} {label} </a>';
+        if (!$child) {
+            if (isset($item['items'])) {
+                $labelTemplate = '<a href="{url}">{icon} {label} </a>';
+                $linkTemplate = '<a href="{url}">{icon} {label} </a>';
+            } else {
+                $labelTemplate = $this->labelTemplate;
+                $linkTemplate = $this->linkTemplate;
+            }
         } else {
-            $labelTemplate = $this->labelTemplate;
-            $linkTemplate = $this->linkTemplate;
+            $labelTemplate = '{label}';
+            $linkTemplate = '<a href="{url}">{label}</a>';
         }
-
         $replacements = [
-            '{label}' => strtr($this->labelTemplate, ['{label}' => $item['label'],]),
+            '{label}' => $child ? strtr($labelTemplate, ['{label}' => $item['label'],]) : strtr($this->labelTemplate, ['{label}' => $item['label'],]),
             '{icon}' => empty($item['icon']) ? ""
                 : '<i class="' . self::$iconClassPrefix . $item['icon'] . '"></i> ',
             '{url}' => isset($item['url']) ? Url::to($item['url']) : 'javascript:void(0);',
         ];
 
         $template = ArrayHelper::getValue($item, 'template', isset($item['url']) ? $linkTemplate : $labelTemplate);
-
-        return strtr($template, $replacements);
+        $result = strtr($template, $replacements);
+        return $result;
     }
 
     /**
@@ -99,7 +103,7 @@ class Menu extends \yii\widgets\Menu
      * @param array $items the menu items to be rendered recursively
      * @return string the rendering result
      */
-    protected function renderItems($items)
+    protected function renderItems($items, $child = false)
     {
         $n = count($items);
         $lines = [];
@@ -108,7 +112,7 @@ class Menu extends \yii\widgets\Menu
             $tag = ArrayHelper::remove($options, 'tag', 'li');
             $class = [];
             if ($item['active']) {
-                $class[] = $this->activeCssClass;
+                $class[] = empty($item['items']) ? $this->activeCssClass : 'nav-active';
             }
             if ($i === 0 && $this->firstItemCssClass !== null) {
                 $class[] = $this->firstItemCssClass;
@@ -123,11 +127,16 @@ class Menu extends \yii\widgets\Menu
                     $options['class'] .= ' ' . implode(' ', $class);
                 }
             }
-            $menu = $this->renderItem($item);
+            if ($item['parent']) {
+                $menu = $this->renderItem($item, false);
+            } else {
+                $menu = $this->renderItem($item, true);
+            }
+
             if (!empty($item['items'])) {
                 $menu .= strtr($this->submenuTemplate, [
-                    '{show}' => $item['active'] ? "style='display: block'" : '',
-                    '{items}' => $this->renderItems($item['items']),
+                    '{show}' => $item['active'] ? "" : '',
+                    '{items}' => $this->renderItems($item['items'], true),
                 ]);
             }
             $lines[] = Html::tag($tag, $menu, $options);
