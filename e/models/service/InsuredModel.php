@@ -59,9 +59,7 @@ class InsuredModel
             $data->andWhere('io.created_time <= :payendDate', [':payendDate' => strtotime($params['payendDate'])]);
         }
 
-        if ($params['org']) {
-            $data->andWhere('io.org_id=:org_id', [':org_id' => $params['org']]);
-        }
+        $data->andWhere('io.org_id=:org_id', [':org_id' => $org_id]);
 
 
         if ($params['excel']) {
