@@ -48,73 +48,74 @@ class QuestionController extends AppController
             //根据机构id和用户uid检查是否填写过
             $uid = DataBus::get('uid');
             $userQuestion = UyeUserQuestion::find()->select('*')->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])->asArray()->one();
+            $userQuestion = [];
             if (empty($userQuestion)) {
-                $redis = RedisUtil::getInstance();
-                $redisKey = 'UYE-QUESTION-CONFIG';
-                $data = $redis->get($redisKey);
-                if ($data) {
-                    $data = json_decode($data, true);
-                } else {
-                    $config = UyeConfig::find()->select('value')->where('name=:name', [':name' => 'question'])->asArray()->one();
-                    if ($config) {
-                        $data = json_decode($config['value'], true);
-                    } else {
-                        $data = [
-                            [
-                                'id' => 1,
-                                'type' => 1,
-                                'question' => '您对自己所学行业感兴趣吗？',
-                                'answer' => [
-                                    '感兴趣',
-                                    '一般 ',
-                                    '纯粹为了找工作'
-                                ],
-                            ],
-                            [
-                                'id' => 2,
-                                'type' => 1,
-                                'question' => '您了解所学行业，或有相关基础吗？',
-                                'answer' => [
-                                    '了解并有基础',
-                                    '了解没有基础',
-                                    '不了解没有基础'
-                                ],
-                            ],
-                            [
-                                'id' => 3,
-                                'type' => 1,
-                                'question' => '您期望毕业以后的就业薪资是多少？',
-                                'answer' => [
-                                    '5000以内',
-                                    '5000-8000',
-                                    '8000-10000',
-                                    '10000+'
-                                ],
-                            ],
-                            [
-                                'id' => 4,
-                                'type' => 1,
-                                'question' => '您期望的就业地点是？',
-                                'answer' => [
-                                    '北上广深',
-                                    '二线省会城市',
-                                    '其他'
-                                ],
-                            ],
-                            [
-                                'id' => 5,
-                                'type' => 1,
-                                'question' => '您学费是怎样缴纳的？',
-                                'answer' => [
-                                    '一次性全款',
-                                    '贷款分期',
-                                ],
-                            ],
-                        ];
-                        UyeConfig::_addConfig(['name' => 'question', 'label' => '问卷', 'value' => json_encode($data)]);
-                    }
-                    $redis->set($redisKey, json_encode($data));
-                }
+//                $redis = RedisUtil::getInstance();
+//                $redisKey = 'UYE-QUESTION-CONFIG';
+//                $data = $redis->get($redisKey);
+//                if ($data) {
+//                    $data = json_decode($data, true);
+//                } else {
+//                    $config = UyeConfig::find()->select('value')->where('name=:name', [':name' => 'question'])->asArray()->one();
+//                    if ($config) {
+//                        $data = json_decode($config['value'], true);
+//                    } else {
+                $data = [
+                    [
+                        'id' => 1,
+                        'type' => 1,
+                        'question' => '您对自己所学行业感兴趣吗？',
+                        'answer' => [
+                            '感兴趣',
+                            '一般 ',
+                            '纯粹为了找工作'
+                        ],
+                    ],
+                    [
+                        'id' => 2,
+                        'type' => 2,
+                        'question' => '您了解所学行业，或有相关基础吗？',
+                        'answer' => [
+                            '了解并有基础',
+                            '了解没有基础',
+                            '不了解没有基础'
+                        ],
+                    ],
+                    [
+                        'id' => 3,
+                        'type' => 1,
+                        'question' => '您期望毕业以后的就业薪资是多少？',
+                        'answer' => [
+                            '5000以内',
+                            '5000-8000',
+                            '8000-10000',
+                            '10000+'
+                        ],
+                    ],
+                    [
+                        'id' => 4,
+                        'type' => 2,
+                        'question' => '您期望的就业地点是？',
+                        'answer' => [
+                            '北上广深',
+                            '二线省会城市',
+                            '其他'
+                        ],
+                    ],
+                    [
+                        'id' => 5,
+                        'type' => 1,
+                        'question' => '您学费是怎样缴纳的？',
+                        'answer' => [
+                            '一次性全款',
+                            '贷款分期',
+                        ],
+                    ],
+                ];
+//                        UyeConfig::_addConfig(['name' => 'question', 'label' => '问卷', 'value' => json_encode($data)]);
+//                    }
+//                    $redis->set($redisKey, json_encode($data));
+//                }
                 $needQuestion = true;
             } else {
                 $needQuestion = false;

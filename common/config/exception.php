@@ -84,3 +84,13 @@ define('ERROR_ORG_NO_SUPPORT_EMPLOYMENT_CONTENT', "该机构暂不支持就业�
 
 define('ERROR_ORG_NO_SUPPORT_HIGH_SALARY', 1025);
 define('ERROR_ORG_NO_SUPPORT_HIGH_SALARY_CONTENT', "该机构暂不支持高薪帮服务！");
+
+define('ERROR_INSURED_NOT_EXISTS', 1026);
+define('ERROR_INSURED_NOT_EXISTS_CONTENT', "暂未获取订单信息，请稍后重试！");
+
+define('ERROR_INSURED_NOT_ORG', 1027);
+define('ERROR_INSURED_NOT_ORG_CONTENT', "该订单非当前查询机构所属，请勿恶意访问！");
+
+define('ERROR_INSURED_NOT_STATUS', 2018);
+define('ERROR_INSURED_NOT_STATUS_CONTENT', "该订单当前状态无法操作相应业务！");
+

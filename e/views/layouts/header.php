@@ -1,3 +1,6 @@
+<?php
+$userInfo = \e\components\RbacUtil::checkUserRight(Yii::$app->user->getId());
+?>
 <!-- header section start-->
 <div class="header-section">
 
@@ -11,7 +14,7 @@
             <li>
                 <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                     <img src="/images/photos/user-avatar.png" alt=""/>
-                    <?= Yii::$app->user->identity->username; ?>
+                    <?= Yii::$app->user->identity->username; ?>(<?= $userInfo['role_name']; ?>)
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-usermenu pull-right">

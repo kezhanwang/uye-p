@@ -35,9 +35,11 @@ if (Yii::$app->controller->action->id === 'login') {
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-
+        <script type="text/javascript">
+            window.__async = [];
+        </script>
     </head>
-    <body class="sticky-header">
+    <body class="sticky-header left-side-collapsed">
     <?php $this->beginBody() ?>
     <section>
         <?= $this->render(
@@ -57,6 +59,13 @@ if (Yii::$app->controller->action->id === 'login') {
         </div>
     </section>
     <?php $this->endBody() ?>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            for (var i = 0; i < window.__async.length; i++) {
+                window.__async[i]();
+            }
+        });
+    </script>
     </body>
     </html>
     <?php $this->endPage() ?>

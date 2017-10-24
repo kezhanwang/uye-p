@@ -23,7 +23,8 @@ class AppAsset extends AssetBundle
         'js/bootstrap.min.js',
         'js/modernizr.min.js',
         'js/jquery.nicescroll.js',
-        'js/scripts.js'
+        'js/scripts.js',
+        'js/alter.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',

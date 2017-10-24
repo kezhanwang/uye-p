@@ -83,6 +83,25 @@ class UyeInsuredOrder extends UActiveRecord
         return $ar->getAttributes();
     }
 
+    public static function _update($id, $info = [])
+    {
+        if (empty($id) || empty($info)) {
+            return false;
+        }
+        $ar = self::findOne($id);
+        $info = ArrayUtil::trimArray($info);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+        $ar->updated_time = time();
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
+
     /**
      * @inheritdoc
      */
@@ -117,22 +136,14 @@ class UyeInsuredOrder extends UActiveRecord
 
     public static function createInsuredOrder($uid)
     {
-        $order_id_main = date('YmdHis') . $uid . rand(100000000, 999999999);
+        $order_id_main = date('YmdHis') . rand(10000, 99999);
         $order_id_len = strlen($order_id_main);
         $order_id_sum = 0;
         for ($i = 0; $i < $order_id_len; $i++) {
             $order_id_sum += (int)(substr($order_id_main, $i, 1));
         }
         $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT);
-        $strlen = strlen($order_id);
-        if ($strlen < 32) {
-            $new_order_id = str_pad($order_id, 32, "0", STR_PAD_RIGHT);
-        } else if ($strlen > 32) {
-            $new_order_id = substr($strlen, 0, 32);
-        } else {
-            $new_order_id = $order_id;
-        }
-        return $new_order_id;
+        return $order_id;
     }
 
     public static function getInsuredStatusDesp($status = '')
