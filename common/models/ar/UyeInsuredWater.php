@@ -36,6 +36,11 @@ class UyeInsuredWater extends UActiveRecord
     const PAY_SOURCE_OFFLINE = 1;
     const PAY_SOURCE_BAOFU = 2;
 
+    public static $paySource = [
+        self::PAY_SOURCE_OFFLINE => '线下支付',
+        self::PAY_SOURCE_BAOFU => '宝付支付',
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;

@@ -20,6 +20,7 @@ return [
             'enableAutoLogin' => true,
             'loginUrl' => ['login/login'],
             'identityCookie' => ['name' => '_identity-e', 'httpOnly' => true],
+            'authTimeout' => 86400,
         ],
         'session' => [
             // this is the name of the session cookie used for login on the frontend

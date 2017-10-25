@@ -32,15 +32,14 @@ class EController extends Controller
 
     public function checkLogin()
     {
+
         if (!Yii::$app->user->isGuest) {
             $org_id = Yii::$app->user->identity->org_id;
             if (empty($org_id)) {
                 throw new BadRequestHttpException("未绑定机构信息");
             }
-        }
-
-        if (Yii::$app->user->isGuest) {
-            $this->redirect('/login/login');
+        } else {
+            header("Location:/login/login");
         }
     }
 
