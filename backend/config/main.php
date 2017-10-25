@@ -27,16 +27,18 @@ return [
     'components' => [
         'request' => [
             'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsApCB',
-            'csrfParam' => '_uye_admin',
+            'csrfParam' => 'DHB_uye_admin',
         ],
         'user' => [
             'identityClass' => 'common\models\ar\UyeAdminUser',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_uye_admin_login', 'httpOnly' => true],
+            'identityCookie' => ['name' => 'DHB_uye_admin_login', 'httpOnly' => true],
+            'authTimeout' => 60,
         ],
         'session' => [
             // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            'name' => 's_uye_admin',
+            'timeout' => 60,
         ],
         "authManager" => [
             "class" => 'yii\rbac\DbManager', //这里记得用单引号而不是双引号
