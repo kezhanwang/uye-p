@@ -60,10 +60,13 @@ if (Yii::$app->controller->action->id === 'login') {
     </section>
     <?php $this->endBody() ?>
     <script type="text/javascript">
+        NProgress.start();
+        
         $(document).ready(function () {
             for (var i = 0; i < window.__async.length; i++) {
                 window.__async[i]();
             }
+            NProgress.done();
         });
     </script>
     </body>

@@ -14,6 +14,7 @@ class AppAsset extends AssetBundle
     public $css = [
         'css/style.css',
         'css/style-responsive.css',
+        'js/nprogress/nprogress.css',
         'css/clndr.css'
     ];
     public $js = [
@@ -23,6 +24,7 @@ class AppAsset extends AssetBundle
         'js/bootstrap.min.js',
         'js/modernizr.min.js',
         'js/jquery.nicescroll.js',
+        'js/nprogress/nprogress.js',
         'js/scripts.js',
         'js/alter.js'
     ];

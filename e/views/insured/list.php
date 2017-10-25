@@ -227,21 +227,21 @@ $this->params['menu'] = $this->title;
         $('#myModal2').modal('show');
         var csrfToken = $('meta[name="csrf-token"]').attr("content");
         $('#pay').click(function () {
+            showLoading("处理中，请稍候");
+            $('#pay_msg').html("");
+            $('#myModal2').modal('hide');
             $.ajax({
                 type: "GET",
                 url: '/insured/pay',
                 data: {'id': id, '_csrf': csrfToken},
                 dataType: "json",
                 success: function (responseData) {
-                    $('#pay_msg').html("");
+                    hideLoading();
                     if (responseData.code == 1000) {
-                        $('#pay_msg').html("");
-                        $('#myModal2').modal('hide');
                         alert("操作成功", "提示", function () {
                             history.go(0);
                         });
                     } else {
-                        $('#myModal2').modal('hide');
                         alert(responseData.msg, "提示", function () {
                             history.go(0);
                         });
