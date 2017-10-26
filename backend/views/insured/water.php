@@ -10,7 +10,7 @@ use yii\helpers\Html;
 use yii\widgets\Pjax;
 use common\models\ar\UyeInsuredOrder;
 
-$this->title = '保单列表';
+$this->title = '服务费核算';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 ?>
