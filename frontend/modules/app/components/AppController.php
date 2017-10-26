@@ -70,7 +70,7 @@ class AppController extends UController
                     'info' => $uyeua,
                     'created_time' => time(),
                 );
-                $result = UyeMobileModel::_add($unique_id, $filedData);
+                UyeMobileModel::_add($unique_id, $filedData);
             }
         } catch (UException $exception) {
             Yii::error();

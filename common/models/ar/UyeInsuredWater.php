@@ -30,8 +30,18 @@ class UyeInsuredWater extends UActiveRecord
     const USER_TYPE_ORG = 1;
     const USER_TYPE_USER = 2;
 
+    public static $userType = [
+        self::USER_TYPE_ORG => '机构',
+        self::USER_TYPE_USER => '用户'
+    ];
+
     const PAY_STATUS_SUCCESS = 1;
-    const PAY_STATUS_FAILE = 2;
+    const PAY_STATUS_FAIL = 2;
+
+    public static $payStatus = [
+        self::PAY_STATUS_SUCCESS => '支付成功',
+        self::PAY_STATUS_FAIL => '支付失败'
+    ];
 
     const PAY_SOURCE_OFFLINE = 1;
     const PAY_SOURCE_BAOFU = 2;
@@ -39,6 +49,13 @@ class UyeInsuredWater extends UActiveRecord
     public static $paySource = [
         self::PAY_SOURCE_OFFLINE => '线下支付',
         self::PAY_SOURCE_BAOFU => '宝付支付',
+    ];
+
+    const ACCOUNTING_STATUS_YES = 1;
+    const ACCOUNTING_STATUS_NO = 2;
+    public static $status = [
+        self::ACCOUNTING_STATUS_YES => '已核算',
+        self::ACCOUNTING_STATUS_NO => '未核算'
     ];
 
     public static function tableName()

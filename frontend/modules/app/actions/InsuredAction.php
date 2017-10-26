@@ -87,6 +87,7 @@ class InsuredAction extends AppAction
             $add['pay_ceiling'] = $params['tuition'] * $orgInfo['employment_rate'];
             $add['plat'] = DataBus::get('plat');
             $add['version'] = $this->getParams('version');
+            $add['org_parent_id'] = $orgInfo['parent_id'];
 
             $insuredOrder = UyeInsuredOrder::_add($add);
 

@@ -42,10 +42,6 @@ $this->params['menu'] = $this->title;
                         <label>机构</label>
                         <input class="form-control" type="text" name="org" placeholder="机构名称/分校ID/总校ID" value="<?= Yii::$app->request->get('org')?>">
                     </div>
-                    <div class="form-group">
-                        <label>身份证号</label>
-                        <input class="form-control" type="text" name="id_card" placeholder="身份证号" value="<?= Yii::$app->request->get('id_card')?>">
-                    </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
@@ -60,13 +56,8 @@ $this->params['menu'] = $this->title;
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>订单状态</label>
-                        <select class="form-control" name="insured_status">
-                            <option value="0">所有订单状态</option>
-                            <?php foreach (\common\models\ar\UyeInsuredOrder::getInsuredStatusDesp() as $key=>$value){?>
-                                <option value="<?= $key;?>" <?php if (Yii::$app->request->get('insured_status') == $key){ echo "selected";}?>><?= $value?></option>
-                            <?php }?>
-                        </select>
+                        <label>身份证号</label>
+                        <input class="form-control" type="text" name="id_card" placeholder="身份证号" value="<?= Yii::$app->request->get('id_card')?>">
                     </div>
                 </div>
             </div>
