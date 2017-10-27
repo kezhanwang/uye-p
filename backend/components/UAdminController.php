@@ -29,5 +29,24 @@ class UAdminController extends Controller
         }
     }
 
+    public function getParams($key = '')
+    {
+        $request = Yii::$app->request;
+
+        $method = strtolower($request->method);
+        switch ($method) {
+            case 'get':
+                return $request->get($key);
+                break;
+            case 'post':
+                return $request->post($key);
+                break;
+            default:
+                return '';
+                break;
+        }
+    }
+
+
 
 }

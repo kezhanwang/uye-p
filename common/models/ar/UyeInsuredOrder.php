@@ -157,7 +157,7 @@ class UyeInsuredOrder extends UActiveRecord
     const CLIENT_ORG = 2;
     const CLIENT_USER = 3;
 
-    public static function getInsuredStatusDesp($client = self::CLIENT_USER, $status = '')
+    public static function getInsuredStatusDesp($status = '', $client = self::CLIENT_USER)
     {
         $insuredStatus = [
             self::CLIENT_ADMIN => [

@@ -79,10 +79,39 @@ class UyeInsuredWater extends UActiveRecord
         }
 
         $ar->created_time = time();
+        $ar->updated_time = time();
         if (!$ar->save()) {
             UException::dealAR($ar);
         }
 
         return $ar->getAttributes();
     }
+
+    public static function _update($id, $info)
+    {
+        if (empty($id) || !is_numeric($id)) {
+            return false;
+        }
+
+        if (empty($info)) {
+            return false;
+        }
+
+        $info = ArrayUtil::trimArray($info);
+
+        $ar = self::findOne($id);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->updated_time = time();
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
+
+
 }

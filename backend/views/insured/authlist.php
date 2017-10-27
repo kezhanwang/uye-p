@@ -8,6 +8,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\Pjax;
+use \common\models\ar\UyeInsuredOrder;
 
 $this->title = '保单列表';
 $this->params['breadcrumbs'][] = $this->title;
@@ -48,7 +49,7 @@ $this->params['menu'] = $this->title;
                         <label>订单类型</label>
                         <select class="form-control" name="insured_type">
                             <option value="0">所有订单类型</option>
-                            <?php foreach (\common\models\ar\UyeInsuredOrder::$insuredType as $key=>$value){?>
+                            <?php foreach (UyeInsuredOrder::$insuredType as $key=>$value){?>
                                 <option value="<?= $key;?>" <?php if (Yii::$app->request->get('insured_type') == $key){ echo "selected";}?>><?= $value?></option>
                             <?php }?>
                         </select>
@@ -96,7 +97,7 @@ $this->params['menu'] = $this->title;
                         <?php foreach ($insureds as $key){?>
                             <tr>
                                 <td><?= $key['insured_order']; ?></td>
-                                <td><?= \common\models\ar\UyeInsuredOrder::getInsuredStatusDesp($key['insured_status']); ?></td>
+                                <td><?= UyeInsuredOrder::getInsuredStatusDesp($key['insured_status'], UyeInsuredOrder::CLIENT_ADMIN); ?></td>
                                 <td><?= $key['full_name'] . "<br>" . $key['id_card'] . "<br>" . $key['auth_mobile']; ?></td>
                                 <td><?= $key['org_name'] . "<br>" . $key['c_name'] . "<br>" . $key['course_consultant']; ?></td>
                                 <td><?= date('Y-m-d H:i:s', $key['created_time']); ?></td>

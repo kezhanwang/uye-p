@@ -9,10 +9,10 @@
 namespace backend\controllers;
 
 
+use backend\components\AOutPut;
 use backend\components\UAdminController;
-use backend\models\search\InsuredSearch;
 use backend\models\service\InsuredModel;
-use common\models\ar\UyeInsuredOrder;
+use components\UException;
 
 class InsuredController extends UAdminController
 {
@@ -41,7 +41,20 @@ class InsuredController extends UAdminController
 
     public function actionUpdate()
     {
-
+        try {
+            $params = [
+                'id' => $this->getParams('id'),
+                'remark' => $this->getParams('remark'),
+                'type' => $this->getParams('type')
+            ];
+            if (empty($params)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+            InsuredModel::checkInsured($params);
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
     }
 
     public function actionAuthlist()
@@ -57,5 +70,19 @@ class InsuredController extends UAdminController
     {
         $data = InsuredModel::getWaterList(\Yii::$app->request->queryParams);
         return $this->render('water', $data);
+    }
+
+    public function actionCheckwater()
+    {
+        try {
+            $id = $this->getParams('id');
+            if (empty($id) || !is_numeric($id)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+            InsuredModel::checkWater($id);
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
     }
 }

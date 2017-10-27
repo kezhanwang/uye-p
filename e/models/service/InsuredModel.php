@@ -165,19 +165,20 @@ class InsuredModel
         }
 
         $update = [
-            'insured_status' => INSURED_STATUS_PAYMENT,
+            'insured_status' => INSURED_STATUS_PAY,
             'payment_time' => time(),
             'payment_method' => UyeInsuredOrder::PAYMENT_METHOD_ORG
         ];
         UyeInsuredOrder::_update($id, $update);
-        UyeInsuredLog::_addLog($id, $insuredOrder['insured_order'], $insuredOrder['insured_status'], INSURED_STATUS_PAYMENT, \Yii::$app->user->getId(), json_encode($update), "机构支付，进入培训中");
+        UyeInsuredLog::_addLog($id, $insuredOrder['insured_order'], $insuredOrder['insured_status'], INSURED_STATUS_PAY, \Yii::$app->user->getId(), json_encode($update), "机构支付，进入培训中");
         $water = [
             'uid' => \Yii::$app->user->getId(),
             'user_type' => UyeInsuredWater::USER_TYPE_ORG,
             'insured_id' => $insuredOrder['id'],
             'pay_amount' => $insuredOrder['premium_amount'],
             'pay_source' => UyeInsuredWater::PAY_SOURCE_OFFLINE,
-            'pay_status' => UyeInsuredWater::PAY_STATUS_SUCCESS
+            'pay_status' => UyeInsuredWater::PAY_STATUS_SUCCESS,
+            'pay_time' => time(),
         ];
         UyeInsuredWater::_add($water);
         return true;

@@ -94,3 +94,6 @@ define('ERROR_INSURED_NOT_ORG_CONTENT', "该订单非当前查询机构所属，
 define('ERROR_INSURED_NOT_STATUS', 2018);
 define('ERROR_INSURED_NOT_STATUS_CONTENT', "该订单当前状态无法操作相应业务！");
 
+
+define('ERROR_INSURED_WATER_NOT_EXISTS', 2019);
+define('ERROR_INSURED_WATER_NOT_EXISTS_CONTENT', "暂未获取服务费流水，请稍后再试");
