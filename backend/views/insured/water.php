@@ -9,6 +9,7 @@
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 use common\models\ar\UyeInsuredOrder;
+use common\models\ar\UyeInsuredWater;
 
 $this->title = '服务费核算';
 $this->params['breadcrumbs'][] = $this->title;
@@ -92,8 +93,8 @@ $this->params['menu'] = $this->title;
                             <td><?= $water['uid']; ?>
                             <td><?= date('Y-m-d H:i:s', $water['pay_time']); ?></td>
                             <td><?= '￥' . number_format($water['pay_amount'] / 100, 2); ?></td>
-                            <td><?= \common\models\ar\UyeInsuredWater::$paySource[$water['pay_source']]; ?></td>
-                            <td><?= \common\models\ar\UyeInsuredWater::$status[$water['status']]; ?></td>
+                            <td><?= UyeInsuredWater::$paySource[$water['pay_source']]; ?></td>
+                            <td><?= UyeInsuredWater::$status[$water['status']]; ?></td>
                             <td>
                                 <?php if ($water['insured_status'] == INSURED_STATUS_PAY) { ?>
                                     <button class="btn btn-success btn-sm">核算</button>

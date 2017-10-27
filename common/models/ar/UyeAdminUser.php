@@ -32,6 +32,15 @@ class UyeAdminUser extends UActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public static function getStatus()
+    {
+        return [
+            self::STATUS_DELETED => '已删除',
+            self::STATUS_ACTIVE => '激活'
+        ];
+    }
+
+
     const TABLE_NAME = 'uye_admin_user';
 
     public static function tableName()
@@ -99,7 +108,7 @@ class UyeAdminUser extends UActiveRecord implements IdentityInterface
             return false;
         }
 
-        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $timestamp = (int)substr($token, strrpos($token, '_') + 1);
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         return $timestamp + $expire >= time();
     }
