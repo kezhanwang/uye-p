@@ -12,7 +12,30 @@ $this->title = '用户管理';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 ?>
-<?php echo $this->render('_search', ['model' => $searchModel]); ?>
+
+<div class="box box-default">
+    <div class="box-header with-border">
+        <h3 class="box-title">搜索</h3>
+        <div class="box-tools pull-right">
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+        </div>
+    </div>
+
+    <form >
+        <!-- /.box-header -->
+        <div class="box-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer">
+            <?= Html::submitButton('查询', ['class' => 'btn btn-primary btn-sm']) ?>
+            <?= Html::resetButton('重置', ['class' => 'btn btn-default btn-sm']) ?>
+        </div>
+    </form>
+</div>
 
 
 <div class="row">
@@ -22,33 +45,9 @@ $this->params['menu'] = $this->title;
                 <h3 class="box-title">数据列表</h3>
             </div>
             <div class="box-body">
-                <?php Pjax::begin(); ?>    <?= GridView::widget([
-                    'dataProvider' => $dataProvider,
-                    'columns' => [
-                        'uid',
-                        'username',
-                        'phone',
-                        'email:email',
-                        [
-                            'label' => '状态',
-                            'attribute' => 'status',
-                            'value' => function ($model) {
-                                return $model->status == 1 ? '可用' : '不可用';
-                            }
-                        ],
-                        [
-                            'label' => '注册时间',
-                            'attribute' => 'created_time',
-                            'format' => ['date', 'php:Y-m-d H:i:s'],
-                        ],
-                        [
-                            'class' => 'yii\grid\ActionColumn',
-                            'header' => '操作',
-                            'template' => '{view} {update}',
-                        ],
-                    ],
-                ]); ?>
-                <?php Pjax::end(); ?></div>
+                <?php Pjax::begin(); ?>
+                <?php Pjax::end(); ?>
+            </div>
         </div>
     </div>
 </div>
