@@ -10,6 +10,7 @@ namespace app\modules\app\actions;
 
 
 use app\modules\app\components\AppAction;
+use common\models\ar\UyeUserContact;
 use common\models\ar\UyeUserIdentity;
 use components\Output;
 use components\UException;
@@ -26,11 +27,11 @@ class UserinfoAction extends AppAction
     public function run()
     {
         try {
-            $uid = DataBus::get('uid');
-            $identity = $this->identity($uid);
-
+            $identity = $this->identity($this->uid);
+            $contact = $this->contact($this->uid);
             $templateData = [
                 'identity' => $identity,
+                'contact' => $contact,
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (UException $exception) {
@@ -50,6 +51,24 @@ class UserinfoAction extends AppAction
         $result = true;
         foreach ($params as $param) {
             if (!array_key_exists($param, $userIdentity) || empty($userIdentity[$param])) {
+                $result = false;
+                break;
+            }
+        }
+        return $result;
+    }
+
+    private function contact($uid)
+    {
+        $userContact = UyeUserContact::getUserInfo($uid);
+        if (empty($userContact)) {
+            return false;
+        }
+
+        $params = ['home_province', 'home_city', 'home_area', 'home_address', 'email', 'wechat', 'qq', 'contact1_name', 'contact1_phone', 'contact1_relation', 'marriage'];
+        $result = true;
+        foreach ($params as $param) {
+            if (!array_key_exists($param, $userContact) || empty($userContact[$param])) {
                 $result = false;
                 break;
             }
