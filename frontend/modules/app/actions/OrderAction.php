@@ -41,7 +41,6 @@ class OrderAction extends AppAction
     private function getInsuredOrder($page = 1)
     {
         try {
-            $uid = 1000003;
             $fields = "io.*,o.org_name,oc.name as c_name,oi.logo";
             $insuredOrder = UyeInsuredOrder::find()
                 ->select($fields)
@@ -49,7 +48,7 @@ class OrderAction extends AppAction
                 ->leftJoin(UyeOrg::TABLE_NAME . " o", "o.id=io.org_id")
                 ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=io.org_id")
                 ->leftJoin(UyeOrgCourse::TABLE_NAME . " oc", "oc.id=io.c_id")
-                ->where('io.uid=:uid', [':uid' => $uid])
+                ->where('io.uid=:uid', [':uid' => $this->uid])
                 ->orderBy('id desc')
                 ->limit(1)
                 ->offset(($page - 1))
@@ -61,7 +60,7 @@ class OrderAction extends AppAction
                 ->leftJoin(UyeOrg::TABLE_NAME . " o", "o.id=io.org_id")
                 ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=io.org_id")
                 ->leftJoin(UyeOrgCourse::TABLE_NAME . " oc", "oc.id=io.c_id")
-                ->where('io.uid=:uid', [':uid' => $uid])
+                ->where('io.uid=:uid', [':uid' => $this->uid])
                 ->asArray()->one();
 
             $getPageArr = [
