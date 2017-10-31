@@ -47,9 +47,9 @@ class UserModel
     public static function getUserInfo($uid)
     {
         $user = UyeUser::findOne($uid)->getAttributes();
-        $userIdentity = UyeUserIdentity::findOne($uid)->getAttributes();
-        $userMobile = UyeUserMobile::findOne($uid)->getAttributes();
-        $userContact = UyeUserContact::findOne($uid)->getAttributes();
+        $userIdentity = UyeUserIdentity::find()->select('*')->from(UyeUserIdentity::TABLE_NAME)->where('uid=:uid', [':uid' => $uid])->asArray()->one();
+        $userMobile = UyeUserMobile::find()->select('*')->from(UyeUserMobile::TABLE_NAME)->where('uid=:uid', [':uid' => $uid])->asArray()->one();
+        $userContact = UyeUserContact::find()->select('*')->from(UyeUserContact::TABLE_NAME)->where('uid=:uid', [':uid' => $uid])->asArray()->one();
 
         if (!empty($userIdentity['home_area'])) {
             $info = UyeAreas::getAreas(-1, $userIdentity['home_area']);
