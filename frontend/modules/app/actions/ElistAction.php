@@ -51,17 +51,23 @@ class ElistAction extends AppAction
             }
             $id = $this->getParams('id');
             if ($id) {
-
-                $old_info = UyeUserExperienceList::getByID($params['id']);
-                $diff = [];
-                foreach ($params as $key => $param) {
-                    if (array_key_exists($key, $old_info) && $param != $old_info[$key]) {
-                        $diff[$key] = $param;
+                $old_info = UyeUserExperienceList::getByID($id);
+                if ($old_info) {
+                    if ($old_info['uid'] != $this->uid) {
+                        throw new UException(ERROR_SYS_PARAMS_CONTENT . ":改经历信息非当前登录用户所属", ERROR_SYS_PARAMS);
                     }
-                }
+                    $diff = [];
+                    foreach ($params as $key => $param) {
+                        if (array_key_exists($key, $old_info) && $param != $old_info[$key]) {
+                            $diff[$key] = $param;
+                        }
+                    }
 
-                if (empty($diff)) {
-                    UyeUserExperienceList::_update($id, $diff);
+                    if (!empty($diff)) {
+                        UyeUserExperienceList::_update($id, $diff);
+                    }
+                } else {
+                    throw new UException(ERROR_SYS_PARAMS_CONTENT . ":未获取到经历信息", ERROR_SYS_PARAMS);
                 }
             } else {
                 $params['uid'] = $this->uid;
