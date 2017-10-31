@@ -19,19 +19,27 @@ class UyeUserExperienceList extends UActiveRecord
     const TYPE_STUDY = 1;
     const TYPE_WORK = 2;
 
+    public static $type = [
+        self::TYPE_STUDY => '学历',
+        self::TYPE_WORK => '职业'
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;
     }
 
-    public static function getByUid($uid)
+    public static function getByUid($uid, $type = '')
     {
-        $list = self::find()
+        $query = self::find()
             ->select('*')
             ->from(self::TABLE_NAME)
-            ->where('uid=:uid', [':uid' => $uid])
-            ->asArray()->all();
+            ->where('uid=:uid', [':uid' => $uid]);
 
+        if ($type) {
+            $query->andWhere('type=:type', [':type' => $type]);
+        }
+        $list = $query->asArray()->all();
         if (empty($list)) {
             return [];
         } else {
