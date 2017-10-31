@@ -41,6 +41,8 @@ class IdentityAction extends AppAction
 
             SmsUtil::checkVerifyCode($params['phone'], $ip, $params['code']);
 
+            $this->checkUserByIDCard();
+
             $userIdentity = UyeUserIdentity::find()->select('*')->where('uid=:uid', [':uid' => $uid])->asArray()->one();
             if (empty($userIdentity)) {
                 $params['uid'] = $uid;
@@ -60,6 +62,20 @@ class IdentityAction extends AppAction
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+    private function checkUserByIDCard($id_card)
+    {
+        $userInfo = UyeUserIdentity::find()
+            ->select('*')
+            ->from(UyeUserIdentity::TABLE_NAME)
+            ->where('id_card=:id_card AND uid !=:uid', [':id_card' => $id_card, ':uid' => $this->uid])
+            ->asArray()->all();
+        if (empty($userInfo)) {
+            return true;
+        } else {
+            throw new UException("该用户已使用其他账户进行实名注册", ERROR_SYS_PARAMS);
         }
     }
 }
