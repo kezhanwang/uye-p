@@ -3,19 +3,18 @@
  * Created by PhpStorm.
  * User: wangyi
  * Date: 2017/10/30
- * Time: 上午11:23
+ * Time: 下午3:41
  */
 
 namespace app\modules\app\controllers;
 
 
 use app\modules\app\components\AppController;
-use common\models\ar\UyeAreas;
-use common\models\ar\UyeUserContact;
+use common\models\ar\UyeUserExperience;
 use components\Output;
 use components\UException;
 
-class ContactController extends AppController
+class ExperController extends AppController
 {
     public function init()
     {
@@ -36,13 +35,12 @@ class ContactController extends AppController
     public function actionInfo()
     {
         try {
-            $userInfo = UyeUserContact::getUserInfo($this->uid);
+            $userInfo = UyeUserExperience::getByUid($this->uid);
 
-            if (!empty($userInfo['home_area'])) {
-                $info = UyeAreas::getAreas(-1, $userInfo['home_area']);
-                $userInfo['home'] = str_replace(',', '', $info[0]['joinname']);
+            if (!empty($userInfo['will_work_city'])) {
+                $userInfo['will_work_city'] = json_decode($userInfo['will_work_city'], true);
             } else {
-                $userInfo['home'] = '';
+                $userInfo['will_work_city'] = [];
             }
             Output::info(SUCCESS, SUCCESS_CONTENT, $userInfo);
         } catch (UException $exception) {
@@ -54,8 +52,9 @@ class ContactController extends AppController
     {
         try {
             $data = [
-                'relation' => ['父母', '配偶', '监护人', '子女', '兄弟姐妹', '亲属', '同事', '朋友', '同学', '其他'],
-                'marriage' => ['已婚有子女', '已婚无子女', '未婚', '离异', '其他'],
+                'highest_education' => ['初中及以下', '中专', '高中', '大专', '本科', '硕士', '博士及以上'],
+                'profession' => ['学生', '国家机关公务员', '事业单位员工', '企业单位员工', '私营业主', '金融业人员', '医务人员', '服务业人员', '信息技术人员', '教师', '律师', '工程师', '文体业人员', '农民', '其他'],
+                'housing_situation' => ['宿舍', '租房', '与父母同住', '与其他亲属同住', '自有住房', '其他'],
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
