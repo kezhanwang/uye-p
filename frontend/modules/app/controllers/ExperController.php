@@ -55,6 +55,7 @@ class ExperController extends AppController
                 'highest_education' => ['初中及以下', '中专', '高中', '大专', '本科', '硕士', '博士及以上'],
                 'profession' => ['学生', '国家机关公务员', '事业单位员工', '企业单位员工', '私营业主', '金融业人员', '医务人员', '服务业人员', '信息技术人员', '教师', '律师', '工程师', '文体业人员', '农民', '其他'],
                 'housing_situation' => ['宿舍', '租房', '与父母同住', '与其他亲属同住', '自有住房', '其他'],
+                'monthly_income' => ['2000以下', '2000~5000', '5000~8000', '8000~20000', '20000以上'],
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
