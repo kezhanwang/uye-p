@@ -33,7 +33,7 @@ class UyeUserModel
         $checkUser = UyeUser::getUserByPhone($phone);
         if (empty($checkUser)) {
             $inster = [
-                'username' => substr($phone, 0, 3) . '****' . substr($phone, 0, -4),
+                'username' => substr($phone, 0, 3) . '****' . substr($phone, -4),
                 'password' => !empty($password) ? self::createPasswordMd5($password) : '',
                 'phone' => $phone,
                 'status' => 1,

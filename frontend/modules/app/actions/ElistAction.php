@@ -29,7 +29,6 @@ class ElistAction extends AppAction
                 'type' => $this->getParams('type'),
                 'date_start' => $this->getParams('date_start'),
                 'date_end' => $this->getParams('date_end'),
-                'id' => $this->getParams('id'),
             ];
 
             if ($params['type'] == UyeUserExperienceList::TYPE_STUDY) {
@@ -50,8 +49,7 @@ class ElistAction extends AppAction
                     throw new UException(ERROR_SYS_PARAMS_CONTENT . ":" . $key, ERROR_SYS_PARAMS);
                 }
             }
-            $id = $params['id'];
-            unset($params['id']);
+            $id = $this->getParams('id');
             if ($id) {
 
                 $old_info = UyeUserExperienceList::getByID($params['id']);

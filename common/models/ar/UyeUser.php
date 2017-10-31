@@ -20,6 +20,11 @@ class UyeUser extends UActiveRecord
     const STATUS_CLOSE = 2;
     const STATUS_BLACKLIST = 3;
 
+    public static $status = [
+        self::STATUS_NORMAL => '正常',
+        self::STATUS_CLOSE => '关闭',
+        self::STATUS_BLACKLIST => '黑名单',
+    ];
 
     public static function tableName()
     {

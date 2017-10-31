@@ -30,9 +30,10 @@ class UserController extends UAdminController
      * @param integer $id
      * @return mixed
      */
-    public function actionView($id)
+    public function actionView($uid)
     {
-        return $this->render('view');
+        $data = UserModel::getUserInfo($uid);
+        return $this->render('view', $data);
     }
 
 }
