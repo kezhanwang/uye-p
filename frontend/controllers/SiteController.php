@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use frontend\components\UController;
@@ -9,6 +10,16 @@ use frontend\components\UController;
  */
 class SiteController extends UController
 {
+
+    public function actions()
+    {
+        return [
+            'error' => [
+                'class' => 'app\components\ErrorAction',
+            ],
+        ];
+    }
+
     /**
      * Displays homepage.
      *

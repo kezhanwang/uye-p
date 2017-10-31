@@ -41,6 +41,7 @@ class ElistController extends AppController
             } else {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ':type类型异常', ERROR_SYS_PARAMS);
             }
+            Output::info(SUCCESS, SUCCESS_CONTENT, $list);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
