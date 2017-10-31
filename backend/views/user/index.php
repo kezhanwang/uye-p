@@ -64,6 +64,7 @@ $this->params['menu'] = $this->title;
                         <td>用户UID</td>
                         <td>登录账号</td>
                         <td>昵称</td>
+                        <td>真实姓名</td>
                         <td>账户状态</td>
                         <td>注册时间</td>
                         <td>查看</td>
@@ -75,6 +76,7 @@ $this->params['menu'] = $this->title;
                             <td><?= $user['uid']; ?></td>
                             <td><?= $user['phone'] ?></td>
                             <td><?= $user['username'] ?></td>
+                            <td><?= $user['full_name']; ?></td>
                             <td><?= \common\models\ar\UyeUser::$status[$user['status']]; ?></td>
                             <td><?= date('Y-m-d H:i:s', $user['created_time']); ?></td>
                             <td>
