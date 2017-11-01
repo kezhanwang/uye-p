@@ -2,6 +2,10 @@
 
 namespace backend\controllers;
 
+use backend\components\AOutPut;
+use common\models\ar\UyeAreas;
+use components\RedisUtil;
+use components\UException;
 use frontend\components\UController;
 use Yii;
 use yii\filters\VerbFilter;
@@ -12,35 +16,6 @@ use yii\filters\AccessControl;
  */
 class SiteController extends UController
 {
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'rules' => [
-                    [
-                        'actions' => ['login', 'error'],
-                        'allow' => true,
-                    ],
-                    [
-                        'actions' => ['logout', 'index'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    }
-
     /**
      * @inheritdoc
      */
@@ -94,5 +69,87 @@ class SiteController extends UController
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+
+    public function actionProvince()
+    {
+        try {
+            $redis = RedisUtil::getInstance();
+            $key = "UYE_GET_PROVINCE";
+            $data = $redis->get($key);
+            if ($data) {
+                $list = json_decode($data, true);
+            } else {
+                $list = UyeAreas::getAreas(0);
+
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    unset($item['joinname']);
+                    list($item['letter'], $item['name']) = explode('-', $item['name']);
+                }
+
+                $redis->set($key, json_encode($list));
+            }
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT, $list);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+    public function actionCity()
+    {
+        try {
+            $request = \Yii::$app->request;
+            $province = $request->isPost ? $request->post("province") : $request->get("province");
+            if (empty($province) || !is_numeric($province)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+
+            $redis = RedisUtil::getInstance();
+            $key = "UYE_GET_CITY_BY_PROVINCE_" . $province;
+            $data = $redis->get($key);
+            if ($data) {
+                $list = json_decode($data, true);
+            } else {
+                $list = UyeAreas::getAreas($province);
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    unset($item['joinname']);
+                }
+
+                $redis->set($key, json_encode($list));
+            }
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT, $list);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+    public function actionArea()
+    {
+        try {
+            $request = \Yii::$app->request;
+            $city = $request->isPost ? $request->post("city") : $request->get("city");
+            if (empty($city) || !is_numeric($city)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+
+            $redis = RedisUtil::getInstance();
+            $key = "UYE_GET_AREA_BY_CITY_" . $city;
+            $data = $redis->get($key);
+            if ($data) {
+                $list = json_decode($data, true);
+            } else {
+                $list = UyeAreas::getAreas($city);
+                foreach ($list as &$item) {
+                    unset($item['parentid']);
+                    $item['joinname'] = str_replace(',', '', $item['joinname']);
+                }
+                $redis->set($key, json_encode($list));
+            }
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT, $list);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
     }
 }

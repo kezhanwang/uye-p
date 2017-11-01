@@ -147,4 +147,28 @@ class UyeOrg extends UActiveRecord
         }
         return $ar->getAttributes();
     }
+
+    public static function _add($info = [])
+    {
+        if (empty($info)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $info = ArrayUtil::trimArray($info);
+        $ar = new UyeOrg();
+        $ar->setIsNewRecord(true);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->created_time = time();
+        $ar->updated_time = time();
+
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
 }

@@ -8,6 +8,9 @@ use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
 use common\models\search\UyeOrgSearch;
+use components\PicUtil;
+use components\UException;
+use GuzzleHttp\Exception\BadResponseException;
 use Yii;
 
 use yii\web\NotFoundHttpException;
@@ -70,16 +73,16 @@ class OrgController extends UAdminController
      */
     public function actionCreate()
     {
-        $model = new UyeOrg();
-        $infoModel = new UyeOrgInfo();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        $type = $this->getParams('type', '');
+        if ($type && $type == 'create') {
+            $params = $_POST;
+            if (empty($params)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+            $result = OrgModel::createOrg($params);
+            return $this->redirect(['view', 'id' => '']);
         } else {
-            return $this->render('create', [
-                'model' => $model,
-                'infoModel' => $infoModel,
-            ]);
+            return $this->render('create');
         }
     }
 
@@ -138,5 +141,12 @@ class OrgController extends UAdminController
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+
+    public function actionUpload()
+    {
+        $pic_res = PicUtil::uploadPic(0, $to_thumb_keys = array(), $fileInfo, array('logo'));
+        $pic_res_url = DOMAIN_IMAGE . $pic_res['logo'];
+        echo json_encode($pic_res_url);
     }
 }
