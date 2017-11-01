@@ -44,6 +44,7 @@ class ExperAction extends AppAction
             if (!is_array($will_work_city)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ":JSON格式解析异常", ERROR_SYS_PARAMS);
             }
+            $params['will_work_city'] = json_encode($will_work_city);
 
             $userInfo = UyeUserExperience::getByUid($this->uid);
             if (empty($userInfo)) {
@@ -66,5 +67,4 @@ class ExperAction extends AppAction
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
-
 }

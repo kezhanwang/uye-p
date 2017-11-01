@@ -65,7 +65,7 @@ class UyeUserExperience extends UActiveRecord
         }
 
         $ar = self::findOne($uid);
-        $info = ArrayUtil::trimArray($ar);
+        $info = ArrayUtil::trimArray($info);
         foreach ($ar->getAttributes() as $key => $attribute) {
             if (array_key_exists($key, $info)) {
                 $ar->$key = $info[$key];
