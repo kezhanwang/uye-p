@@ -11,6 +11,8 @@ namespace app\modules\app\actions;
 
 use app\modules\app\components\AppAction;
 use common\models\ar\UyeUserContact;
+use common\models\ar\UyeUserExperience;
+use common\models\ar\UyeUserExperienceList;
 use common\models\ar\UyeUserIdentity;
 use components\Output;
 use components\UException;
@@ -29,9 +31,11 @@ class UserinfoAction extends AppAction
         try {
             $identity = $this->identity($this->uid);
             $contact = $this->contact($this->uid);
+            $experience = $this->exper($this->uid);
             $templateData = [
                 'identity' => $identity,
                 'contact' => $contact,
+                'experience' => $experience,
             ];
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (UException $exception) {
@@ -76,4 +80,29 @@ class UserinfoAction extends AppAction
         return $result;
     }
 
+    private function exper($uid)
+    {
+        $userExpre = UyeUserExperience::getByUid($uid);
+        if (empty($userExpre)) {
+            return false;
+        }
+
+        $params = ['highest_education', 'profession', 'monthly_income', 'housing_situation', 'will_work_city'];
+        $result = true;
+
+        foreach ($params as $param) {
+            if (!array_key_exists($param, $userExpre) || empty($userExpre[$param])) {
+                $result = false;
+                break;
+            }
+        }
+
+        if ($userExpre['highest_education'] == '未就业') {
+            $userExpreList = UyeUserExperienceList::getByUid($uid, UyeUserExperienceList::TYPE_STUDY);
+            if (empty($userExpreList)) {
+                $result = false;
+            }
+        }
+        return $result;
+    }
 }

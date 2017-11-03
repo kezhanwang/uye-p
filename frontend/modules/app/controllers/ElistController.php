@@ -61,4 +61,24 @@ class ElistController extends AppController
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
+
+    public function actionDel()
+    {
+        try {
+            $id = $this->getParams('id');
+            if (empty($id) || !is_numeric($id)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT . ":id", ERROR_SYS_PARAMS);
+            }
+
+            $list = UyeUserExperienceList::getByID($id);
+            if (empty($list) || $list['uid'] != $this->uid) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT . ":经历暂未查询", ERROR_SYS_PARAMS);
+            }
+
+            UyeUserExperienceList::_update($id, ['status' => UyeUserExperienceList::STATUS_OFF]);
+            Output::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            Output::err($exception->getCode(), $exception->getMessage());
+        }
+    }
 }

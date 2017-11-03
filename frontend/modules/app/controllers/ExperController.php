@@ -11,6 +11,7 @@ namespace app\modules\app\controllers;
 
 use app\modules\app\components\AppController;
 use common\models\ar\UyeUserExperience;
+use common\models\ar\UyeUserExperienceList;
 use components\Output;
 use components\UException;
 
@@ -62,4 +63,6 @@ class ExperController extends AppController
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
+
+
 }
