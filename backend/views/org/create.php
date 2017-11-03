@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'class' => 'form-horizontal']]); ?>
     <div class="box-body">
-        <input type="hidden" name="type" value="ctrate">
+        <input type="hidden" name="type" value="create">
         <?php if (!empty($org)) { ?>
             <div class="form-group">
                 <label class="col-sm-2 control-label">机构总校:</label>
@@ -94,7 +94,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="form-group">
             <label class="col-md-2 control-label">商务人员:</label>
             <div class="col-md-10">
-                <select class="form-control" name="org_type">
+                <select class="form-control" name="business">
                     <option value="0">请选择商务人员</option>
                     <?php foreach ($business as $item) { ?>
                         <option value="<?= $item['id']; ?>"><?= $item['realname']; ?></option>

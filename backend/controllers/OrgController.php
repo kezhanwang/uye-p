@@ -83,7 +83,7 @@ class OrgController extends UAdminController
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }
             $result = OrgModel::createOrg($params);
-            return $this->redirect(['view', 'id' => '']);
+            return $this->redirect(['view', 'id' => $result['id']]);
         } else {
             $org = [];
             if ($parent && is_numeric($parent)) {
@@ -107,7 +107,11 @@ class OrgController extends UAdminController
     public function actionUpdate($id)
     {
         $info = OrgModel::getOrgInfo($id);
-        return $this->render('update', ['info' => $info]);
+
+        $category = UyeCategory::find()->asArray()->all();
+        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
+        $area = OrgModel::getArea($info['province'], $info['city']);
+        return $this->render('update', ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
     }
 
     /**

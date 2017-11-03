@@ -68,7 +68,7 @@ $this->params['menu'] = $this->title;
                         [
                             'header' => '操作',
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {update} {add} {delete}',
+                            'template' => '{view} {update} {add} {add_org} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model, $key) {
                                     return Html::a('查看', ['/org/view', 'id' => $model->id], ['class' => "btn btn-sm btn-info", 'title' => '查看', 'target' => '_blank']);
@@ -82,8 +82,11 @@ $this->params['menu'] = $this->title;
                                 'delete' => function ($url, $model, $key) {
                                     if ($model->is_delete == \common\models\ar\UyeOrg::IS_DELETE_ON) {
                                         return Html::a('删除', ['/org/delete', 'id' => $model->id], ['class' => "btn btn-sm btn-danger", 'title' => '删除']);
-                                    } else {
-                                        return Html::a('删除', 'javascript:void(0)', ['class' => "btn btn-sm btn-default", 'title' => '删除']);
+                                    }
+                                },
+                                'add_org' => function ($url, $model, $key) {
+                                    if ($model->org_type == \common\models\ar\UyeOrg::ORG_TYPE_GENERAL) {
+                                        return Html::a('添加分校', ['/org/create', 'parent' => $model->id], ['class' => "btn btn-sm btn-info", 'title' => '添加分校', 'target' => '_blank']);
                                     }
                                 }
                             ],

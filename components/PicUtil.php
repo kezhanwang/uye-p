@@ -343,7 +343,53 @@ class PicUtil
         } elseif ($secret == self::SECRET_IMAGES) {
 //            return FrontEnd::calcCDNDomain('http://' . DOMAIN_RES . $url);
         } else {
-            return 'http://img.kezhanwang.com' . $url;
+            return DOMAIN_IMAGE . $url;
         }
+    }
+
+    /*
+     * 图片裁剪
+     */
+    public static function imgCut($file, $cut_x, $cut_y, $cut_width, $cut_height, $dir)
+    {
+        $fileInfo = getimagesize($file);
+        switch ($fileInfo['mime']) {
+            case 'image/gif':
+                $imgData = @imagecreatefromgif($file);
+                break;
+            case 'image/jpeg':
+                $imgData = @imagecreatefromjpeg($file);
+                break;
+            case 'image/png':
+                $imgData = @imagecreatefrompng($file);
+                break;
+        }
+        $new = imagecreatetruecolor($cut_width, $cut_height);
+        $color = imagecolorallocate($new, 255, 255, 255);
+        imagecolortransparent($new, $color);
+        imagefill($new, 0, 0, $color);
+        $r_1 = imagecopyresampled($new, $imgData, 0, 0, $cut_x, $cut_y, $cut_width, $cut_height, $cut_width, $cut_height);
+        $r_2 = imagejpeg($new, $dir);
+        imagedestroy($new);
+        imagedestroy($imgData);
+        return $r_1 && $r_2 ? true : false;
+    }
+
+    public static function getLogo($url, $logo_x, $logo_y, $logo_w, $logo_h)
+    {
+        $logo_dir = UrlUtil::urlForLinuxPath($url);
+        $logo_datedir = substr($logo_dir, 0, strrpos($logo_dir, '/') + 1);
+        $logo_name = trim(strrchr($url, '/'), '/');
+        if (!empty($cut_logo_x) || !empty($cut_logo_y) || !empty($cut_logo_w) || !empty($cut_logo_h)) {
+            $file = PATH_UPLOAD . $logo_dir;
+            $cFileName = "c_" . $logo_name;
+            $cutPic_res = self::imgCut($file, $cut_logo_x, $cut_logo_y, $cut_logo_w, $cut_logo_h, PATH_UPLOAD . $logo_datedir . $cFileName);
+            if ($cutPic_res) {
+                $logo = $logo_datedir . $cFileName;
+            }
+        } else {
+            $logo = $logo_datedir . $logo_name;
+        }
+        return DOMAIN_IMAGE . $logo;
     }
 }
