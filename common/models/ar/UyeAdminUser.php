@@ -32,11 +32,22 @@ class UyeAdminUser extends UActiveRecord implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    const BUSINESS_NO = 1;
+    const BUSINESS_OFF = 2;
+
     public static function getStatus()
     {
         return [
             self::STATUS_DELETED => '已删除',
             self::STATUS_ACTIVE => '激活'
+        ];
+    }
+
+    public static function getBusiness()
+    {
+        return [
+            self::BUSINESS_NO => '商务',
+            self::BUSINESS_OFF => '普通员工',
         ];
     }
 

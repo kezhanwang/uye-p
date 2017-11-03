@@ -4,6 +4,8 @@ namespace backend\controllers;
 
 use backend\components\UAdminController;
 use backend\models\service\OrgModel;
+use common\models\ar\UyeAdminUser;
+use common\models\ar\UyeCategory;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
@@ -74,6 +76,7 @@ class OrgController extends UAdminController
     public function actionCreate()
     {
         $type = $this->getParams('type', '');
+        $parent = $this->getParams('parent', '');
         if ($type && $type == 'create') {
             $params = $_POST;
             if (empty($params)) {
@@ -82,7 +85,16 @@ class OrgController extends UAdminController
             $result = OrgModel::createOrg($params);
             return $this->redirect(['view', 'id' => '']);
         } else {
-            return $this->render('create');
+            $org = [];
+            if ($parent && is_numeric($parent)) {
+                $org = UyeOrg::findOne($parent)->getAttributes();
+                if (empty($org)) {
+                    throw new NotFoundHttpException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+                }
+            }
+            $category = UyeCategory::find()->asArray()->all();
+            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
+            return $this->render('create', ['org' => $org, 'category' => $category, 'business' => $business]);
         }
     }
 

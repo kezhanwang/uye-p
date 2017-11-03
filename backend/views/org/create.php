@@ -2,9 +2,7 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-/* @var $this yii\web\View */
-/* @var $model app\models\UyeOrg */
+use common\models\ar\UyeOrg;
 
 $this->title = '新增机构';
 $this->params['breadcrumbs'][] = ['label' => '新增机构', 'url' => ['index']];
@@ -25,6 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'class' => 'form-horizontal']]); ?>
     <div class="box-body">
         <input type="hidden" name="type" value="ctrate">
+        <?php if (!empty($org)) { ?>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">机构总校:</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" readonly value="<?= $org['org_name']; ?>">
+                    <input type="hidden" name="parent_id" value="<?= $org['id']; ?>">
+                </div>
+            </div>
+        <?php } ?>
         <div class="form-group">
             <label class="col-sm-2 control-label">机构名称:</label>
             <div class="col-md-10">
@@ -41,9 +48,17 @@ $this->params['breadcrumbs'][] = $this->title;
             <label class="col-md-2 control-label">机构类型:</label>
             <div class="col-md-10">
                 <select class="form-control" name="org_type">
-                    <?php foreach (\common\models\ar\UyeOrg::$orgType as $key => $item) { ?>
-                        <option value="<?= $key; ?>"><?= $item; ?></option>
+                    <?php if (empty($org)) { ?>
+                        <option value="<?= UyeOrg::ORG_TYPE_GENERAL; ?>"><?= UyeOrg::$orgType[UyeOrg::ORG_TYPE_GENERAL]; ?></option>
+                    <?php } else { ?>
+                        <?php foreach (UyeOrg::$orgType as $key => $item) { ?>
+                            <?php if ($key == UyeOrg::ORG_TYPE_GENERAL) {
+                                continue;
+                            } ?>
+                            <option value="<?= $key; ?>"><?= $item; ?></option>
+                        <?php } ?>
                     <?php } ?>
+
                 </select>
             </div>
         </div>
@@ -80,7 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
             <label class="col-md-2 control-label">商务人员:</label>
             <div class="col-md-10">
                 <select class="form-control" name="org_type">
-
+                    <option value="0">请选择商务人员</option>
+                    <?php foreach ($business as $item) { ?>
+                        <option value="<?= $item['id']; ?>"><?= $item['realname']; ?></option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
@@ -146,7 +164,9 @@ $this->params['breadcrumbs'][] = $this->title;
             <div class="col-md-10">
                 <select class="form-control" name="category_1">
                     <option value="0">请选择机构分类</option>
-
+                    <?php foreach ($category as $item) { ?>
+                        <option value="<?= $item['id'] ?>"><?= $item['name'] ?></option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
