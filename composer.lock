@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "42202a2d172fd738270691a1df0ce5fd",
+    "content-hash": "d1ad50f51a185bd5470d899b6213a88d",
     "packages": [
         {
             "name": "almasaeed2010/adminlte",
@@ -550,16 +550,16 @@
         },
         {
             "name": "mdmsoft/yii2-admin",
-            "version": "2.8",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mdmsoft/yii2-admin.git",
-                "reference": "48298cb2891f728ae93e59f75802607f0ed910f5"
+                "reference": "10cce31845f4d7d8bd1eefe784bd7d0223de4420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://files.phpcomposer.com/files/mdmsoft/yii2-admin/48298cb2891f728ae93e59f75802607f0ed910f5.zip",
-                "reference": "48298cb2891f728ae93e59f75802607f0ed910f5",
+                "url": "https://files.phpcomposer.com/files/mdmsoft/yii2-admin/10cce31845f4d7d8bd1eefe784bd7d0223de4420.zip",
+                "reference": "10cce31845f4d7d8bd1eefe784bd7d0223de4420",
                 "shasum": ""
             },
             "require": {
@@ -604,7 +604,7 @@
                 "rbac",
                 "yii"
             ],
-            "time": "2017-10-04T02:54:53+00:00"
+            "time": "2017-10-17 06:08:40"
         },
         {
             "name": "mobiledetect/mobiledetectlib",
@@ -3598,7 +3598,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mdmsoft/yii2-admin": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

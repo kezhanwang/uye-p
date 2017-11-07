@@ -87,7 +87,7 @@ return array (
   'mdmsoft/yii2-admin' => 
   array (
     'name' => 'mdmsoft/yii2-admin',
-    'version' => '2.8.0.0',
+    'version' => '9999999-dev',
     'alias' => 
     array (
       '@mdm/admin' => $vendorDir . '/mdmsoft/yii2-admin',
