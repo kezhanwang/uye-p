@@ -12,7 +12,7 @@ namespace e\components;
 use common\models\ar\UyeERole;
 use common\models\ar\UyeEUser;
 use common\models\ar\UyeEUserRole;
-use GuzzleHttp\Exception\BadResponseException;
+use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 
 class RbacUtil
@@ -34,7 +34,7 @@ class RbacUtil
             ->asArray()
             ->one();
         if (empty($userInfo)) {
-            throw new BadResponseException("未查询到用户信息");
+            throw new NotSupportedException("未查询到用户信息");
         }
         return $userInfo;
     }
@@ -50,7 +50,7 @@ class RbacUtil
             ->one();
 
         if (empty($userRole)) {
-            throw new BadResponseException("未查询到用户角色");
+            throw new NotSupportedException("未查询到用户角色");
         }
         return $userRole;
 
