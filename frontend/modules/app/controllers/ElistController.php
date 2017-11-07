@@ -38,10 +38,14 @@ class ElistController extends AppController
             $type = $this->getParams('type');
             if (array_key_exists($type, UyeUserExperienceList::$type)) {
                 $list = UyeUserExperienceList::getByUid($this->uid, $type);
+                if (empty($list)) {
+                    $list = [];
+                }
             } else {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ':type类型异常', ERROR_SYS_PARAMS);
             }
-            Output::info(SUCCESS, SUCCESS_CONTENT, $list);
+            $data['list'] = $list;
+            Output::info(SUCCESS, SUCCESS_CONTENT, $data);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }

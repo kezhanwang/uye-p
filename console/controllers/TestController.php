@@ -52,15 +52,15 @@ class TestController extends Controller
 //
 //        }
 
-//        $fields = "o.*,oi.*,c.name as category";
-//        $query = (new \yii\db\Query())
-//            ->select($fields)
-//            ->from(UyeOrg::TABLE_NAME . " o")
-//            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
-//            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
-//            ->all();
-//
-//        OrgSearch::createPush($query);
+        $fields = "o.*,oi.*,c.name as category";
+        $query = (new \yii\db\Query())
+            ->select($fields)
+            ->from(UyeOrg::TABLE_NAME . " o")
+            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
+            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
+            ->all();
+
+        OrgSearch::createPush($query);
 
 //        $orgs = UyeOrgInfo::find()->select('org_id,city')->asArray()->all();
 //        foreach ($orgs as $org) {
@@ -81,8 +81,6 @@ class TestController extends Controller
 //        $order_id = $order_id_main . str_pad((100 - $order_id_sum % 100) % 100, 2, '0', STR_PAD_LEFT);
 //        var_dump($order_id);
 
-        $phone = "13619226180";
-        var_dump(substr($phone,-4));
 
     }
 

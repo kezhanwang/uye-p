@@ -73,7 +73,7 @@ class AppController extends UController
                 UyeMobileModel::_add($unique_id, $filedData);
             }
         } catch (UException $exception) {
-            Yii::error();
+            Yii::error($exception->getMessage());
         }
     }
 }
