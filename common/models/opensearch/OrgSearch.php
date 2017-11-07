@@ -10,6 +10,7 @@ namespace common\models\opensearch;
 
 
 use common\models\ar\UyeOrg;
+use common\models\ar\UyeOrgCourse;
 use components\NearbyUtil;
 use components\UException;
 
@@ -28,6 +29,17 @@ class OrgSearch extends SearchOS
 
         $searchData = [];
         foreach ($data as $datum) {
+            $courses = UyeOrgCourse::find()
+                ->select('*')
+                ->from(UyeOrgCourse::TABLE_NAME)
+                ->where('org_id=:org_id', [':org_id' => $datum['id']])
+                ->asArray()->all();
+
+            $courseStr = '';
+            foreach ($courses as $cours) {
+                $courseStr .= $cours['id'] . '、' . $cours['name'] . ';';
+            }
+
             $tmp = [
                 'id' => $datum['id'],
                 'org_name' => $datum['org_name'],
@@ -47,7 +59,7 @@ class OrgSearch extends SearchOS
                 'province' => $datum['province'],
                 'city' => $datum['city'],
                 'area' => $datum['area'],
-                'popular' => $datum['org_name'] . ";" . $datum['org_num'] . ";" . $datum['org_name'],
+                'popular' => $courseStr,
             ];
             array_push($searchData, $tmp);
         }
@@ -170,10 +182,10 @@ class OrgSearch extends SearchOS
             }
 
             foreach ($list as &$v) {
-                $search = '.cn/';
+                $search = '.com/';
                 $pos = strpos($v['logo'], $search);
                 if ($pos === false) {
-                    $v['logo'] = "http://img.kezhanwang.cn" . $v['logo'];
+                    $v['logo'] = 'http://img.bjzhongteng.com' . $v['logo'];
                 }
             }
             $tmpArr = [
