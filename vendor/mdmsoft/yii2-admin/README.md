@@ -1,4 +1,4 @@
-RBAC Manager for Yii 2 
+RBAC Manager for Yii 2
 ======================
 GUI manager for RABC (Role Base Access Control) Yii2. Easy to manage authorization of user :smile:.
 
