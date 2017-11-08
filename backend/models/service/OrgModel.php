@@ -13,6 +13,7 @@ use common\models\ar\UyeAreas;
 use common\models\ar\UyeCategory;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgInfo;
+use common\models\ar\UyeOrgCourse;
 use common\models\opensearch\OrgSearch;
 use components\PicUtil;
 use components\RedisUtil;
@@ -40,27 +41,7 @@ class OrgModel
     public static function createOrg($params)
     {
         $orgKey = [
-            'org_name',
-            'org_short_name',
-            'org_type',
-            'is_employment',
-            'employment_rate',
-            'is_high_salary',
-            'business',
-            'province',
-            'city',
-            'area',
-            'address',
-            'map_lng',
-            'map_lat',
-            'phone',
-            'category_1',
-            'editorValue',
-            'logo',
-            'logo_x',
-            'logo_y',
-            'logo_w',
-            'logo_h'
+            'org_name', 'org_short_name', 'org_type', 'is_employment', 'employment_rate', 'is_high_salary', 'business', 'province', 'city', 'area', 'address', 'map_lng', 'map_lat', 'phone', 'category_1', 'editorValue', 'logo', 'logo_x', 'logo_y', 'logo_w', 'logo_h'
         ];
 
         $org = [];
@@ -199,5 +180,33 @@ class OrgModel
             ->asArray()
             ->all();
         OrgSearch::createPush($org);
+    }
+
+    public static function createCourse($params = [])
+    {
+        $key = [
+            'org_id', 'name', 'unit_price', 'logo', 'logo_x', 'logo_y', 'logo_w', 'logo_h'
+        ];
+
+        $course = [];
+
+        foreach ($key as $item) {
+            if (!array_key_exists($item, $params)) {
+                throw new NotFoundHttpException(ERROR_SYS_PARAMS_CONTENT . ":" . $item, ERROR_SYS_PARAMS);
+            } else {
+                $course[$item] = $params[$item];
+            }
+        }
+        $course['logo'] = PicUtil::getLogo($params['logo'], $params['logo_x'], $params['logo_y'], $params['logo_w'], $params['logo_h']);
+        $course['unit_price'] = $course['unit_price'] * 100;
+        try {
+            UyeOrgCourse::_add($course);
+            $avg = UyeOrgCourse::getAvgUnitByOrgID($course['org_id']);
+            UyeOrgInfo::_updateOrgInfo($course['org_id'], ['avg_course_price' => $avg]);
+            self::updateOpenSearch($course['org_id']);
+            return true;
+        } catch (UException $exception) {
+            throw new UException($exception->getMessage(), $exception->getCode());
+        }
     }
 }

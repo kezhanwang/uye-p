@@ -9,6 +9,9 @@
 namespace common\models\ar;
 
 
+use components\ArrayUtil;
+use components\UException;
+
 class UyeOrgCourse extends UActiveRecord
 {
     const TABLE_NAME = 'uye_org_course';
@@ -36,5 +39,45 @@ class UyeOrgCourse extends UActiveRecord
         } else {
             return $courses;
         }
+    }
+
+    public static function _add($info)
+    {
+        if (empty($info)) {
+            return false;
+        }
+
+        $info = ArrayUtil::trimArray($info);
+
+        $ar = new UyeOrgCourse();
+        $ar->setIsNewRecord(true);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->created_time = time();
+        $ar->updated_time = time();
+
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
+
+    public static function getAvgUnitByOrgID($org_id)
+    {
+        if (!is_numeric($org_id)) {
+            return 0;
+        }
+
+        $result = UyeOrgCourse::find()
+            ->select('AVG(unit_price) AS avg_unit_price')
+            ->from(self::TABLE_NAME)
+            ->where('org_id=:org_id', [':org_id' => $org_id])
+            ->asArray()
+            ->one();
+        return $result['avg_unit_price'];
     }
 }

@@ -68,16 +68,13 @@ $this->params['menu'] = $this->title;
                         [
                             'header' => '操作',
                             'class' => 'yii\grid\ActionColumn',
-                            'template' => '{view} {update} {add} {add_org} {delete}',
+                            'template' => '{view} {update} {add_org} {delete}',
                             'buttons' => [
                                 'view' => function ($url, $model, $key) {
                                     return Html::a('查看', ['/org/view', 'id' => $model->id], ['class' => "btn btn-sm btn-info", 'title' => '查看', 'target' => '_blank']);
                                 },
                                 'update' => function ($url, $model, $key) {
                                     return Html::a('编辑', ['/org/update', 'id' => $model->id], ['class' => "btn btn-sm btn-warning", 'title' => '编辑', 'target' => '_blank']);
-                                },
-                                'add' => function ($url, $model, $key) {
-                                    return Html::a('添加课程', ['/org/addcourse', 'id' => $model->id], ['class' => "btn btn-sm btn-success", 'title' => '添加课程', 'target' => '_blank']);
                                 },
                                 'delete' => function ($url, $model, $key) {
                                     if ($model->is_delete == \common\models\ar\UyeOrg::IS_DELETE_ON) {

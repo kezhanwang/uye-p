@@ -11,6 +11,7 @@ namespace frontend\controllers;
 
 use common\models\ar\UyeAreas;
 use common\models\service\SimgService;
+use components\CookieUtil;
 use components\Output;
 use components\PicUtil;
 use components\RedisUtil;
@@ -35,15 +36,18 @@ class CommonController extends UController
     public function actionUpload()
     {
         try {
-            \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic :" . var_export($_FILES, true), 'upload_file');
+            \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic :" . var_export($_FILES,
+                    true), 'upload_file');
             $fileInfo = [];
             $ret = PicUtil::uploadPic(PicUtil::SECRET_ADMIN, [], $fileInfo, [], $this->uid);
             $ret = PicUtil::getUrls($ret, PicUtil::SECRET_ADMIN);
             SimgService::addSimgInfo($ret, DataBus::get('uid'));
-            \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic return url:" . var_export($ret, true), 'upload_file');
+            \Yii::info(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic return url:" . var_export($ret,
+                    true), 'upload_file');
             Output::info(SUCCESS, SUCCESS_CONTENT, $ret);
         } catch (UException $exception) {
-            \Yii::error(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic error:" . $exception->getMessage(), 'upload_file');
+            \Yii::error(__LINE__ . ':' . __FUNCTION__ . $this->uid . ':' . DataBus::get('plat') . " upload pic error:" . $exception->getMessage(),
+                'upload_file');
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
@@ -128,5 +132,13 @@ class CommonController extends UController
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
+    }
+
+    public function actionTest()
+    {
+        $cookieValue = "BglWVlZSUh0FUwcaGxISVFIDBUVXU1dTVlMBVAcBA0R KlB4fGtRIA==";
+        $cookieValue = str_replace(' ', '+', $cookieValue);
+        $userInfo = CookieUtil::strCode($cookieValue, 'DECODE');
+        var_dump($userInfo);
     }
 }

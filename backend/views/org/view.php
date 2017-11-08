@@ -137,6 +137,7 @@ $this->params['menu'] = $this->title;
                             </tr>
                         <?php } ?>
                     </table>
+                    <a class="btn btn-info btn-sm" href="/org/course?org_id=<?= $info_model->org_id; ?>" target="_blank">添加课程</a>
                 </div>
             </div>
             <!-- /.tab-content -->

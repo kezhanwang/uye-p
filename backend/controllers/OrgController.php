@@ -193,4 +193,29 @@ class OrgController extends UAdminController
             AOutPut::err($exception->getCode(), $exception->getMessage());
         }
     }
+
+    public function actionCourse()
+    {
+        $type = $this->getParams('type');
+        if ($type == 'create') {
+            $params = $_POST;
+            if (empty($params)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
+            $result = OrgModel::createCourse($params);
+            return $this->redirect(['view', 'id' => $params['org_id']]);
+        } else {
+            $org_id = $this->getParams('org_id');
+            if (empty($org_id) || !is_numeric($org_id)) {
+                throw new NotFoundHttpException(ERROR_SYS_PARAMS_CONTENT);
+            }
+
+            $org_info = UyeOrg::findOne($org_id)->getAttributes();
+            if (empty($org_info)) {
+                throw new NotFoundHttpException(ERROR_ORG_NO_EXISTS_CONTENT);
+            }
+
+            return $this->render('course', ['org' => $org_info]);
+        }
+    }
 }
