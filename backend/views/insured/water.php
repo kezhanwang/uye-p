@@ -133,7 +133,7 @@ $this->params['menu'] = $this->title;
                     success: function (responseData) {
                         if (responseData.code == 1000) {
                             alert("操作成功", '审核结果', function () {
-                                window.location.href = "<?php echo $backurl;?>";
+                                history.go(0);
                             });
                         } else {
                             alert(responseData.msg);

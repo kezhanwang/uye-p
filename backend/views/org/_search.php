@@ -3,9 +3,6 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\UyeOrgSearch */
-/* @var $form yii\widgets\ActiveForm */
 ?>
 
 <div class="box box-default">
@@ -29,7 +26,8 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'id')->textInput(); ?>
                 </div>
                 <div class="form-group">
-                    <?= $form->field($model, 'is_shelf')->dropDownList(\common\models\ar\UyeOrg::$isShelf, ['prompt' => '请选择']); ?>
+                    <?= $form->field($model, 'is_shelf')->dropDownList(\common\models\ar\UyeOrg::$isShelf,
+                        ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
@@ -37,20 +35,24 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'org_name')->textInput(); ?>
                 </div>
                 <div class="form-group">
-                    <?= $form->field($model, 'is_employment')->dropDownList(\common\models\ar\UyeOrg::$isEmployment, ['prompt' => '请选择']); ?>
+                    <?= $form->field($model, 'is_employment')->dropDownList(\common\models\ar\UyeOrg::$isEmployment,
+                        ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'org_type')->dropDownList(\common\models\ar\UyeOrg::$orgType, ['prompt' => '请选择']); ?>
+                    <?= $form->field($model, 'org_type')->dropDownList(\common\models\ar\UyeOrg::$orgType,
+                        ['prompt' => '请选择']); ?>
                 </div>
                 <div class="form-group">
-                    <?= $form->field($model, 'is_high_salary')->dropDownList(\common\models\ar\UyeOrg::$isHighSalary, ['prompt' => '请选择']); ?>
+                    <?= $form->field($model, 'is_high_salary')->dropDownList(\common\models\ar\UyeOrg::$isHighSalary,
+                        ['prompt' => '请选择']); ?>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <?= $form->field($model, 'status')->dropDownList(\common\models\ar\UyeOrg::$orgStatus, ['prompt' => '请选择']); ?>
+                    <?= $form->field($model, 'status')->dropDownList(\common\models\ar\UyeOrg::$orgStatus,
+                        ['prompt' => '请选择']); ?>
                 </div>
             </div>
         </div>
@@ -58,7 +60,6 @@ use yii\widgets\ActiveForm;
     <div class="box-footer">
         <?= Html::submitButton('查询', ['class' => 'btn btn-primary btn-sm']) ?>
         <?= Html::resetButton('重置', ['class' => 'btn btn-default btn-sm']) ?>
-        <?= Html::a('新加总校', ['create'], ['class' => 'btn btn-success btn-sm']) ?>
     </div>
     <?php ActiveForm::end(); ?>
 </div>

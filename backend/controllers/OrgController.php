@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use backend\components\AOutPut;
 use backend\components\UAdminController;
 use backend\models\service\OrgModel;
 use common\models\ar\UyeAdminUser;
@@ -93,7 +94,8 @@ class OrgController extends UAdminController
                 }
             }
             $category = UyeCategory::find()->asArray()->all();
-            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
+            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business',
+                [':business' => 1])->asArray()->all();
             return $this->render('create', ['org' => $org, 'category' => $category, 'business' => $business]);
         }
     }
@@ -109,9 +111,11 @@ class OrgController extends UAdminController
         $info = OrgModel::getOrgInfo($id);
 
         $category = UyeCategory::find()->asArray()->all();
-        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
+        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business',
+            [':business' => 1])->asArray()->all();
         $area = OrgModel::getArea($info['province'], $info['city']);
-        return $this->render('update', ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
+        return $this->render('update',
+            ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
     }
 
     /**
@@ -164,5 +168,29 @@ class OrgController extends UAdminController
         $pic_res = PicUtil::uploadPic(0, $to_thumb_keys = array(), $fileInfo, array('logo'));
         $pic_res_url = DOMAIN_IMAGE . $pic_res['logo'];
         echo json_encode($pic_res_url);
+    }
+
+    public function actionAuth()
+    {
+        try {
+            $id = $this->getParams('id');
+            $status = $this->getParams('status');
+            OrgModel::auth($id, $status);
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT);
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
+    }
+
+    public function actionShelf()
+    {
+        try {
+            $id = $this->getParams('id');
+            $shelf = $this->getParams('shelf');
+            OrgModel::shelf($id, $shelf);
+            AOutPut::info(SUCCESS, SUCCESS_CONTENT . ":已更新搜索");
+        } catch (UException $exception) {
+            AOutPut::err($exception->getCode(), $exception->getMessage());
+        }
     }
 }

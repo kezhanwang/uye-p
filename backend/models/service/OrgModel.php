@@ -10,8 +10,10 @@ namespace backend\models\service;
 
 
 use common\models\ar\UyeAreas;
+use common\models\ar\UyeCategory;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgInfo;
+use common\models\opensearch\OrgSearch;
 use components\PicUtil;
 use components\RedisUtil;
 use components\UException;
@@ -37,8 +39,28 @@ class OrgModel
 
     public static function createOrg($params)
     {
-        $orgKey = ['org_name', 'org_short_name', 'org_type', 'is_employment', 'employment_rate', 'is_high_salary', 'business', 'province',
-            'city', 'area', 'address', 'map_lng', 'map_lat', 'phone', 'category_1', 'editorValue', 'logo', 'logo_x', 'logo_y', 'logo_w', 'logo_h'
+        $orgKey = [
+            'org_name',
+            'org_short_name',
+            'org_type',
+            'is_employment',
+            'employment_rate',
+            'is_high_salary',
+            'business',
+            'province',
+            'city',
+            'area',
+            'address',
+            'map_lng',
+            'map_lat',
+            'phone',
+            'category_1',
+            'editorValue',
+            'logo',
+            'logo_x',
+            'logo_y',
+            'logo_w',
+            'logo_h'
         ];
 
         $org = [];
@@ -63,7 +85,8 @@ class OrgModel
         }
 
         $params['org_id'] = $orgInfo['id'];
-        $params['logo'] = PicUtil::getLogo($org['logo'], $org['logo_x'], $org['logo_y'], $org['logo_w'], $org['logo_h']);
+        $params['logo'] = PicUtil::getLogo($org['logo'], $org['logo_x'], $org['logo_y'], $org['logo_w'],
+            $org['logo_h']);
         $params['description'] = $params['editorValue'];
         UyeOrgInfo::_addOrgInfo($params);
         return $orgInfo;
@@ -120,5 +143,61 @@ class OrgModel
             'city' => $list2,
             'area' => $list3
         ];
+    }
+
+    public static function auth($id, $status)
+    {
+        if (empty($id) || !is_numeric($id) || empty($status) || !is_numeric($status)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $org = UyeOrg::findOne($id)->getAttributes();
+        if (empty($org)) {
+            throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+        }
+
+        if ($org['status'] == UyeOrg::STATUS_OK) {
+            throw new UException("机构已通过审核，请勿重复操作！", ERROR_SYS_PARAMS);
+        }
+
+        try {
+            UyeOrg::_update($org['id'], ['status' => $status]);
+            return true;
+        } catch (UException $exception) {
+            throw new UException($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    public static function shelf($id, $shelf)
+    {
+        if (empty($id) || !is_numeric($id) || empty($shelf) || !is_numeric($shelf)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+
+        $org = UyeOrg::findOne($id)->getAttributes();
+        if (empty($org)) {
+            throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+        }
+
+        try {
+            UyeOrg::_update($org['id'], ['is_shelf' => $shelf]);
+            self::updateOpenSearch($org['id']);
+            return true;
+        } catch (UException $exception) {
+            throw new UException($exception->getMessage(), $exception->getCode());
+        }
+    }
+
+    public static function updateOpenSearch($id)
+    {
+        $fields = "o.*,oi.*,c.name as category";
+        $org = UyeOrg::find()
+            ->select($fields)
+            ->from(UyeOrg::TABLE_NAME . " o")
+            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
+            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
+            ->asArray()
+            ->all();
+        OrgSearch::createPush($org);
     }
 }

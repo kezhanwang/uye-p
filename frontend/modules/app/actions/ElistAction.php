@@ -36,12 +36,14 @@ class ElistAction extends AppAction
                 $params['education'] = $this->getParams('education');
                 $params['school_profession'] = $this->getParams('school_profession');
                 $params['school_address'] = $this->getParams('school_address');
-            } else if ($params['type'] == UyeUserExperienceList::TYPE_WORK) {
-                $params['work_name'] = $this->getParams('work_name');
-                $params['work_position'] = $this->getParams('work_position');
-                $params['work_salary'] = $this->getParams('work_salary');
             } else {
-                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+                if ($params['type'] == UyeUserExperienceList::TYPE_WORK) {
+                    $params['work_name'] = $this->getParams('work_name');
+                    $params['work_position'] = $this->getParams('work_position');
+                    $params['work_salary'] = $this->getParams('work_salary');
+                } else {
+                    throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+                }
             }
 
             foreach ($params as $key => $param) {
@@ -49,6 +51,8 @@ class ElistAction extends AppAction
                     throw new UException(ERROR_SYS_PARAMS_CONTENT . ":" . $key, ERROR_SYS_PARAMS);
                 }
             }
+            $params['date_start'] = $params['date_start'] . '-01';
+            $params['date_end'] = $params['date_end'] . '-01';
             $id = $this->getParams('id');
             if ($id) {
                 $old_info = UyeUserExperienceList::getByID($id);
