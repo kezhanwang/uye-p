@@ -70,24 +70,28 @@ class OrderAction extends AppAction
                 'pageSize' => 1
             ];
 
-            $result = [
-                'insured_order' => $insuredOrder['insured_order'],
-                'insured_status' => $insuredOrder['insured_status'],
-                'insured_status_desp' => UyeInsuredOrder::getInsuredStatusDesp($insuredOrder['insured_status']),
-                'org_name' => $insuredOrder['org_name'],
-                'insured_type' => UyeInsuredOrder::$insuredType[$insuredOrder['insured_type']],
-                'tuition' => $insuredOrder['tuition'],
-                'remark' => 'xxxx',
-                'premium_amount_top' => $insuredOrder['pay_ceiling'],
-                'career_time' => '2018-01-01~2018-03-01',
-                'repay_time' => '2018-03-01~2018-10-01',
-                'org_logo' => PicUtil::getUrl($insuredOrder['logo']),
-                'train' => [
-                    'first_train' => $insuredOrder['class_start'] . "~" . $insuredOrder['class_end'],
-                    'second_train' => '',
-                    'end_train' => '',
-                ]
-            ];
+            if ($insuredOrder) {
+                $result = [
+                    'insured_order' => $insuredOrder['insured_order'],
+                    'insured_status' => $insuredOrder['insured_status'],
+                    'insured_status_desp' => UyeInsuredOrder::getInsuredStatusDesp($insuredOrder['insured_status']),
+                    'org_name' => $insuredOrder['org_name'],
+                    'insured_type' => UyeInsuredOrder::$insuredType[$insuredOrder['insured_type']],
+                    'tuition' => $insuredOrder['tuition'],
+                    'remark' => $insuredOrder['remark'],
+                    'premium_amount_top' => $insuredOrder['pay_ceiling'],
+                    'career_time' => '',
+                    'repay_time' => '',
+                    'org_logo' => PicUtil::getUrl($insuredOrder['logo']),
+                    'train' => [
+                        'first_train' => $insuredOrder['class_start'] . "~" . $insuredOrder['class_end'],
+                        'second_train' => '',
+                        'end_train' => '',
+                    ]
+                ];
+            } else {
+                $result = [];
+            }
 
             return [
                 'page' => $getPageArr,
