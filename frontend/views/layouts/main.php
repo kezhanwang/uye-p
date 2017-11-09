@@ -5,11 +5,7 @@
 /* @var $content string */
 
 use yii\helpers\Html;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
-use common\widgets\Alert;
 
 AppAsset::register($this);
 ?>
@@ -20,8 +16,11 @@ AppAsset::register($this);
     <meta charset="<?= Yii::$app->charset ?>">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="北京中腾汇达投资管理有限公司，U业帮">
+    <meta name="description" content="北京中腾汇达投资管理有限公司">
     <?= Html::csrfMetaTags() ?>
-    <title><?= Html::encode($this->title) ?></title>
+    <title><?= Html::encode($this->title) ?>-北京中腾汇达投资管理有限公司</title>
+
     <?php $this->head() ?>
     <!--[if lt IE 9]>
     <script src="/js/html5shiv.js"></script>
@@ -59,8 +58,6 @@ AppAsset::register($this);
                             <nav id="mainnav" class="mainnav">
                                 <ul class="menu">
                                     <li><a href="/">首页</a></li>
-<!--                                    <li><a href="/about">关于我们</a></li>-->
-<!--                                    <li><a href="/contact">联系方式</a></li>-->
                                 </ul><!-- /.menu -->
                             </nav><!-- /.mainnav -->
                         </div><!-- /.nav-wrap -->
@@ -75,7 +72,8 @@ AppAsset::register($this);
     <footer class="footer">
         <div class="container">
             <div class="row" align="center">
-                <p> &copy; 2017 Bjzhongteng.com <?= Yii::$app->params['company_name'];?>  京ICP备17053228号-1</p>
+                <p> &copy; <?= date('Y'); ?> Bjzhongteng.com <?= Yii::$app->params['company_name']; ?>
+                    京ICP备17053228号-1</p>
             </div><!-- /.row -->
         </div><!-- /.container -->
     </footer>
