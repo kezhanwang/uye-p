@@ -47,7 +47,7 @@ AppAsset::register($this);
                     <div class="col-md-4">
                         <div id="logo" class="logo mgl2">
                             <a href="/" rel="home">
-                                <img src="/images/logo-login.png" alt="image" style="width: 149px;height: 19px">
+                                <img src="/images/logo.png" alt="image">
                             </a>
                         </div><!-- /.logo -->
                         <div class="btn-menu">

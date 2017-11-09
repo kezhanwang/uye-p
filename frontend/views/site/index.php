@@ -29,7 +29,7 @@ $this->title = Yii::$app->name;
                 data-masterspeed="2000" data-rotate="0" data-saveperformance="off" data-title="HTML5 Video"
                 data-param1="" data-param2="" data-param3="" data-param4="" data-param5="" data-param6="" data-param7=""
                 data-param8="" data-param9="" data-param10="" data-description="">
-                <img src="http://img1.kezhanwang.cn/201607/13/202845_1468412925_3298.jpg" alt=""
+                <img src="/images/slide/2.png" alt=""
                      data-bgposition="center center" data-bgfit="cover" data-bgparallax="10" class="rev-slidebg"
                      data-no-retina>
             </li>
@@ -39,14 +39,43 @@ $this->title = Yii::$app->name;
 <section class="flat-row v8">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <article class="post style2 column clearfix">
-                        <img src="/images/new/portfolio/1.jpg" alt="image">
+                    <div class="featured-post">
+                        <img src="images/new/portfolio/1.jpg" alt="image">
+                    </div><!-- /.feature-post -->
+                    <div class="content-post">
+                        <h2 class="title-post"><a href="#">Financial Planning</a></h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna
+                            adipisicing elit.</p>
+                        <a href="#" class="readmore">READ MORE</a>
+                    </div><!-- /.contetn-post -->
                 </article>
             </div>
-            <div class="col-md-6 col-sm-6">
+            <div class="col-md-4 col-sm-6">
                 <article class="post style2 column clearfix">
-                        <img src="/images/new/portfolio/2.jpg" alt="image">
+                    <div class="featured-post">
+                        <img src="images/new/portfolio/2.jpg" alt="image">
+                    </div><!-- /.feature-post -->
+                    <div class="content-post">
+                        <h2 class="title-post"><a href="#">Private equity</a></h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna
+                            adipisicing elit.</p>
+                        <a href="#" class="readmore">READ MORE</a>
+                    </div><!-- /.contetn-post -->
+                </article>
+            </div>
+            <div class="col-md-4 col-sm-6">
+                <article class="post style2 column clearfix">
+                    <div class="featured-post">
+                        <img src="images/new/portfolio/3.jpg" alt="image">
+                    </div><!-- /.feature-post -->
+                    <div class="content-post">
+                        <h2 class="title-post"><a href="#">Risk Management</a></h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor ut labore et dolore magna
+                            adipisicing elit.</p>
+                        <a href="#" class="readmore">READ MORE</a>
+                    </div><!-- /.contetn-post -->
                 </article>
             </div>
         </div>
