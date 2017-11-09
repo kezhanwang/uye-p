@@ -9,6 +9,7 @@
 namespace frontend\controllers;
 
 
+use common\models\ar\UyeAppVersion;
 use common\models\ar\UyeAreas;
 use common\models\service\SimgService;
 use components\CookieUtil;
@@ -134,11 +135,48 @@ class CommonController extends UController
         }
     }
 
-    public function actionTest()
+    public function actionDownload()
     {
-        $cookieValue = "BglWVlZSUh0FUwcaGxISVFIDBUVXU1dTVlMBVAcBA0R KlB4fGtRIA==";
-        $cookieValue = str_replace(' ', '+', $cookieValue);
-        $userInfo = CookieUtil::strCode($cookieValue, 'DECODE');
-        var_dump($userInfo);
+        $type = 4;
+
+        //可以由参数控制下载哪个
+        if (isset($_GET['type']) && $_GET['type'] == 1) {
+            $type = 1;
+            $this->isIOS = true;
+            $this->isAndroid = false;
+        } else if (isset($_GET['type']) && $_GET['type'] == 2) {
+            $type = 2;
+            $this->isAndroid = true;
+            $this->isIOS = false;
+        }
+
+        if ($type != 4) {
+            $new_version = UyeAppVersion::getVersion('', $type);
+        } else {
+            $new_version = UyeAppVersion::getVersion('');
+        }
+
+        $ver = $new_version[0]['version'] ? $new_version[0]['version'] : self::DOWNLOAD_ANDROID_VER;
+        if ($this->isWX) {
+            $contentPath = PATH_BASE . '/../html/wx_download/wx_download.html';
+            $content = file_get_contents($contentPath);
+            echo $content;
+            return;
+        } else if ($this->isIOS) {
+            $type = 1;
+            //$ver = self::DOWNLOAD_IOS_VER;
+            $url = self::DOWNLOAD_IOS;
+        } else if ($this->isAndroid) {
+            $type = 2;
+            $url = $new_version[0]['url'];
+        } else {
+            $type = 4;
+            $url = $new_version[0]['url'];
+
+        }
+        HttpUtil::goUrl($url);
+        ARDownloadLog::insertLog($type, $ver);
     }
+
+
 }
