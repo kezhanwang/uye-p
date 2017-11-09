@@ -67,18 +67,6 @@ AppAsset::register($this);
         </div>
     </header><!-- /.header -->
     <?= $content ?>
-
-    <!-- Footer -->
-    <!--    <footer class="footer">-->
-    <!--        <div class="container">-->
-    <!--            <div class="row" align="center">-->
-    <!--                <p> &copy; -->
-    <? //= date('Y'); ?><!-- Bjzhongteng.com --><? //= Yii::$app->params['company_name']; ?>
-    <!--                    京ICP备17053228号-1</p>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </footer>-->
-
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
@@ -96,7 +84,7 @@ AppAsset::register($this);
                             <!--                            <li class="skype"><a href="#"></a></li>-->
                         </ul>
                     </div>
-                </div><!-- /.col-md-3 -->
+                </div>
 
                 <div class="col-md-4 col-sm-6">
                     <div class="widget widget-out-link">
@@ -118,8 +106,6 @@ AppAsset::register($this);
             </div>
         </div>
     </footer>
-
-    <!-- Bottom -->
     <div class="bottom">
         <div class="container">
             <div class="copyright">
