@@ -2847,29 +2847,29 @@ article.post.bg-view {
 /* Footer
 -------------------------------------------------------------- */
 footer {
-    background-color: #19181d;
+    background-color: #eee;
     padding: 70px 0 65px;  
 }
 
 footer a,
 footer p {
-	color: #b2b1b8;
+	color: #000000;
 }
 
 .footer .widget .widget-title {
 	font-size: 18px;
-	color: #FFF;
+	color: #000000;
 	padding-top: 13px;
 }
 
 .footer .logo-footer {
     font-size: 30px;
-    color: #fff;
+    color: #000000;
     margin-bottom: 13px;
 }
 
 .footer .logo-footer a {
-    color: #fff;
+    color: #000000;
 }
 
 .footer .logo-footer a:hover {
@@ -3059,7 +3059,7 @@ footer p {
 /* Bottom
 -------------------------------------------------------------- */
 .bottom {
-	background-color: #111014;
+	background-color: #eee;
 	padding: 10px 0;
 }
 

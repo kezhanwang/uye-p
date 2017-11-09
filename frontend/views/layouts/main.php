@@ -69,15 +69,65 @@ AppAsset::register($this);
     <?= $content ?>
 
     <!-- Footer -->
+    <!--    <footer class="footer">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row" align="center">-->
+    <!--                <p> &copy; -->
+    <? //= date('Y'); ?><!-- Bjzhongteng.com --><? //= Yii::$app->params['company_name']; ?>
+    <!--                    京ICP备17053228号-1</p>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </footer>-->
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="row" align="center">
-                <p> &copy; <?= date('Y'); ?> Bjzhongteng.com <?= Yii::$app->params['company_name']; ?>
-                    京ICP备17053228号-1</p>
-            </div><!-- /.row -->
-        </div><!-- /.container -->
+            <div class="row">
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-infomation">
+                        <h3 class="logo-footer"><a href="/" rel="home">
+                                <img src="/images/logo.png" alt="image">
+                            </a></h3>
+                        <p><?= Yii::$app->params['company_name']; ?></p>
+                        <ul class="flat-information">
+                            <!--                            <li class="phone"><a href="#"></a></li>-->
+                            <!--                            <li class="address"><a href="#">J</a></li>-->
+                            <!--                            <li class="email"><a href="#"></a></li>-->
+                            <!--                            <li class="skype"><a href="#"></a></li>-->
+                        </ul>
+                    </div>
+                </div><!-- /.col-md-3 -->
+
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-out-link">
+                        <h4 class="widget-title">链接</h4>
+                        <ul class="one-half">
+                            <li><a href="/">首页</a></li>
+                        </ul>
+                        <ul class="one-half">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-6">
+                    <div class="widget widget-letter">
+                        <h4 class="widget-title">下载U业帮App</h4>
+                        <img src="http://res1.kezhanwang.cn/static/images/qrcode_app_abda20.png" style="width: 104px">
+                    </div>
+                </div>
+            </div>
+        </div>
     </footer>
 
+    <!-- Bottom -->
+    <div class="bottom">
+        <div class="container">
+            <div class="copyright">
+                <p> &copy; <?= date('Y'); ?> Bjzhongteng.com <?= Yii::$app->params['company_name']; ?>
+                    京ICP备17053228号-1</p>
+            </div>
+        </div>
+    </div>
     <a class="go-top">
         <i class="fa fa-angle-up"></i>
     </a>
