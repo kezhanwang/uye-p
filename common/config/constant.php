@@ -30,7 +30,7 @@ if (YII_ENV == 'dev' || YII_ENV == 'test') {
     define('DOMAIN_IMAGE', DOMAIN_HTTPS . 'dev.img.' . DOMAIN_BASE);    //二级域名，图片资源
     define('DOMAIN_SECRET', DOMAIN_HTTPS . 'dev.simg.' . DOMAIN_BASE);    //二级域名，个人图片资源
 } else {
-    define('DOMAIN_HTTPS', 'https://');
+    define('DOMAIN_HTTPS', 'http://');
     define('DOMAIN_WWW', DOMAIN_HTTPS . "www." . DOMAIN_BASE);
     define('DOMAIN_E', DOMAIN_HTTPS . 'e.' . DOMAIN_BASE); //二级域名，机构管理平台，生产环境
     define('DOMAIN_ADMIN', DOMAIN_HTTPS . 'admin.' . DOMAIN_BASE); //二级域名，运营平台，生产环境
