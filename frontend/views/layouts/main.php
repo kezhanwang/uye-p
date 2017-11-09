@@ -100,7 +100,7 @@ AppAsset::register($this);
                 <div class="col-md-4 col-sm-6">
                     <div class="widget widget-letter">
                         <h4 class="widget-title">下载U业帮APP</h4>
-                        <img src="http://res1.kezhanwang.cn/static/images/qrcode_app_abda20.png" style="width: 104px">
+                        <img src="/images/1510212394.png" style="width: 128px">
                     </div>
                 </div>
             </div>

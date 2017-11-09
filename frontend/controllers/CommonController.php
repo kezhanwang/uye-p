@@ -140,7 +140,7 @@ class CommonController extends UController
 
 
     const DOWNLOAD_IOS_VER = '1.0.0';
-    const DOWNLOAD_IOS = 'https://itunes.apple.com/app/id1026601319?mt=8';
+    const DOWNLOAD_IOS = 'https://itunes.apple.com/cn/app/id1309404350?mt=8';
 
     const DOWNLOAD_ANDROID_VER = '1.0.0';
     const DOWNLOAD_ANDROID = 'http://www.bjzhongteng.com/html/release_uye_v10.apk';
