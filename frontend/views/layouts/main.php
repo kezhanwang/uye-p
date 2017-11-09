@@ -77,6 +77,10 @@ AppAsset::register($this);
             </div><!-- /.row -->
         </div><!-- /.container -->
     </footer>
+
+    <a class="go-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
 </div>
 <?php $this->endBody() ?>
 </body>
