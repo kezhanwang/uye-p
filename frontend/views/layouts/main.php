@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use yii\helpers\Html;
@@ -22,61 +23,63 @@ AppAsset::register($this);
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <!--[if lt IE 9]>
+    <script src="/js/html5shiv.js"></script>
+    <script src="/js/respond.min.js"></script>
+    <![endif]-->
 </head>
-<body>
+<body class="header-sticky">
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => 'My Company',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    $menuItems = [
-        ['label' => 'Home', 'url' => ['/site/index']],
-        ['label' => 'About', 'url' => ['/site/about']],
-        ['label' => 'Contact', 'url' => ['/site/contact']],
-    ];
-    if (Yii::$app->user->isGuest) {
-        $menuItems[] = ['label' => 'Signup', 'url' => ['/site/signup']];
-        $menuItems[] = ['label' => 'Login', 'url' => ['/site/login']];
-    } else {
-        $menuItems[] = '<li>'
-            . Html::beginForm(['/site/logout'], 'post')
-            . Html::submitButton(
-                'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-            . Html::endForm()
-            . '</li>';
-    }
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $menuItems,
-    ]);
-    NavBar::end();
-    ?>
-
-    <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
+<!-- Preloader -->
+<section class="loading-overlay">
+    <div class="Loading-Page">
+        <h2 class="loader">Loading</h2>
     </div>
+</section>
+<!-- Boxed -->
+<div class="boxed">
+    <!-- Header -->
+    <header id="header" class="header header-classic clearfix">
+        <div class="container">
+            <div class="row">
+                <div class="header-wrap clearfix">
+                    <div class="col-md-4">
+                        <div id="logo" class="logo mgl2">
+                            <a href="/" rel="home">
+                                <img src="/images/logo-login.png" alt="image" style="width: 149px;height: 19px">
+                            </a>
+                        </div><!-- /.logo -->
+                        <div class="btn-menu">
+                            <span></span>
+                        </div><!-- //mobile menu button -->
+                    </div>
+                    <div class="col-md-8">
+                        <div class="nav-wrap">
+                            <nav id="mainnav" class="mainnav">
+                                <ul class="menu">
+                                    <li><a href="/">首页</a></li>
+<!--                                    <li><a href="/about">关于我们</a></li>-->
+<!--                                    <li><a href="/contact">联系方式</a></li>-->
+                                </ul><!-- /.menu -->
+                            </nav><!-- /.mainnav -->
+                        </div><!-- /.nav-wrap -->
+                    </div>
+                </div><!-- /.header-inner -->
+            </div><!-- /.row -->
+        </div>
+    </header><!-- /.header -->
+    <?= $content ?>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row" align="center">
+                <p> &copy; 2017 Bjzhongteng.com <?= Yii::$app->params['company_name'];?>  京ICP备17053228号-1</p>
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </footer>
 </div>
-
-<footer class="footer">
-    <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
-    </div>
-</footer>
-
 <?php $this->endBody() ?>
 </body>
 </html>
