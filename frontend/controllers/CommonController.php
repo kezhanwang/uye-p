@@ -8,17 +8,20 @@
 
 namespace frontend\controllers;
 
+require_once PATH_BASE . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "vendor" . DIRECTORY_SEPARATOR . "autoload.php";
 
 use common\models\ar\UyeAppVersion;
 use common\models\ar\UyeAreas;
+use common\models\ar\UyeDownloadLog;
 use common\models\service\SimgService;
-use components\CookieUtil;
+use components\HttpUtil;
 use components\Output;
 use components\PicUtil;
 use components\RedisUtil;
 use components\UException;
 use frontend\components\UController;
 use frontend\models\DataBus;
+
 
 class CommonController extends UController
 {
@@ -135,47 +138,52 @@ class CommonController extends UController
         }
     }
 
+
+    const DOWNLOAD_IOS_VER = '1.0.0';
+    const DOWNLOAD_IOS = 'https://itunes.apple.com/app/id1026601319?mt=8';
+
+    const DOWNLOAD_ANDROID_VER = '1.0.0';
+    const DOWNLOAD_ANDROID = 'http://www.bjzhongteng.com/html/release_uye_v10.apk';
+
     public function actionDownload()
     {
-        $type = 4;
-
-        //可以由参数控制下载哪个
-        if (isset($_GET['type']) && $_GET['type'] == 1) {
-            $type = 1;
-            $this->isIOS = true;
-            $this->isAndroid = false;
-        } else if (isset($_GET['type']) && $_GET['type'] == 2) {
-            $type = 2;
-            $this->isAndroid = true;
-            $this->isIOS = false;
-        }
-
-        if ($type != 4) {
-            $new_version = UyeAppVersion::getVersion('', $type);
+        $detect = new \Mobile_Detect();
+        if ($detect->isMobile()) {
+            if ($detect->is('IOS')) {
+                $plat = 1;
+            } else {
+                if ($detect->is('AndroidOS')) {
+                    $plat = 2;
+                } else {
+                    $plat = 3;
+                }
+            }
         } else {
-            $new_version = UyeAppVersion::getVersion('');
+            $plat = 2;
         }
 
+        $isWX = (isset($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], 'micromessenger') !== false ? true : false);
+        $new_version = UyeAppVersion::getVersion('', $plat);
         $ver = $new_version[0]['version'] ? $new_version[0]['version'] : self::DOWNLOAD_ANDROID_VER;
-        if ($this->isWX) {
-            $contentPath = PATH_BASE . '/../html/wx_download/wx_download.html';
-            $content = file_get_contents($contentPath);
-            echo $content;
-            return;
-        } else if ($this->isIOS) {
-            $type = 1;
-            //$ver = self::DOWNLOAD_IOS_VER;
+        if ($isWX) {
+            $url = DOMAIN_WWW . '/html/wx_download/wx_download.html';
+            HttpUtil::goUrl($url);
+        } else if ($plat == 1) {
             $url = self::DOWNLOAD_IOS;
-        } else if ($this->isAndroid) {
-            $type = 2;
+        } else if ($plat == 2 || $plat == 3) {
             $url = $new_version[0]['url'];
         } else {
-            $type = 4;
             $url = $new_version[0]['url'];
-
         }
+        UyeDownloadLog::_add([
+            'uid' => $this->uid,
+            'name' => 1,
+            'type' => $plat,
+            'ua' => $_SERVER['HTTP_USER_AGENT'],
+            'ip' => ip2long(\Yii::$app->request->getUserIP()),
+            'version' => $ver,
+        ]);
         HttpUtil::goUrl($url);
-        ARDownloadLog::insertLog($type, $ver);
     }
 
 

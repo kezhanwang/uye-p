@@ -55,7 +55,7 @@ $this->title = Yii::$app->name;
                     </div>
                     <div class="content-post">
                         <h2 class="title-post"><a href="#">机构专注教学</a></h2>
-                        <p>教育培训机构时刻关注教学表现和就业进展，协助机构处理就业事务，破解行业人才难题。</p>
+                        <p>教育培训机构时刻关注教学表现和就业进展，U业帮协助机构处理就业事务，提升培训效果，破解行业人才难题。</p>
                     </div>
                 </article>
             </div>
