@@ -12,7 +12,7 @@ use yii\widgets\Pjax;
 
 $this->title = Yii::t('rbac-admin', 'Assignments');
 $this->params['breadcrumbs'][] = $this->title;
-
+$this->params['menu'] = $this->title;
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
     $usernameField,
@@ -25,18 +25,23 @@ $columns[] = [
     'template' => '{view}'
 ];
 ?>
-<div class="assignment-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <?php Pjax::begin(); ?>
-    <?=
-    GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => $columns,
-    ]);
-    ?>
-    <?php Pjax::end(); ?>
-
+<div class="row">
+    <div class="col-xs-12">
+        <div class="box">
+            <div class="box-header">
+                <h3 class="box-title">数据列表</h3>
+            </div>
+            <div class="box-body">
+                <?php Pjax::begin(); ?>
+                <?=
+                GridView::widget([
+                    'dataProvider' => $dataProvider,
+                    'columns' => $columns,
+                ]);
+                ?>
+                <?php Pjax::end(); ?>
+            </div>
+        </div>
+    </div>
 </div>
