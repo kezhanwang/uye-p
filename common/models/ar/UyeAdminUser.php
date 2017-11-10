@@ -192,4 +192,22 @@ class UyeAdminUser extends UActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => '员工号',
+            'username' => '登录号',
+            'realname' => '真实姓名',
+            'phone' => '手机号',
+            'email' => '工作邮箱',
+            'status' => '账号状态',
+            'business' => '商务人员',
+            'created_time' => '创建时间',
+            'updated_time' => '更新时间',
+        ];
+    }
 }

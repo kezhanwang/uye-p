@@ -14,8 +14,11 @@ $this->title = Yii::t('rbac-admin', 'Assignments');
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 $columns = [
-    ['class' => 'yii\grid\SerialColumn'],
+    'id',
     $usernameField,
+    'realname',
+    'phone',
+    'email',
 ];
 if (!empty($extraColumns)) {
     $columns = array_merge($columns, $extraColumns);
@@ -24,6 +27,8 @@ $columns[] = [
     'class' => 'yii\grid\ActionColumn',
     'template' => '{view}'
 ];
+
+
 ?>
 
 <div class="row">
