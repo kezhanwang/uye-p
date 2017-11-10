@@ -27,7 +27,7 @@ $fieldOptions2 = [
     <!-- /.login-logo -->
     <div class="login-box-body">
         <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-        <p class="login-box-msg">请输入员工姓名和密码</p>
+        <p class="login-box-msg">请输入手机号和密码</p>
         <div class="form-group has-feedback">
             <?= $form->field($model, 'username', $fieldOptions1)->label(false)->textInput(['autofocus' => true]) ?>
         </div>
