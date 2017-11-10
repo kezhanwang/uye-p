@@ -166,8 +166,10 @@ class CommonController extends UController
         $new_version = UyeAppVersion::getVersion('', $plat);
         $ver = $new_version[0]['version'] ? $new_version[0]['version'] : self::DOWNLOAD_ANDROID_VER;
         if ($isWX) {
-            $url = DOMAIN_WWW . '/html/wx_download/wx_download.html';
-            HttpUtil::goUrl($url);
+            $contentPath = PATH_BASE . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . 'frontend/web/html/wx_download/wx_download.html';
+            $content = file_get_contents($contentPath);
+            echo $content;
+            return;
         } else if ($plat == 1) {
             $url = self::DOWNLOAD_IOS;
         } else if ($plat == 2 || $plat == 3) {
