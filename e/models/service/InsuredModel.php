@@ -129,7 +129,7 @@ class InsuredModel
         $contact['address'] = '';
         if ($contact['home_area']) {
             $area = UyeAreas::findOne($contact['home_area'])->getAttributes();
-            $contact['address'] = $area;
+            $contact['address'] = str_replace(',', '', $area['joinname']);
         }
         return [
             'insured_order' => $insuredInfo,
