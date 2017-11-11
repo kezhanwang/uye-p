@@ -45,11 +45,11 @@ class IndexAction extends AppAction
 
             $adList = [
                 [
-                    'logo' => 'http://dev.img.bjzhongteng.com/201710/19/guidelines.png',
+                    'logo' => 'http://img.bjzhongteng.com/201710/19/guidelines.png',
                     'url' => '',
                 ],
                 [
-                    'logo' => 'http://dev.img.bjzhongteng.com/201710/19/guidelines.png',
+                    'logo' => 'http://img.bjzhongteng.com/201710/19/guidelines.png',
                     'url' => '',
                 ]
             ];
