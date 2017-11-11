@@ -170,7 +170,7 @@ $this->params['menu'] = $this->title;
                                                 <?php } ?>
                                             <?php } else { ?>
                                                 <tr>
-                                                    <td colspan="4" align="center">暂无学历信息</td>
+                                                    <td colspan="5" align="center">暂无学历信息</td>
                                                 </tr>
                                             <?php } ?>
                                             </tbody>
@@ -180,7 +180,34 @@ $this->params['menu'] = $this->title;
                                             <tr>
                                                 <td colspan="4" align="center">联系信息</td>
                                             </tr>
-
+                                            <tr>
+                                                <td>家庭住址</td>
+                                                <td colspan="3"><?= $contact['address'] . $contact['home_address']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>微信号</td>
+                                                <td><?= $contact['wechat']; ?></td>
+                                                <td>QQ号</td>
+                                                <td><?= $contact['qq']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>电子邮箱</td>
+                                                <td><?= $contact['email']; ?></td>
+                                                <td>婚姻状态</td>
+                                                <td><?= $contact['marriage']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>紧急联系人姓名</td>
+                                                <td><?= $contact['contact1_name']; ?></td>
+                                                <td>紧急联系人关系</td>
+                                                <td><?= $contact['contact1_phone']; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>紧急联系人电话</td>
+                                                <td><?= $contact['contact1_relation']; ?></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
                                             </tbody>
                                         </table>
                                     </div>

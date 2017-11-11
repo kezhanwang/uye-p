@@ -9,12 +9,14 @@
 namespace e\models\service;
 
 
+use common\models\ar\UyeAreas;
 use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeInsuredWater;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeUser;
+use common\models\ar\UyeUserContact;
 use common\models\ar\UyeUserExperience;
 use common\models\ar\UyeUserExperienceList;
 use common\models\ar\UyeUserIdentity;
@@ -122,12 +124,20 @@ class InsuredModel
             ->from(UyeInsuredLog::TABLE_NAME)
             ->where("insured_id=:insured_id", [':insured_id' => $insuredInfo['id']])
             ->asArray()->all();
+
+        $contact = UyeUserContact::findOne($insuredInfo['uid'])->getAttributes();
+        $contact['address'] = '';
+        if ($contact['home_area']) {
+            $area = UyeAreas::findOne($contact['home_area'])->getAttributes();
+            $contact['address'] = $area;
+        }
         return [
             'insured_order' => $insuredInfo,
             'mobile' => $mobileArr,
             'expre' => $expre,
-            'work' => $workExpre,
-            'study' => $studyExpre,
+            'workExpre' => $workExpre,
+            'studyExpre' => $studyExpre,
+            'contact' => $contact,
             'log' => $log
         ];
     }
