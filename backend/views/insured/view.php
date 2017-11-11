@@ -108,23 +108,92 @@ $this->params['menu'] = $this->title;
                     <tr>
                         <td colspan="4" align="center">个人经历</td>
                     </tr>
+                    <tr>
+                        <td>最高学历</td>
+                        <td><?= $expre['highest_education']; ?></td>
+                        <td>职业</td>
+                        <td><?= $expre['profession']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>月收入</td>
+                        <td><?= number_format(($expre['monthly_income'] / 100), 2); ?></td>
+                        <td>住房情况</td>
+                        <td><?= $expre['housing_situation']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>期望工作地点</td>
+                        <td colspan="4" align="left">
+                            <?php if (!empty($expre['will_work_city'])) {
+                                $work_city = json_decode($expre['will_work_city']);
+                                if (!is_array($work_city)) {
+                                    echo "";
+                                } else {
+                                    echo implode(',', $work_city);
+                                }
+                            } ?>
+                        </td>
+                    </tr>
 
                     </tbody>
                 </table>
                 <table class="table table-hover table-bordered table-striped">
-                    <tbody>
+                    <thead>
                     <tr>
                         <td colspan="4" align="center">职业信息</td>
                     </tr>
-
+                    <tr>
+                        <td>时间</td>
+                        <td>单位名称</td>
+                        <td>职位</td>
+                        <td>薪资</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (!empty($workExpre)) { ?>
+                        <?php foreach ($workExpre as $item) { ?>
+                            <tr>
+                                <td><?= $item['date_start'] . '~' . $item['date_end']; ?></td>
+                                <td><?= $item['work_name']; ?></td>
+                                <td><?= $item['work_position']; ?></td>
+                                <td><?= number_format(($item['work_salary'] / 100), 2); ?></td>
+                            </tr>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <tr>
+                            <td colspan="4" align="center">暂无职业信息</td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
                 <table class="table table-hover table-bordered table-striped">
-                    <tbody>
+                    <thead>
                     <tr>
-                        <td colspan="4" align="center">学历信息</td>
+                        <td colspan="5" align="center">学历信息</td>
                     </tr>
-
+                    <tr>
+                        <td>时间</td>
+                        <td>学历</td>
+                        <td>学校</td>
+                        <td>专业</td>
+                        <td>地址</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (!empty($studyExpre)) { ?>
+                        <?php foreach ($studyExpre as $item) { ?>
+                            <tr>
+                                <td><?= $item['date_start'] . '~' . $item['date_end']; ?></td>
+                                <td><?= $item['education']; ?></td>
+                                <td><?= $item['school_name']; ?></td>
+                                <td><?= $item['school_profession']; ?></td>
+                                <td><?= $item['school_address'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    <?php } else { ?>
+                        <tr>
+                            <td colspan="5" align="center">暂无学历信息</td>
+                        </tr>
+                    <?php } ?>
                     </tbody>
                 </table>
                 <table class="table table-hover table-bordered table-striped">
@@ -132,7 +201,34 @@ $this->params['menu'] = $this->title;
                     <tr>
                         <td colspan="4" align="center">联系信息</td>
                     </tr>
-
+                    <tr>
+                        <td>家庭住址</td>
+                        <td colspan="3"><?= $contact['address'] . $contact['home_address']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>微信号</td>
+                        <td><?= $contact['wechat']; ?></td>
+                        <td>QQ号</td>
+                        <td><?= $contact['qq']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>电子邮箱</td>
+                        <td><?= $contact['email']; ?></td>
+                        <td>婚姻状态</td>
+                        <td><?= $contact['marriage']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>紧急联系人姓名</td>
+                        <td><?= $contact['contact1_name']; ?></td>
+                        <td>紧急联系人关系</td>
+                        <td><?= $contact['contact1_phone']; ?></td>
+                    </tr>
+                    <tr>
+                        <td>紧急联系人电话</td>
+                        <td><?= $contact['contact1_relation']; ?></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

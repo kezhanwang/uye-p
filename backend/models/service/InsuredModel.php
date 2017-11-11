@@ -9,11 +9,15 @@
 namespace backend\models\service;
 
 
+use common\models\ar\UyeAreas;
 use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeInsuredWater;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
+use common\models\ar\UyeUserContact;
+use common\models\ar\UyeUserExperience;
+use common\models\ar\UyeUserExperienceList;
 use common\models\ar\UyeUserIdentity;
 use common\models\ar\UyeUserMobile;
 use components\UException;
@@ -96,14 +100,37 @@ class InsuredModel
         }
 
 
+        $expre = UyeUserExperience::findOne($insuredInfo['uid'])->getAttributes();
+        $workExpre = UyeUserExperienceList::find()
+            ->select('*')
+            ->from(UyeUserExperienceList::TABLE_NAME)
+            ->where('uid=:uid AND type=:type AND status=:status', [':uid' => $insuredInfo['uid'], ':type' => UyeUserExperienceList::TYPE_WORK, ':status' => UyeUserExperienceList::STATUS_ON])
+            ->asArray()->all();
+        $studyExpre = UyeUserExperienceList::find()
+            ->select('*')
+            ->from(UyeUserExperienceList::TABLE_NAME)
+            ->where('uid=:uid AND type=:type AND status=:status', [':uid' => $insuredInfo['uid'], ':type' => UyeUserExperienceList::TYPE_STUDY, ':status' => UyeUserExperienceList::STATUS_ON])
+            ->asArray()->all();
+
         $log = UyeInsuredLog::find()
             ->select('*')
             ->from(UyeInsuredLog::TABLE_NAME)
             ->where("insured_id=:insured_id", [':insured_id' => $insuredInfo['id']])
             ->asArray()->all();
+
+        $contact = UyeUserContact::findOne($insuredInfo['uid'])->getAttributes();
+        $contact['address'] = '';
+        if ($contact['home_area']) {
+            $area = UyeAreas::findOne($contact['home_area'])->getAttributes();
+            $contact['address'] = str_replace(',', '', $area['joinname']);
+        }
         return [
             'insured_order' => $insuredInfo,
             'mobile' => $mobileArr,
+            'expre' => $expre,
+            'workExpre' => $workExpre,
+            'studyExpre' => $studyExpre,
+            'contact' => $contact,
             'log' => $log
         ];
     }
