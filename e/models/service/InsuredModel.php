@@ -15,6 +15,8 @@ use common\models\ar\UyeInsuredWater;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeUser;
+use common\models\ar\UyeUserExperience;
+use common\models\ar\UyeUserExperienceList;
 use common\models\ar\UyeUserIdentity;
 use common\models\ar\UyeUserMobile;
 use components\CsvUtil;
@@ -103,6 +105,17 @@ class InsuredModel
             $mobileArr = [];
         }
 
+        $expre = UyeUserExperience::findOne($insuredInfo['uid'])->getAttributes();
+        $workExpre = UyeUserExperienceList::find()
+            ->select('*')
+            ->from(UyeUserExperienceList::TABLE_NAME)
+            ->where('uid=:uid AND type=:type AND status=:status', [':uid' => $insuredInfo['uid'], ':type' => UyeUserExperienceList::TYPE_WORK, ':status' => UyeUserExperienceList::STATUS_ON])
+            ->asArray()->all();
+        $studyExpre = UyeUserExperienceList::find()
+            ->select('*')
+            ->from(UyeUserExperienceList::TABLE_NAME)
+            ->where('uid=:uid AND type=:type AND status=:status', [':uid' => $insuredInfo['uid'], ':type' => UyeUserExperienceList::TYPE_STUDY, ':status' => UyeUserExperienceList::STATUS_ON])
+            ->asArray()->all();
 
         $log = UyeInsuredLog::find()
             ->select('*')
@@ -112,6 +125,9 @@ class InsuredModel
         return [
             'insured_order' => $insuredInfo,
             'mobile' => $mobileArr,
+            'expre' => $expre,
+            'work' => $workExpre,
+            'study' => $studyExpre,
             'log' => $log
         ];
     }
