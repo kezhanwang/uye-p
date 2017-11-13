@@ -110,8 +110,8 @@ class IdentityController extends AppController
                 ];
             } else {
                 $data = [
-                    'id_card_info_pic' => DOMAIN_SECRET . $userInfo['front_card'],
-                    'id_card_nation_pic' => DOMAIN_SECRET . $userInfo['back_card'],
+                    'id_card_info_pic' => !empty($userInfo['front_card']) ? DOMAIN_SECRET . $userInfo['front_card'] : '',
+                    'id_card_nation_pic' => !empty($userInfo['back_card']) ? DOMAIN_SECRET . $userInfo['back_card'] : '',
                 ];
             }
 
