@@ -70,6 +70,7 @@ class UdcreditController extends UController
                 throw new UException("请求方式异常");
             }
             $post_data = file_get_contents('php://input');
+            \Yii::info($post_data, 'udcredit');
             // 验证数据和签名
             $params = json_decode($post_data, true);
             if (!is_array($params)) {
