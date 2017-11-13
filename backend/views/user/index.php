@@ -28,10 +28,14 @@ $this->params['menu'] = $this->title;
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label>手机号</label>
+                        <input class="form-control" type="text" name="phone" placeholder="手机号" value="<?= Yii::$app->request->get('phone')?>">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
+                        <label>姓名</label>
+                        <input class="form-control" type="text" name="full_name" placeholder="姓名" value="<?= Yii::$app->request->get('full_name')?>">
                     </div>
                 </div>
                 <div class="col-md-3">

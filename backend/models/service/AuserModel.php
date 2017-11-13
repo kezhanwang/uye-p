@@ -33,6 +33,7 @@ class AuserModel
     {
         if (!empty($params)) {
             $user = new UyeAdminUser();
+            $user->setIsNewRecord(true);
             $user->username = $params['phone'];
             $user->email = $params['email'];
             $user->realname = $params['username'];
@@ -40,7 +41,6 @@ class AuserModel
             $user->setPassword($params['password']);
             $user->generateAuthKey();
             if (!$user->save()) {
-                var_dump($user);exit;
                 UException::dealAR($user);
             }
             return $user->getAttributes();

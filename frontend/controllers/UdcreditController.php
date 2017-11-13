@@ -32,11 +32,11 @@ class UdcreditController extends UController
 
     public function actionIndex()
     {
-//        if ($this->isMobile) {
-//            $this->checkLogin();
-//        } else {
-//            $this->checkLogin(true);
-//        }
+        if ($this->isMobile) {
+            $this->checkLogin();
+        } else {
+            $this->checkLogin(true);
+        }
 
         try {
             $uid = DataBus::get('uid');

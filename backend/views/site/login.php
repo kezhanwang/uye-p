@@ -36,7 +36,7 @@ $fieldOptions2 = [
         </div>
         <div class="row">
             <div class="col-xs-8">
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= $form->field($model, '保持登录')->checkbox() ?>
             </div>
             <div class="col-xs-4">
                 <?= Html::submitButton('登录', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>

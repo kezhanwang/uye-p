@@ -204,8 +204,8 @@ class UyeEUser extends UActiveRecord implements IdentityInterface
             'email' => 'Email',
             'status' => '状态',
             'org_id' => '机构ID',
-            'created_time' => 'Created Time',
-            'updated_time' => 'Updated Time',
+            'created_at' => 'Created Time',
+            'updated_at' => 'Updated Time',
         ];
     }
 

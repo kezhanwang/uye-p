@@ -37,7 +37,7 @@ class OrgSearch extends SearchOS
 
             $courseStr = '';
             foreach ($courses as $cours) {
-                $courseStr .= $cours['id'] . '、' . $cours['name'] . ';';
+                $courseStr .= $cours['name'] . ';';
             }
 
             $tmp = [
@@ -176,7 +176,7 @@ class OrgSearch extends SearchOS
             $list = [];
             foreach ($data as $key => $datum) {
                 $list[$key] = $datum['fields'];
-                $list[$key]['distance'] = $datum['variableValue']['distance_value'][0] . "km";
+                $list[$key]['distance'] = number_format($datum['variableValue']['distance_value'][0], 2) . "km";
                 unset($list[$key]['index_name']);
                 unset($list[$key]['uye']);
             }
