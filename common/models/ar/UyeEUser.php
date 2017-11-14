@@ -23,8 +23,8 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
- * @property integer $created_time
- * @property integer $updated_time
+ * @property integer $created_at
+ * @property integer $updated_at
  * @property string $password write-only password
  */
 class UyeEUser extends UActiveRecord implements IdentityInterface
@@ -212,8 +212,8 @@ class UyeEUser extends UActiveRecord implements IdentityInterface
             'email' => 'Email',
             'status' => '状态',
             'org_id' => '机构ID',
-            'created_time' => 'Created Time',
-            'updated_time' => 'Updated Time',
+            'created_at' => 'Created Time',
+            'updated_at' => 'Updated Time',
         ];
     }
 

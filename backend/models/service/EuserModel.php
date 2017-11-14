@@ -15,6 +15,8 @@ use common\models\ar\UyeEUser;
 use common\models\ar\UyeEUserRole;
 use common\models\ar\UyeOrg;
 use components\CheckUtil;
+use components\UException;
+use yii\base\NotSupportedException;
 use yii\data\Pagination;
 
 class EuserModel
@@ -49,5 +51,43 @@ class EuserModel
             'pages' => $pages,
             'users' => $euserList
         ];
+    }
+
+    public static function registerEUser($params = [])
+    {
+        if (empty($params)) {
+            throw new NotSupportedException(ERROR_SYS_PARAMS_CONTENT);
+        }
+
+        $check = UyeEUser::find()->select('*')->from(UyeEUser::TABLE_NAME)->where('username=:username', [':username' => $params['username']])->asArray()->all();
+        if (!empty($check)) {
+            throw new UException('已经添加改手机号管理员，请勿重复添加', ERROR_SYS_PARAMS);
+        }
+
+        $org = UyeOrg::getOrgById($params['org_id']);
+        if (empty($org)) {
+            throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+        }
+
+        $user = new UyeEUser();
+        $user->setIsNewRecord(true);
+        $user->username = $params['username'];
+        $user->email = $params['email'];
+        $user->org_id = $params['org_id'];
+        $user->setPassword($params['password']);
+        $user->generateAuthKey();
+
+        if (!$user->save()) {
+            UException::dealAR($user);
+        }
+        $userInfo = $user->getAttributes();
+        $role = new UyeEUserRole();
+        $role->setIsNewRecord(true);
+        $role->uid = $userInfo['id'];
+        $role->role_id = $params['role_id'];
+        if (!$role->save()) {
+            UException::dealAR($role);
+        }
+        return true;
     }
 }

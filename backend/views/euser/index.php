@@ -62,6 +62,7 @@ $status = \common\models\ar\UyeEUser::getStatus();
         <div class="box-footer">
             <?= Html::submitButton('查询', ['class' => 'btn btn-primary btn-sm']) ?>
             <?= Html::resetButton('重置', ['class' => 'btn btn-default btn-sm']) ?>
+            <?= Html::a('添加机构管理员', ['register'], ['class' => 'btn btn-success btn-sm']) ?>
         </div>
     </form>
 </div>
@@ -84,6 +85,7 @@ $status = \common\models\ar\UyeEUser::getStatus();
                         <td>邮箱</td>
                         <td>注册时间</td>
                         <td>状态</td>
+                        <td>操作</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -96,6 +98,14 @@ $status = \common\models\ar\UyeEUser::getStatus();
                             <td><?= $user['email']; ?></td>
                             <td><?= date('Y-m-d H:i:s', $user['created_time']); ?></td>
                             <td><?= $status[$user['status']]; ?></td>
+                            <td>
+                                <?php if ($user['status'] == \common\models\ar\UyeEUser::STATUS_ACTIVE) { ?>
+                                    <button class="btn btn-sm btn-danger">删除</button>
+                                    <button class="btn btn-sm btn-info">重置密码</button>
+                                <?php } else { ?>
+                                    <button class="btn btn-sm btn-info">不可操作</button>
+                                <?php } ?>
+                            </td>
                         </tr>
                     <?php } ?>
                     </tbody>

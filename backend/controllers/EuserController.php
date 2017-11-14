@@ -25,7 +25,21 @@ class EuserController extends UAdminController
     {
         $data = EuserModel::getEuserList(Yii::$app->request->queryParams);
         $data['role'] = UyeERole::find()->asArray()->all();
-        return $this->render('index',$data);
+        return $this->render('index', $data);
+    }
+
+    public function actionRegister()
+    {
+        $params = Yii::$app->request->post();
+        if (!empty($params)) {
+            EuserModel::registerEUser($params);
+            return $this->redirect('/euser/index');
+        } else {
+            $template = [
+                'role' => UyeERole::find()->asArray()->all(),
+            ];
+            return $this->render('register', $template);
+        }
     }
 
 
