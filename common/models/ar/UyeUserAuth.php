@@ -133,11 +133,11 @@ class UyeUserAuth extends UActiveRecord
 
     public static function _updateByOrder($order, $info)
     {
-        if (empty($id) || empty($info)) {
+        if (empty($order) || empty($info)) {
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $ar = self::findOne(['order' => $order]);
+        $ar = static::findOne(['order' => $order]);
         $attributes = $ar->getAttributes();
         $info = ArrayUtil::trimArray($info);
         foreach ($attributes as $key => $attribute) {

@@ -23,19 +23,23 @@ class NotifyHandle
      * @return array|bool
      * @throws \components\UException
      */
-    public static function updateData($data)
+    public static function updateData($data, $uid)
     {
         if (!$data) {
             return false;
         }
-        $picArr = ['front_card', 'back_card', 'photo_get', 'photo_grid', 'photo_living'];
-        foreach ($picArr as $key) {
+        $picArr = [
+            'idcard_front_photo' => 'front_card',
+            'idcard_back_photo' => 'back_card',
+            'idcard_portrait_photo' => 'photo_get',
+            'living_photo' => 'photo_living'];
+        foreach ($picArr as $key => $value) {
             if (isset($data[$key]) && $data[$key]) {
                 $result = self::saveImage($data[$key]);
-                self::insertSimg($result['path'], $data['uid']);
-                $data[$key] = $result['result'] ? $result['path'] : '';
+                self::insertSimg($result['path'], $uid);
+                $data[$value] = $result['result'] ? $result['path'] : '';
             } else {
-                $data[$key] = '';
+                $data[$value] = '';
             }
         }
 
@@ -94,21 +98,28 @@ class NotifyHandle
      */
     public static function NotifyHandle($data)
     {
-        if ($data['result_auth'] === 'T') {
+        if ($data['auth_result'] === 'T') {
             $data['result_auth'] = UyeUserAuth::RESULT_AUTH_TRUE;
         } else {
             $data['result_auth'] = UyeUserAuth::RESULT_AUTH_FALSE;
         }
-        $data['order'] = $data['no_order'];
+        $data['order'] = $data['partner_order_id'];
         unset($data['no_order']);
-        $data['id_card'] = $data['id_no'];
+        $data['id_card'] = $data['id_number'];
         unset($data['id_no']);
         $data['sex'] = $data['gender'] == '女' ? 2 : 1;
         unset($data['gender']);
+        $data['be_idcard'] = $data['similarity'];
+        unset($data['similarity']);
         $validityDate = explode('-', $data['validity_period']);
         $data['idcard_start'] = str_replace('.', '-', $validityDate[0]);
         $data['idcard_expired'] = $validityDate[1] == '长期' ? '2099-01-01' : str_replace('.', '-', $validityDate[1]);
-        return self::updateData($data);
+
+        $info = UyeUserAuth::getUserInfoByOrder($data['order']);
+        if (empty($info)) {
+            throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+        }
+        return self::updateData($data, $info['uid']);
     }
 
     /**

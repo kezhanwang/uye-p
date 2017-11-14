@@ -41,8 +41,7 @@ class UdcreditBase
     public function IsSignSet()
     {
         $isSign = array_key_exists('sign', $this->values);
-        $isSignField = array_key_exists('sign_field', $this->values);
-        if ($isSign && $isSignField) {
+        if ($isSign) {
             return true;
         }
         return false;
@@ -67,12 +66,7 @@ class UdcreditBase
      */
     public function ToSignParams()
     {
-        $params = explode('|', $this->values['sign_field']);
-        $buff = "";
-        foreach ($params as $k) {
-            $buff .= $k . "=" . $this->values[$k] . "|";
-        }
-        $buff = substr($buff, 0, strlen($buff) - 1);
+        $buff = 'partner_order_id=' . $this->values['partner_order_id'] . '|sign_time=' . $this->values['sign_time'];
         return $buff;
     }
 
@@ -89,7 +83,7 @@ class UdcreditBase
         if (empty($config)) {
             throw new UException(ERROR_SECRET_CONFIG_NO_EXISTS_CONTENT, ERROR_SECRET_CONFIG_NO_EXISTS);
         }
-        $string = $string . $config['merchant_key'];
+        $string = 'pub_key=' . $config['pub_key'] . '|' . $string . '|security_key=' . $config['security_key'];
         //签名步骤三：MD5加密
         $result = md5($string);
         return $result;
