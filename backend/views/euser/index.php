@@ -84,7 +84,6 @@ $status = \common\models\ar\UyeEUser::getStatus();
                         <td>邮箱</td>
                         <td>注册时间</td>
                         <td>状态</td>
-                        <td>操作</td>
                     </tr>
                     </thead>
                     <tbody>
@@ -97,8 +96,6 @@ $status = \common\models\ar\UyeEUser::getStatus();
                             <td><?= $user['email']; ?></td>
                             <td><?= date('Y-m-d H:i:s', $user['created_time']); ?></td>
                             <td><?= $status[$user['status']]; ?></td>
-                            <td>
-                            </td>
                         </tr>
                     <?php } ?>
                     </tbody>
