@@ -26,6 +26,33 @@ class UyeAppVersion extends UActiveRecord
 {
     const TABLE_NAME = 'uye_app_version';
 
+
+    const TYPE_IOS = 1;
+    const TYPE_ANDROID = 2;
+
+    public static $type = [
+        self::TYPE_IOS => 'IOS',
+        self::TYPE_ANDROID => '安卓'
+    ];
+
+    const STATUS_RELEASE = 1;
+    const STATUS_CREATE = 2;
+    const STATUS_DELETE = 3;
+
+    public static $status = [
+        self::STATUS_RELEASE => '发布',
+        self::STATUS_CREATE => '创建',
+        self::STATUS_DELETE => '删除',
+    ];
+
+    const FORCE_UPDATE_OFF = 0;
+    const FORCE_UPDATE_ON = 1;
+
+    public static $forceUpdate = [
+        self::FORCE_UPDATE_OFF => '弱升级',
+        self::FORCE_UPDATE_ON => '强升级',
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;

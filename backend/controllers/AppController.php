@@ -8,8 +8,8 @@
 
 namespace backend\controllers;
 
+use backend\models\service\AppModel;
 use common\models\ar\UyeAppVersion;
-use common\models\search\UyeAppVersionSearch;
 use Yii;
 use backend\components\UAdminController;
 use yii\filters\VerbFilter;
@@ -39,13 +39,8 @@ class AppController extends UAdminController
 
     public function actionVersion()
     {
-        $searchModel = new UyeAppVersionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('version', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $data = AppModel::getLists();
+        return $this->render('version', $data);
     }
 
     public function actionVview($id)
