@@ -96,7 +96,7 @@ $status = \common\models\ar\UyeEUser::getStatus();
                             <td><?= $user['org_name']; ?></td>
                             <td><?= $user['role_name']; ?></td>
                             <td><?= $user['email']; ?></td>
-                            <td><?= date('Y-m-d H:i:s', $user['created_time']); ?></td>
+                            <td><?= date('Y-m-d H:i:s', $user['created_at']); ?></td>
                             <td><?= $status[$user['status']]; ?></td>
                             <td>
                                 <?php if ($user['status'] == \common\models\ar\UyeEUser::STATUS_ACTIVE) { ?>
