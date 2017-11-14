@@ -8,6 +8,9 @@
 
 namespace common\models\ar;
 
+use components\ArrayUtil;
+use components\UException;
+
 /**
  * This is the model class for table "uye_app_version".
  *
@@ -104,7 +107,7 @@ class UyeAppVersion extends UActiveRecord
         $sql = self::find()
             ->select('*')
             ->from(self::TABLE_NAME)
-            ->where('type=:type AND status=:status', [':type' => $type, ':status' => 0]);
+            ->where('type=:type AND status=:status', [':type' => $type, ':status' => self::STATUS_RELEASE]);
         if (!empty($version)) {
             $sql->andWhere('version=:version', [':version' => $version]);
         }
@@ -132,4 +135,25 @@ class UyeAppVersion extends UActiveRecord
             return true;
         }
     }
+
+    public static function _add($info)
+    {
+        $info = ArrayUtil::trimArray($info);
+        $ar = new UyeAppVersion();
+        $ar->setIsNewRecord(true);
+        foreach ($ar->getAttributes() as $key => $attribute) {
+            if (array_key_exists($key, $info)) {
+                $ar->$key = $info[$key];
+            }
+        }
+
+        $ar->created_time = time();
+
+        if (!$ar->save()) {
+            UException::dealAR($ar);
+        }
+        return $ar->getAttributes();
+    }
+
+
 }

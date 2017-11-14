@@ -10,6 +10,7 @@ namespace backend\models\service;
 
 
 use common\models\ar\UyeAppVersion;
+use yii\base\NotSupportedException;
 use yii\data\Pagination;
 
 class AppModel
@@ -26,5 +27,21 @@ class AppModel
             'pages' => $pages,
             'lists' => $lists
         ];
+    }
+
+    public static function created($params)
+    {
+        $params = $params['UyeAppVersion'];
+        if ($params['type'] == UyeAppVersion::TYPE_IOS) {
+            $params['url'] = 'https://itunes.apple.com/cn/app/id1309404350?mt=8';
+        } else if ($params['type'] == UyeAppVersion::TYPE_ANDROID) {
+            $params['url'] = DOMAIN_IMAGE . "/app_sdk/" . $params['app_name'];
+        }
+
+        $check = UyeAppVersion::find()->select('*')->from(UyeAppVersion::TABLE_NAME)->where('version_code=:version_code', [':version_code' => $params['version_code']])->asArray()->all();
+        if (!empty($check)) {
+            throw new NotSupportedException('版本号重复');
+        }
+        return UyeAppVersion::_add($params);
     }
 }

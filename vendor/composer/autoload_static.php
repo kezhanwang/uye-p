@@ -38,6 +38,10 @@ class ComposerStaticInit07fa1fc615f8860b045739cd8f015a37
         array (
             'mdm\\admin\\' => 10,
         ),
+        'k' => 
+        array (
+            'kartik\\plugins\\fileinput\\' => 25,
+        ),
         'd' => 
         array (
             'dmstr\\' => 6,
@@ -138,6 +142,10 @@ class ComposerStaticInit07fa1fc615f8860b045739cd8f015a37
         'mdm\\admin\\' => 
         array (
             0 => __DIR__ . '/..' . '/mdmsoft/yii2-admin',
+        ),
+        'kartik\\plugins\\fileinput\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kartik-v/bootstrap-fileinput',
         ),
         'dmstr\\' => 
         array (

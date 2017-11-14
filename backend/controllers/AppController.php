@@ -55,8 +55,9 @@ class AppController extends UAdminController
     {
         $model = new UyeAppVersion();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if (Yii::$app->request->post()) {
+            $result = AppModel::created(Yii::$app->request->post());
+            return $this->redirect(['version']);
         } else {
             return $this->render('vcreate', [
                 'model' => $model,
