@@ -218,5 +218,4 @@ class OrgController extends UAdminController
             return $this->render('course', ['org' => $org_info]);
         }
     }
-
 }

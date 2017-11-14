@@ -23,8 +23,8 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
+ * @property integer $created_time
+ * @property integer $updated_time
  * @property string $password write-only password
  */
 class UyeEUser extends UActiveRecord implements IdentityInterface
@@ -32,6 +32,14 @@ class UyeEUser extends UActiveRecord implements IdentityInterface
     const TABLE_NAME = 'uye_e_user';
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
+
+    public static function getStatus()
+    {
+        return [
+            self::STATUS_DELETED => '已删除',
+            self::STATUS_ACTIVE => '激活'
+        ];
+    }
 
     public static function tableName()
     {
@@ -204,8 +212,8 @@ class UyeEUser extends UActiveRecord implements IdentityInterface
             'email' => 'Email',
             'status' => '状态',
             'org_id' => '机构ID',
-            'created_at' => 'Created Time',
-            'updated_at' => 'Updated Time',
+            'created_time' => 'Created Time',
+            'updated_time' => 'Updated Time',
         ];
     }
 
