@@ -62,7 +62,6 @@ $status = \common\models\ar\UyeEUser::getStatus();
         <div class="box-footer">
             <?= Html::submitButton('查询', ['class' => 'btn btn-primary btn-sm']) ?>
             <?= Html::resetButton('重置', ['class' => 'btn btn-default btn-sm']) ?>
-<!--            --><?//= Html::a('添加机构管理员', ['register'], ['class' => 'btn btn-success btn-sm']) ?>
         </div>
     </form>
 </div>
