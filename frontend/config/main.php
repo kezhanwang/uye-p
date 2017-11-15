@@ -11,7 +11,7 @@ return [
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'asdfgh123456',
+            'cookieValidationKey' => 'sFUMFbeKZZD797hYGZiX9qmB31YrejjXwY3NepUAe3U=',
             'csrfParam' => '_csrf-frontend',
         ],
         'user' => [

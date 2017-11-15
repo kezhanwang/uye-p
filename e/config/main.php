@@ -12,7 +12,7 @@ return [
     'components' => [
         'request' => [
             'enableCookieValidation' => true,
-            'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsdcds',
+            'cookieValidationKey' => 'T5sUxuVhWzcEBnDRkciAU2E4kmVPHSvG+G3j5ONbxQw=',
             'csrfParam' => '_csrf-e',
         ],
         'user' => [

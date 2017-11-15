@@ -26,7 +26,7 @@ return [
     ],
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'Q-TAjtqKlLrK2nQLbeDDHBI00UPsApCB',
+            'cookieValidationKey' => 'XP0YeEnp5iWwj0q8mW4dofAcZLvYwtfK/pYY/FgNom0=',
             'csrfParam' => 'DHB_uye_admin',
         ],
         'user' => [
