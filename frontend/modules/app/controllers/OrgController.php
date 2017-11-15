@@ -24,7 +24,7 @@ class OrgController extends AppController
     {
         $this->layout = "main_h5";
         $org_id = $this->getParams('org_id');
-        $orgInfo = UyeOrg::getOrgById($org_id);
+        $orgInfo = UyeOrg::getOrgById($org_id, null, null, true);
         return $this->render('view', $orgInfo);
 
     }
