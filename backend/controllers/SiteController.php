@@ -3,18 +3,15 @@
 namespace backend\controllers;
 
 use backend\components\AOutPut;
+use backend\components\UAdminController;
 use common\models\ar\UyeAreas;
 use components\RedisUtil;
 use components\UException;
-use frontend\components\UController;
-use Yii;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 
 /**
  * Site controller
  */
-class SiteController extends UController
+class SiteController extends UAdminController
 {
     /**
      * @inheritdoc
@@ -38,38 +35,7 @@ class SiteController extends UController
         return $this->render('index');
     }
 
-    /**
-     * Login action.
-     *
-     * @return string
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-        $this->layout = 'main-login.php';
-        $model = new \backend\models\LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->redirect(['/site/index']);
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
 
-    /**
-     * Logout action.
-     *
-     * @return string
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
-
-        return $this->goHome();
-    }
 
     public function actionProvince()
     {

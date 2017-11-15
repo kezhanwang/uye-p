@@ -32,6 +32,7 @@ return [
         'user' => [
             'identityClass' => 'common\models\ar\UyeAdminUser',
             'enableAutoLogin' => true,
+            'loginUrl' => ['login/login'],
             'identityCookie' => ['name' => 'DHB_uye_admin_login', 'httpOnly' => true],
             'authTimeout' => 60,
         ],

@@ -8,9 +8,10 @@
 
 namespace backend\components;
 
+use common\models\ar\UyeAdminLog;
+use components\UException;
 use Yii;
 use yii\web\Controller;
-use yii\web\ForbiddenHttpException;
 
 class UAdminController extends Controller
 {
@@ -22,6 +23,7 @@ class UAdminController extends Controller
 
     public function beforeAction($action)
     {
+        $this->addLog();
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         } else {
@@ -47,6 +49,26 @@ class UAdminController extends Controller
         }
     }
 
+    private function addLog()
+    {
+        $info = [];
+        foreach ($_SERVER as $key => $item) {
+            $info[strtolower($key)] = $item;
+        }
 
+        if (Yii::$app->user->isGuest) {
+            $info['uid'] = 0;
+        } else {
+            $info['uid'] = Yii::$app->user->id;
+        }
 
+        if ($info['request_method'] != 'GET') {
+            $info['query_string'] = $info['query_string'] . '|' . http_build_query($_POST);
+        }
+        try {
+            UyeAdminLog::_add($info);
+        } catch (UException $exception) {
+            Yii::error($exception->getMessage());
+        }
+    }
 }
