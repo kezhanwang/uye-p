@@ -27,7 +27,7 @@ class SearchAction extends AppAction
             $cacheConfig = $this->getCacheConfig();
 
             if (DataBus::get('uid')) {
-                $searchHistory = UyeSearchLog::find()->select('words')->where('uid=:uid', [':uid' => 0])->limit(5)->offset(0)->orderBy('id desc')->asArray()->all();
+                $searchHistory = UyeSearchLog::find()->select('words')->where('uid=:uid', [':uid' => DataBus::get('uid')])->limit(5)->offset(0)->orderBy('id desc')->asArray()->all();
             } else {
                 $searchHistory = [];
             }
