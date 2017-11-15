@@ -1,14 +1,27 @@
 <?php
 $userInfo = \e\components\RbacUtil::checkUserRight(Yii::$app->user->getId());
 ?>
+<style>
+    .searchform span {
+        box-shadow: none;
+        float: left;
+        font-size: 14px;
+        height: 35px;
+        width: 220px;
+        margin: 7px 0px 0px 10px;
+        padding: 10px;
+    }
+</style>
 <!-- header section start-->
 <div class="header-section">
 
     <!--toggle button start-->
     <a class="toggle-btn"><i class="fa fa-bars"></i></a>
-    <!--toggle button end-->
 
-    <!--notification menu start -->
+    <div class="searchform" action="index.html" method="post">
+        <span><?= $userInfo['org_name']; ?></span>
+    </div>
+
     <div class="menu-right">
         <ul class="notification-menu">
             <li>

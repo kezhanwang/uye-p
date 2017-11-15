@@ -12,6 +12,7 @@ namespace e\components;
 use common\models\ar\UyeERole;
 use common\models\ar\UyeEUser;
 use common\models\ar\UyeEUserRole;
+use common\models\ar\UyeOrg;
 use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 
@@ -21,8 +22,10 @@ class RbacUtil
     {
         $userInfo = self::getUserInfo($uid);
         $userRole = self::getUserRole($uid);
-
-        return ArrayHelper::merge($userInfo, $userRole);
+        unset($userRole['id']);
+        $org = UyeOrg::getOrgById($userInfo['org_id']);
+        unset($org['id']);
+        return ArrayHelper::merge($userInfo, $userRole, $org);
     }
 
     public static function getUserInfo($uid)
