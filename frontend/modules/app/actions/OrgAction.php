@@ -29,15 +29,7 @@ class OrgAction extends AppAction
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }
 
-            $fields = "o.*,oi.*,c.name as category";
-            $orgInfo = UyeOrg::find()
-                ->select($fields)
-                ->from(UyeOrg::TABLE_NAME . " o")
-                ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
-                ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
-                ->where('o.id=:id AND o.status=:status AND o.is_shelf=:is_shelf', [':id' => $org_id, ':status' => UyeOrg::STATUS_OK, ':is_shelf' => UyeOrg::IS_SHELF_ON])
-                ->asArray()
-                ->one();
+            $orgInfo = UyeOrg::getOrgById($org_id);
 
             if (empty($orgInfo)) {
                 throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);

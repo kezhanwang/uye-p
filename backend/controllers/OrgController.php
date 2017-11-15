@@ -88,14 +88,13 @@ class OrgController extends UAdminController
         } else {
             $org = [];
             if ($parent && is_numeric($parent)) {
-                $org = UyeOrg::findOne($parent)->getAttributes();
+                $org = UyeOrg::getOrgById($parent, null, null, true);
                 if (empty($org)) {
                     throw new NotFoundHttpException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
                 }
             }
             $category = UyeCategory::find()->asArray()->all();
-            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business',
-                [':business' => 1])->asArray()->all();
+            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
             return $this->render('create', ['org' => $org, 'category' => $category, 'business' => $business]);
         }
     }
@@ -111,8 +110,7 @@ class OrgController extends UAdminController
         $info = OrgModel::getOrgInfo($id);
 
         $category = UyeCategory::find()->asArray()->all();
-        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business',
-            [':business' => 1])->asArray()->all();
+        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
         $area = OrgModel::getArea($info['province'], $info['city']);
         return $this->render('update',
             ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
@@ -210,7 +208,7 @@ class OrgController extends UAdminController
                 throw new NotFoundHttpException(ERROR_SYS_PARAMS_CONTENT);
             }
 
-            $org_info = UyeOrg::findOne($org_id)->getAttributes();
+            $org_info = UyeOrg::getOrgById($org_id, null, null, true);
             if (empty($org_info)) {
                 throw new NotFoundHttpException(ERROR_ORG_NO_EXISTS_CONTENT);
             }

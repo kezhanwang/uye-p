@@ -29,6 +29,9 @@ class RedisUtil extends \Redis
                 if ($instance->connect('127.0.0.1', '6379', 0) == false) {
                     return false;
                 }
+                if ($instance->auth('kz2016') == false) {
+                    return false;
+                }
 
                 $instance->select($db);
             } catch (\Exception $exception) {

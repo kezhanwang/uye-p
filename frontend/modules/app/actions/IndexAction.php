@@ -139,7 +139,7 @@ class IndexAction extends AppAction
     {
         $info = UyeOrgWifi::getByMacAndSSID($mac, $ssid, Yii::$app->request->getUserIP());
         if ($info['org_id']) {
-            $organize = UyeOrg::find()->select('id As org_id,org_name')->where('id=:org_id', [':org_id' => $info['org_id']])->asArray()->one();
+            $organize = UyeOrg::getOrgById($info['org_id']);
         } else {
             $organize = [];
         }

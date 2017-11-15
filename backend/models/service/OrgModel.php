@@ -24,14 +24,7 @@ class OrgModel
 {
     public static function getOrgInfo($id)
     {
-        $info = UyeOrg::find()
-            ->select('*')
-            ->from(UyeOrg::TABLE_NAME . " o")
-            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
-            ->where('o.id=:id', [':id' => $id])
-            ->asArray()
-            ->one();
-
+        $info = UyeOrg::getOrgById($id, null, null, true);
         if (empty($info)) {
             throw new NotFoundHttpException("未查询到机构信息");
         }
@@ -132,7 +125,7 @@ class OrgModel
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $org = UyeOrg::findOne($id)->getAttributes();
+        $org = UyeOrg::getOrgById($id, null, null, true);
         if (empty($org)) {
             throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
         }
@@ -155,7 +148,7 @@ class OrgModel
             throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
         }
 
-        $org = UyeOrg::findOne($id)->getAttributes();
+        $org = UyeOrg::getOrgById($id, null, null, true);
         if (empty($org)) {
             throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
         }
@@ -163,6 +156,7 @@ class OrgModel
         try {
             UyeOrg::_update($org['id'], ['is_shelf' => $shelf]);
             self::updateOpenSearch($org['id']);
+            self::updateRedis($org['id']);
             return true;
         } catch (UException $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());
@@ -177,9 +171,15 @@ class OrgModel
             ->from(UyeOrg::TABLE_NAME . " o")
             ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
             ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
+            ->where('o.id=:id', [':id' => $id])
             ->asArray()
             ->all();
         OrgSearch::createPush($org);
+    }
+
+    public static function updateRedis($id)
+    {
+        UyeOrg::getOrgById($id, null, null, true, false);
     }
 
     public static function createCourse($params = [])
@@ -204,6 +204,7 @@ class OrgModel
             $avg = UyeOrgCourse::getAvgUnitByOrgID($course['org_id']);
             UyeOrgInfo::_updateOrgInfo($course['org_id'], ['avg_course_price' => $avg]);
             self::updateOpenSearch($course['org_id']);
+            self::updateRedis($course['id']);
             return true;
         } catch (UException $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());

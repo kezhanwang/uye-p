@@ -73,7 +73,7 @@ class EController extends Controller
 
     public function getOrgInfo()
     {
-        $orgInfo = UyeOrg::findOne($this->org_id)->getAttributes();
+        $orgInfo = UyeOrg::getOrgById($this->org_id, null, null, true);
         if (empty($orgInfo)) {
             throw new NotFoundHttpException(ERROR_ORG_NOT_EXISTS_CONTENT, ERROR_ORG_NOT_EXISTS);
         }

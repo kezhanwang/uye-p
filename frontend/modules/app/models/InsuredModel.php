@@ -21,17 +21,13 @@ class InsuredModel
 {
     public static function getOrganize($org_id)
     {
-        $fields = "o.*,oi.*,c.name as category";
-        $organize = UyeOrg::find()
-            ->select($fields)
-            ->from(UyeOrg::TABLE_NAME . " o")
-            ->leftJoin(UyeOrgInfo::TABLE_NAME . " oi", "oi.org_id=o.id")
-            ->leftJoin(UyeCategory::TABLE_NAME . " c", "c.id=oi.category_1")
-            ->where("o.id=:id AND o.status=:status AND o.is_shelf=:is_shelf AND o.is_employment=:is_employment", [':id' => $org_id, ':status' => UyeOrg::STATUS_OK, ':is_shelf' => UyeOrg::IS_SHELF_ON, ':is_employment' => UyeOrg::IS_EMPLOYMENT_SUPPORT])
-            ->asArray()
-            ->one();
+        $organize = UyeOrg::getOrgById($org_id);
         if (empty($organize)) {
             throw new UException(ERROR_ORG_NOT_EXISTS_CONTENT, ERROR_ORG_NOT_EXISTS);
+        }
+
+        if ($organize['is_employment'] != UyeOrg::IS_EMPLOYMENT_SUPPORT) {
+            throw new UException(ERROR_ORG_NO_SUPPORT_EMPLOYMENT_CONTENT, ERROR_ORG_NO_SUPPORT_EMPLOYMENT);
         }
         unset($organize['description']);
         $organize['logo'] = PicUtil::getUrl($organize['logo']);

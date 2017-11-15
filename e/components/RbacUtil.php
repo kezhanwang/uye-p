@@ -23,7 +23,7 @@ class RbacUtil
         $userInfo = self::getUserInfo($uid);
         $userRole = self::getUserRole($uid);
         unset($userRole['id']);
-        $org = UyeOrg::getOrgById($userInfo['org_id']);
+        $org = UyeOrg::getOrgById($userInfo['org_id'], null, null, true);
         unset($org['id']);
         return ArrayHelper::merge($userInfo, $userRole, $org);
     }

@@ -64,7 +64,7 @@ class EuserModel
             throw new UException('已经添加改手机号管理员，请勿重复添加', ERROR_SYS_PARAMS);
         }
 
-        $org = UyeOrg::getOrgById($params['org_id']);
+        $org = UyeOrg::getOrgById($params['org_id'], null, null, true);
         if (empty($org)) {
             throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
         }

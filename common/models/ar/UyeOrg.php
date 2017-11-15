@@ -9,6 +9,7 @@
 namespace common\models\ar;
 
 use components\ArrayUtil;
+use components\RedisUtil;
 use components\UException;
 
 /**
@@ -109,22 +110,51 @@ class UyeOrg extends UActiveRecord
         ];
     }
 
-    public static function getOrgById($id)
+    /**
+     * @param $id 机构id
+     * @param int $status 机构状态，默认审核通过
+     * @param int $shelf 机构是否上架，默认上架
+     * @param bool $needDesp 是否需要机构简介，默认不需要
+     * @param bool $cache 是否需要从cache中取，默认需要
+     * @return array|bool|mixed|null|\yii\db\ActiveRecord
+     */
+    public static function getOrgById($id, $status = self::STATUS_OK, $shelf = self::IS_DELETE_ON, $needDesp = false, $cache = true)
     {
         if (empty($id) || !is_numeric($id)) {
             return false;
         }
-
-        $org = self::find()
-            ->select('*')
-            ->from(self::TABLE_NAME)
-            ->where('id=:id AND status=:status AND is_shelf=:is_shelf ', [':id' => $id, ':status' => self::STATUS_OK, ':is_shelf' => self::IS_SHELF_ON])
-            ->asArray()
-            ->one();
-        if (empty($org)) {
-            return [];
-        } else {
+        $redis = RedisUtil::getInstance();
+        $redisKey = 'UYE_ORG_INFO_' . md5($id);
+        $data = $redis->get($redisKey);
+        if ($data && $cache) {
+            $org = json_decode($data, true);
+            if (!$needDesp) {
+                unset($org['description']);
+            }
             return $org;
+        } else {
+            $query = self::find()
+                ->select('o.*,oi.*,c.name as category')
+                ->from(self::TABLE_NAME . ' o')
+                ->leftJoin(UyeOrgInfo::TABLE_NAME . ' oi', 'oi.org_id=o.id')
+                ->leftJoin(UyeCategory::TABLE_NAME . ' c', 'c.id=oi.category_1')
+                ->where('o.id=:id', [':id' => $id]);
+            if ($status) {
+                $query->andWhere('o.status=:status', [':status' => $status]);
+            }
+            if ($shelf) {
+                $query->andWhere('o.is_shelf=:is_shelf', [':is_shelf' => $shelf]);
+            }
+            $org = $query->asArray()->one();
+            if (empty($org)) {
+                return [];
+            } else {
+                $redis->set($redisKey, json_encode($org));
+                if (!$needDesp) {
+                    unset($org['description']);
+                }
+                return $org;
+            }
         }
     }
 
