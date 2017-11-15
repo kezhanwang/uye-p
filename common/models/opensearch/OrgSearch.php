@@ -11,6 +11,7 @@ namespace common\models\opensearch;
 
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
+use components\BaiduMap;
 use components\NearbyUtil;
 use components\UException;
 
@@ -120,7 +121,10 @@ class OrgSearch extends SearchOS
     public static function getSearchOrgs($words, $lng, $lat, $page = 1)
     {
         if (!is_numeric($lng) || empty($lng) || !is_numeric($lat) || empty($lat)) {
-            throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
+            $ip = \Yii::$app->request->getUserIP();
+            $pos = BaiduMap::getPosByIp($ip);
+            $lng = number_format($pos['content']['point']['x'], 6, '.', '');
+            $lat = number_format($pos['content']['point']['y'], 6, '.', '');
         }
 
         try {

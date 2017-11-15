@@ -47,4 +47,31 @@ class BaiduMap
         }
     }
 
+    public static function getPosByIp($ip, $returnOriginal = false)
+    {
+        if (is_numeric($ip)) {
+            $ip = long2ip($ip);
+        }
+        if ($ip == '127.0.0.1') {
+            return null;
+        }
+        self::getInstance();
+        $url = 'http://api.map.baidu.com/location/ip?' . "ak=" . self::$access_key . "&ip={$ip}&coor=gcj02";
+        $res = HttpUtil::doGet($url);
+
+        $res = json_decode($res, true);
+        if (!isset($res['status']) || $res['status'] != 0 || !isset($res['content'])) {
+            return null;
+        }
+        if (array_key_exists('point', $res['content'])) {
+            if (!$returnOriginal) {
+                return array('lng' => $res['content']['point']['x'], 'lat' => $res['content']['point']['y'],);
+            } else {
+                return $res;
+            }
+        } else {
+            return null;
+        }
+    }
+
 }

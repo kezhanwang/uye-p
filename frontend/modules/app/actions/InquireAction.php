@@ -29,11 +29,8 @@ class InquireAction extends AppAction
                 'page' => $this->getParams('page', 1)
             ];
 
-            if ($params['word'] == 'location') {
-                $data = OrgSearch::locationSearch($params['map_lng'], $params['map_lat'], $params['page']);
-            } else {
-                $data = OrgSearch::getSearchOrgs($params['word'], $params['map_lng'], $params['map_lat'], $params['page']);
-            }
+
+            $data = OrgSearch::getSearchOrgs($params['word'], $params['map_lng'], $params['map_lat'], $params['page']);
             $this->addSearchLog($params['map_lng'], $params['map_lat'], DataBus::get('uid'), $params['word'], $request->get());
             foreach ($data['organizes'] as &$organize) {
                 $organize['org_id'] = $organize['id'];

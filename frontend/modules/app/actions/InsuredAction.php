@@ -50,6 +50,9 @@ class InsuredAction extends AppAction
             ];
 
             foreach ($checkParams as $key => $checkParam) {
+                if ($key == 'map_lng' || $key == 'map_lat') {
+                    continue;
+                }
                 if (!array_key_exists($key, $params) || empty($params[$key])) {
                     throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
                 }

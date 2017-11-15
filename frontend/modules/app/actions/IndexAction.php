@@ -9,7 +9,6 @@
 namespace app\modules\app\actions;
 
 use common\models\ar\UyeAppLog;
-use common\models\ar\UyeCategory;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgWifi;
@@ -26,52 +25,73 @@ class IndexAction extends AppAction
 
     public function run()
     {
+
         try {
             //确定用户城市
-            $request = Yii::$app->request;
             $lng = $this->getParams('map_lng');
             $lat = $this->getParams('map_lat');
             $mac = $this->getParams('mac');
             $ssid = $this->getParams('ssid');
 
-            $ip = ip2long($request->getUserIP());
+            //根据GPS定位解析城市，如果没有开启GPS则返回定位失败
+            $gps = [];
             if (empty($lng) || !is_numeric($lng) || empty($lat) || !is_numeric($lat)) {
-                throw new UException(ERROR_GPS_LOCATION_CONTENT, ERROR_GPS_LOCATION);
+                $loaction = '定位失败';
+            } else {
+                $gps = BaiduMap::getPosInfo($lng, $lat);
+                if ($gps) {
+                    $loaction = $gps['addressComponent']['city'];
+                } else {
+                    $loaction = '定位失败';
+                }
             }
-            $gps = BaiduMap::getPosInfo($lng, $lat);
-            $this->createAppLog($this->getParams('phoneid'), $lng, $lat, $gps);
-            $insuredOrder = $this->getUserInsuredOrder();
-            $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid, $ip);
-
+            $organize = $this->checkMacAndSSIDwihtIP($mac, $ssid);
             $adList = [
                 [
                     'logo' => 'http://img.bjzhongteng.com/201710/19/guidelines.png',
                     'url' => '',
                 ],
             ];
+            $insuredOrder = $this->getUserInsuredOrder();
+            $premium_amount_top = 2000000;
 
             $templateData = [
-                'loaction' => $gps['addressComponent']['city'],
+                'loaction' => $loaction,
                 'count_order' => $this->getCountOrder(),
                 'insured_order' => $insuredOrder,
                 'organize' => $organize,
                 'ad_list' => $adList,
-                'premium_amount_top' => 2000000,
+                'premium_amount_top' => $premium_amount_top,
             ];
+            $this->createAppLog($this->getParams('phoneid'), $lng, $lat, $gps);
             Output::info(SUCCESS, SUCCESS_CONTENT, $templateData);
         } catch (\Exception $exception) {
             Output::err($exception->getCode(), $exception->getMessage());
         }
     }
 
-    private function createAppLog($phoneid, $lng, $lat, $gps)
+    private function createAppLog($phoneid, $lng = '', $lat = '', $gps = [])
     {
         try {
             $sessionID = session_id();
+            $ip = Yii::$app->request->getUserIP();
+            if (empty($lng) || !is_numeric($lng) || empty($lat) || !is_numeric($lat)) {
+                $pos = BaiduMap::getPosByIp($ip, true);
+                if (empty($pos)) {
+                    $lat = 0;
+                    $lng = 0;
+                    $gps['addressComponent'] = ['country' => null, 'province' => null, 'city' => null, 'district' => null, 'town' => null, 'street' => null, 'street_number' => null];
+                } else {
+                    $lng = number_format($pos['content']['point']['x'], 6, '.', '');
+                    $lat = number_format($pos['content']['point']['y'], 6, '.', '');
+                    $gps['addressComponent'] = $pos['content']['address_detail'];
+                }
+            }
             $data = [
                 'phoneid' => $phoneid,
                 'session_id' => $sessionID,
                 'uid' => DataBus::get('uid'),
+                'ip' => $ip,
                 'map_lng' => $lng,
                 'map_lat' => $lat,
                 'country' => $gps['addressComponent']['country'],
@@ -115,9 +135,9 @@ class IndexAction extends AppAction
         return $orders;
     }
 
-    private function checkMacAndSSIDwihtIP($mac, $ssid, $ip)
+    private function checkMacAndSSIDwihtIP($mac, $ssid)
     {
-        $info = UyeOrgWifi::getByMacAndSSID($mac, $ssid, $ip);
+        $info = UyeOrgWifi::getByMacAndSSID($mac, $ssid, Yii::$app->request->getUserIP());
         if ($info['org_id']) {
             $organize = UyeOrg::find()->select('id As org_id,org_name')->where('id=:org_id', [':org_id' => $info['org_id']])->asArray()->one();
         } else {
@@ -138,5 +158,4 @@ class IndexAction extends AppAction
             return '已有' . $main . '位学院加入U业帮就业无忧计划';
         }
     }
-
 }
