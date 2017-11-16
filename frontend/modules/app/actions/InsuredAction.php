@@ -92,6 +92,8 @@ class InsuredAction extends AppAction
             $add['version'] = $this->getParams('version');
             $add['org_parent_id'] = $orgInfo['parent_id'];
 
+            $work = $this->calcWorkDate($add['class_end']);
+            $add = array_merge($add, $work);
             $insuredOrder = UyeInsuredOrder::_add($add);
 
             UyeInsuredLog::_addLog($insuredOrder['id'], $insuredOrder['insured_order'], 0, $insuredOrder['insured_status'], DataBus::get('uid'), json_encode($insuredOrder), INSURED_STATUS_CREATE_CONTENT);
@@ -115,5 +117,14 @@ class InsuredAction extends AppAction
         } catch (UException $exception) {
             \Yii::error($exception->getMessage(), 'insured_order');
         }
+    }
+
+    public function calcWorkDate($classEnd)
+    {
+        $work_start = date('Y-m-d', strtotime('+1 day', strtotime($classEnd)));
+        $work_end = date('Y-m-d', strtotime('+180 days', strtotime($work_start)));
+        return [
+            'work_start' => $work_start, 'work_end' => $work_end
+        ];
     }
 }
