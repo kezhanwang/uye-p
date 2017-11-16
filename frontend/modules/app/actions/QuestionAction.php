@@ -27,7 +27,6 @@ class QuestionAction extends AppAction
     public function run()
     {
         try {
-            $uid = DataBus::get('uid');
             $org_id = $this->getParams('org_id');
             $question = $this->getParams('question');
             if (empty($org_id) || !is_numeric($org_id) || empty($question)) {
@@ -51,9 +50,9 @@ class QuestionAction extends AppAction
                 }
             }
 
-            $userQuestion = UyeUserQuestion::find()->select('*')->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])->asArray()->one();
+            $userQuestion = UyeUserQuestion::getByUidAndOrgID($this->uid, $org_id);
             if (empty($userQuestion)) {
-                UyeUserQuestion::_add(['uid' => $uid, 'org_id' => $org_id, 'question' => $question]);
+                UyeUserQuestion::_add(['uid' => $this->uid, 'org_id' => $org_id, 'question' => $question]);
             }
             Output::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
