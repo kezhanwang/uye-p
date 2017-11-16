@@ -86,4 +86,22 @@ class UyeUserIdentity extends UActiveRecord
 
         return $ar->getAttributes();
     }
+
+    public static function getByUid($uid)
+    {
+        if (empty($uid) || !is_numeric($uid)) {
+            return [];
+        }
+
+        $info = static::find()
+            ->select('*')
+            ->where('uid=:uid', [':uid' => $uid])
+            ->asArray()->one();
+
+        if (empty($info)) {
+            return [];
+        } else {
+            return $info;
+        }
+    }
 }
