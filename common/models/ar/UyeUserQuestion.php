@@ -69,4 +69,21 @@ class UyeUserQuestion extends UActiveRecord
         }
         return $ar->getAttributes();
     }
+
+    public static function getByUidAndOrgID($uid, $org_id)
+    {
+        if (empty($uid) || !is_numeric($uid) || empty($org_id) || !is_numeric($org_id)) {
+            return [];
+        }
+
+        $userQuestion = static::find()
+            ->select('*')
+            ->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])
+            ->asArray()->one();
+        if (empty($userQuestion)) {
+            return [];
+        } else {
+            return $userQuestion;
+        }
+    }
 }

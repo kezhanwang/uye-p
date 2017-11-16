@@ -10,6 +10,7 @@ namespace app\modules\app\actions;
 
 
 use app\modules\app\components\AppAction;
+use common\models\ar\UyeConfig;
 use common\models\ar\UyeUserQuestion;
 use components\Output;
 use components\UException;
@@ -36,6 +37,18 @@ class QuestionAction extends AppAction
             $questionArr = json_decode($question, true);
             if (!is_array($questionArr)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ":数据格式无法json解析", ERROR_SYS_PARAMS);
+            }
+
+            $questionConfig = UyeConfig::getConfig('question');
+
+            if (count($questionConfig) != count($questionArr)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT . ":请填写完整", ERROR_SYS_PARAMS);
+            }
+
+            foreach ($questionArr as $item) {
+                if (empty($item['id']) || empty($item['answer'])) {
+                    throw new UException(ERROR_SYS_PARAMS_CONTENT . ":请填写完整", ERROR_SYS_PARAMS);
+                }
             }
 
             $userQuestion = UyeUserQuestion::find()->select('*')->where('uid=:uid AND org_id=:org_id', [':uid' => $uid, 'org_id' => $org_id])->asArray()->one();

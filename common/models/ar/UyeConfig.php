@@ -3,6 +3,7 @@
 namespace common\models\ar;
 
 use components\ArrayUtil;
+use components\RedisUtil;
 use components\UException;
 
 
@@ -18,14 +19,16 @@ use components\UException;
  */
 class UyeConfig extends UActiveRecord
 {
+    const TABLE_NAME = 'uye_config';
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'uye_config';
+        return self::TABLE_NAME;
     }
-    
+
 
     /**
      * @inheritdoc
@@ -88,5 +91,33 @@ class UyeConfig extends UActiveRecord
             UException::dealAR($ar);
         }
         return $ar->getAttributes();
+    }
+
+    public static function getConfig($name)
+    {
+        if (empty($name)) {
+            return [];
+        }
+
+        $redis = RedisUtil::getInstance();
+        $redisKey = 'UYE-CONFIG-' . $name;
+        $data = $redis->get($redisKey);
+        if ($data) {
+            return json_decode($data, true);
+        } else {
+            $config = static::find()
+                ->select('*')
+                ->from(self::TABLE_NAME)
+                ->where('name=:name', [':name' => $name])
+                ->asArray()->one();
+
+            if (empty($config)) {
+                return [];
+            } else {
+                $redis->set($redisKey, json_encode($config));
+                return $config;
+            }
+        }
+
     }
 }
