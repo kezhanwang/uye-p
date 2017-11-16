@@ -233,4 +233,19 @@ class UyeInsuredOrder extends UActiveRecord
     {
         return $this->hasOne(UyeUserIdentity::className(), ['uid' => 'uid']);
     }
+
+    public static function getOrderByID($id)
+    {
+        $orderInfo = static::find()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('id=:id', [':id' => $id])
+            ->asArray()->one();
+
+        if (empty($orderInfo)) {
+            return [];
+        } else {
+            return $orderInfo;
+        }
+    }
 }
