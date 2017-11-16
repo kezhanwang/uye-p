@@ -38,9 +38,9 @@ class QuestionAction extends AppAction
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ":数据格式无法json解析", ERROR_SYS_PARAMS);
             }
 
-            $questionConfig = UyeConfig::getConfig('question');
-
-            if (count($questionConfig) != count($questionArr)) {
+            $config = UyeConfig::getConfig('question');
+            $data = json_decode($config['value'],true);
+            if (count($data) != count($questionArr)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ":请填写完整", ERROR_SYS_PARAMS);
             }
 
