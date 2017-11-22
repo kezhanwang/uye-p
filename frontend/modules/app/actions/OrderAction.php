@@ -72,6 +72,7 @@ class OrderAction extends AppAction
 
             if ($insuredOrder) {
                 $result = [
+                    'insured_id' => $insuredOrder['id'],
                     'insured_order' => $insuredOrder['insured_order'],
                     'insured_status' => $insuredOrder['insured_status'],
                     'insured_status_desp' => UyeInsuredOrder::getInsuredStatusDesp($insuredOrder['insured_status']),

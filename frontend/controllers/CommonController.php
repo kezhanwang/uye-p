@@ -13,6 +13,7 @@ require_once PATH_BASE . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "ven
 use common\models\ar\UyeAppVersion;
 use common\models\ar\UyeAreas;
 use common\models\ar\UyeDownloadLog;
+use common\models\ar\UyeInsuredOrder;
 use common\models\service\SimgService;
 use components\HttpUtil;
 use components\Output;
@@ -188,5 +189,10 @@ class CommonController extends UController
         HttpUtil::goUrl($url);
     }
 
+    public function actionTest()
+    {
+        $status = UyeInsuredOrder::getInsuredStatusDesp();
+        Output::info(SUCCESS,SUCCESS_CONTENT,$status);
+    }
 
 }

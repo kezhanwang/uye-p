@@ -62,7 +62,7 @@ class UyeInsuredWork extends UActiveRecord
             ->select('*')
             ->from(self::TABLE_NAME)
             ->where('insured_id=:insured_id', [':insured_id' => $insured_id])
-            ->asArray()->one();
+            ->asArray()->all();
         if (empty($list)) {
             return [];
         } else {

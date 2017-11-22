@@ -46,7 +46,7 @@ class WorkAction extends AppAction
                 }
             }
 
-            $picArray = json_decode($param['pic_json'], true);
+            $picArray = json_decode($params['pic_json'], true);
             if (!is_array($picArray)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT . ':数据结构异常,无法json解析', ERROR_SYS_PARAMS);
             }
