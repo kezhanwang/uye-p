@@ -38,7 +38,7 @@ class IdentityController extends AppController
     public function actionInfo()
     {
         try {
-            if (empty($uid)) {
+            if (empty($this->uid)) {
                 throw new UException(ERROR_USER_INFO_NO_EXISTS_CONTENT, ERROR_USER_INFO_NO_EXISTS_CONTENT);
             }
             $userIdentity = UyeUserIdentity::getByUid($this->uid);
