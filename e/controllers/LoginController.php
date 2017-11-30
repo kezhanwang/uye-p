@@ -23,16 +23,18 @@ class LoginController extends Controller
     public function actionLogin()
     {
         if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+            return $this->redirect(['/site/index']);
         }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goHome();
+            return $this->redirect(['/site/index']);
+        }else{
+            return $this->render('login', [
+                'model' => $model,
+            ]);
         }
-        return $this->render('login', [
-            'model' => $model,
-        ]);
+
     }
 
     /**

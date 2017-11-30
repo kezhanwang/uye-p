@@ -28,6 +28,7 @@ class EController extends Controller
         if (Yii::$app->user->isGuest) {
             $this->addLog(true);
             header('Location:/login/login');
+            exit();
         }
 
         $this->checkRight();
