@@ -22,6 +22,12 @@ use yii\web\NotFoundHttpException;
 
 class OrgModel
 {
+    /**
+     * 获取机构信息
+     * @param $id
+     * @return array|bool|mixed|null|\yii\db\ActiveRecord
+     * @throws NotFoundHttpException
+     */
     public static function getOrgInfo($id)
     {
         $info = UyeOrg::getOrgById($id, null, null, true);
@@ -31,6 +37,12 @@ class OrgModel
         return $info;
     }
 
+    /**
+     * 创建机构信息
+     * @param $params
+     * @return array
+     * @throws NotFoundHttpException
+     */
     public static function createOrg($params)
     {
         $orgKey = [
@@ -66,6 +78,12 @@ class OrgModel
         return $orgInfo;
     }
 
+    /**
+     * 获取地域信息
+     * @param $province
+     * @param $city
+     * @return array
+     */
     public static function getArea($province, $city)
     {
         $redis = RedisUtil::getInstance();
@@ -119,6 +137,13 @@ class OrgModel
         ];
     }
 
+    /**
+     * 机构审核
+     * @param $id
+     * @param $status
+     * @return bool
+     * @throws UException
+     */
     public static function auth($id, $status)
     {
         if (empty($id) || !is_numeric($id) || empty($status) || !is_numeric($status)) {
@@ -142,6 +167,13 @@ class OrgModel
         }
     }
 
+    /**
+     * 机构上下架
+     * @param $id
+     * @param $shelf
+     * @return bool
+     * @throws UException
+     */
     public static function shelf($id, $shelf)
     {
         if (empty($id) || !is_numeric($id) || empty($shelf) || !is_numeric($shelf)) {
@@ -163,6 +195,10 @@ class OrgModel
         }
     }
 
+    /**
+     * 更新OpenSearch
+     * @param $id
+     */
     public static function updateOpenSearch($id)
     {
         $fields = "o.*,oi.*,c.name as category";
@@ -177,11 +213,22 @@ class OrgModel
         OrgSearch::createPush($org);
     }
 
+    /**
+     * 更新redis缓存
+     * @param $id
+     */
     public static function updateRedis($id)
     {
         UyeOrg::getOrgById($id, null, null, true, false);
     }
 
+    /**
+     * 添加课程
+     * @param array $params
+     * @return bool
+     * @throws NotFoundHttpException
+     * @throws UException
+     */
     public static function createCourse($params = [])
     {
         $key = [
@@ -209,5 +256,53 @@ class OrgModel
         } catch (UException $exception) {
             throw new UException($exception->getMessage(), $exception->getCode());
         }
+    }
+
+    /**
+     * 更新机构信息
+     * @param $params
+     * @return array|bool|mixed|null|\yii\db\ActiveRecord
+     * @throws UException
+     */
+    public static function updateOrg($params)
+    {
+        $orgId = $params['id'];
+        unset($params['id']);
+        $org = UyeOrg::getOrgById($orgId);
+        if (empty($org)) {
+            throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+        }
+        $updateOrg = [];
+        foreach ($org as $key => $item) {
+            if (array_keys($key, $params) && $item != $params[$key]) {
+                $updateOrg[$key] = $params[$key];
+            }
+        }
+        unset($key);
+        unset($item);
+        if (!empty($updateOrg)) {
+            UyeOrg::_update($orgId, $updateOrg);
+        }
+
+        $orgInfo = UyeOrgInfo::getByOrgID($orgId);
+        if (empty($orgInfo)) {
+            throw new UException(ERROR_ORG_NO_EXISTS_CONTENT, ERROR_ORG_NO_EXISTS);
+        }
+        $updateOrgInfo = [];
+        foreach ($orgInfo as $key => $item) {
+            if (array_key_exists($key, $params) && $item != $params[$key]) {
+                $updateOrgInfo[$key] = $params[$key];
+            }
+        }
+
+        if (!empty($updateOrgInfo['logo'])) {
+            $updateOrgInfo['logo'] = PicUtil::getLogo($params['logo'], $params['logo_x'], $params['logo_y'], $params['logo_w'], $params['logo_h']);
+        }
+
+        if ($params['editorValue'] != $orgInfo['description']) {
+            $updateOrgInfo['description'] = $params['editorValue'];
+        }
+
+        return $org;
     }
 }

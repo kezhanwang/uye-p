@@ -121,4 +121,22 @@ class UyeOrgInfo extends UActiveRecord
         }
         return $ar->getAttributes();
     }
+
+    public static function getByOrgID($org_id)
+    {
+        if (is_null($org_id) || !is_numeric($org_id)) {
+            return [];
+        }
+
+        $result = static::find()
+            ->select('*')
+            ->from(self::TABLE_NAME)
+            ->where('org_id=:org_id', [':org_id' => $org_id])
+            ->asArray()->one();
+        if (empty($result)) {
+            return [];
+        } else {
+            return $result;
+        }
+    }
 }

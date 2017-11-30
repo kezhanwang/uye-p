@@ -22,7 +22,8 @@ $this->params['breadcrumbs'][] = $this->title;
     </div>
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data', 'class' => 'form-horizontal']]); ?>
     <div class="box-body">
-        <input type="hidden" name="type" value="create">
+        <input type="hidden" name="type" value="update">
+        <input type="hidden" name="id" value="<?= $info['id']; ?>">
         <div class="form-group">
             <label class="col-sm-2 control-label">机构名称:</label>
             <div class="col-md-10">

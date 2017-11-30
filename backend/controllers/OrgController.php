@@ -99,21 +99,28 @@ class OrgController extends UAdminController
         }
     }
 
-    /**
-     * Updates an existing UyeOrg model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
+
     public function actionUpdate($id)
     {
-        $info = OrgModel::getOrgInfo($id);
+        $id = $this->getParams('id');
+        $type = $this->getParams('type');
+        if ($type && $type == 'update') {
+            $params = $_POST;
+            if (empty($params)) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
+            }
 
-        $category = UyeCategory::find()->asArray()->all();
-        $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
-        $area = OrgModel::getArea($info['province'], $info['city']);
-        return $this->render('update',
-            ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
+            $result = OrgModel::createOrg($params);
+            return $this->render(['view', 'id' => $id]);
+        } else {
+            $info = OrgModel::getOrgInfo($id);
+
+            $category = UyeCategory::find()->asArray()->all();
+            $business = UyeAdminUser::find()->select('*')->from(UyeAdminUser::TABLE_NAME)->where('business=:business', [':business' => 1])->asArray()->all();
+            $area = OrgModel::getArea($info['province'], $info['city']);
+            return $this->render('update',
+                ['info' => $info, 'category' => $category, 'business' => $business, 'area' => $area]);
+        }
     }
 
     /**
