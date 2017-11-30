@@ -8,9 +8,7 @@
 
 namespace e\controllers;
 
-use e\models\LoginForm;
 use Yii;
-use e\components\EController;
 use yii\web\Controller;
 
 class LoginController extends Controller
@@ -25,11 +23,11 @@ class LoginController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->redirect(['/site/index']);
         }
-
-        $model = new LoginForm();
+        $this->layout = 'main-login.php';
+        $model = new \e\models\LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
             return $this->redirect(['/site/index']);
-        }else{
+        } else {
             return $this->render('login', [
                 'model' => $model,
             ]);
