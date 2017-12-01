@@ -7,6 +7,9 @@ use backend\components\UAdminController;
 use backend\models\service\OrgModel;
 use common\models\ar\UyeAdminUser;
 use common\models\ar\UyeCategory;
+use common\models\ar\UyeERole;
+use common\models\ar\UyeEUser;
+use common\models\ar\UyeEUserRole;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeOrgInfo;
@@ -62,10 +65,18 @@ class OrgController extends UAdminController
     public function actionView($id)
     {
         $courses = UyeOrgCourse::getCoursesListByOrgID($id);
+        $user = UyeEUser::find()
+            ->select('e.*,o.org_name,er.role_id,r.role_name')
+            ->from(UyeEUser::TABLE_NAME . ' e')
+            ->leftJoin(UyeOrg::TABLE_NAME . ' o', 'o.id=e.org_id')
+            ->leftJoin(UyeEUserRole::TABLE_NAME . ' er', 'er.uid=e.id')
+            ->leftJoin(UyeERole::TABLE_NAME . ' r', 'r.id=er.role_id')
+            ->where('e.org_id=:org_id', ['org_id' => $id])->asArray()->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
             'info_model' => $this->findInfoModel($id),
             'courses' => $courses,
+            'user' => $user,
         ]);
     }
 

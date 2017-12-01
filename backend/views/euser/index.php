@@ -100,8 +100,8 @@ $status = \common\models\ar\UyeEUser::getStatus();
                             <td><?= $status[$user['status']]; ?></td>
                             <td>
                                 <?php if ($user['status'] == \common\models\ar\UyeEUser::STATUS_ACTIVE) { ?>
-                                    <button class="btn btn-sm btn-danger">删除</button>
-                                    <button class="btn btn-sm btn-info">重置密码</button>
+                                    <?= Html::a('删除', ['delete', 'id' => $user['id']], ['class' => 'btn btn-sm btn-danger']) ?>
+                                    <?= Html::a('修改信息', ['update', 'id' => $user['id']], ['class' => 'btn btn-sm btn-info']) ?>
                                 <?php } else { ?>
                                     <button class="btn btn-sm btn-info">不可操作</button>
                                 <?php } ?>

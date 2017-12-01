@@ -84,6 +84,7 @@ $this->params['menu'] = $this->title;
                 <li class="active"><a href="#org_info" data-toggle="tab">机构信息</a></li>
                 <li class=""><a href="#org_desp" data-toggle="tab">机构详情</a></li>
                 <li class=""><a href="#org_course" data-toggle="tab">课程列表</a></li>
+                <li class=""><a href="#org_user" data-toggle="tab">机构管理员</a></li>
             </ul>
             <div class="tab-content">
                 <div class="active tab-pane" id="org_info">
@@ -137,7 +138,28 @@ $this->params['menu'] = $this->title;
                             </tr>
                         <?php } ?>
                     </table>
-                    <a class="btn btn-info btn-sm" href="/org/course?org_id=<?= $info_model->org_id; ?>" target="_blank">添加课程</a>
+                    <a class="btn btn-info btn-sm" href="/org/course?org_id=<?= $info_model->org_id; ?>"
+                       target="_blank">添加课程</a>
+                </div>
+                <div class="tab-pane" id="org_user">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <td>用户UID</td>
+                            <td>登录账号</td>
+                            <td>邮箱</td>
+                            <td>角色</td>
+                        </tr>
+                        </thead>
+                        <?php foreach ($user as $item) { ?>
+                            <tr>
+                                <td><?= $item['id']; ?></td>
+                                <td><?= $item['username']; ?></td>
+                                <td><?= $item['email']; ?></td>
+                                <td><?= $item['role_name']; ?></td>
+                            </tr>
+                        <?php } ?>
+                    </table>
                 </div>
             </div>
             <!-- /.tab-content -->

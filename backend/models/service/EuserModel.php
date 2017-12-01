@@ -90,4 +90,40 @@ class EuserModel
         }
         return true;
     }
+
+    public static function updateUserInfo($params = [])
+    {
+        if (empty($params)) {
+            throw new NotSupportedException(ERROR_SYS_PARAMS_CONTENT);
+        }
+
+        $updateUser = [];
+        if ($params['email'] && CheckUtil::checkEmail($params['email'])) {
+            $updateUser['email'] = $params['email'];
+        }
+
+        if (CheckUtil::isPWD($params['password'])) {
+            $updateUser['password'] = $params['password'];
+        }
+
+        $userInfo = UyeEUser::findOne(['id' => $params['id']]);
+        $userInfo->email = $updateUser['email'];
+        $userInfo->setPassword($updateUser['password']);
+        if (!$userInfo->save()) {
+            UException::dealAR($userInfo);
+        }
+
+        if ($params['role_id'] && is_numeric($params['role_id'])) {
+            $role = UyeEUserRole::findOne(['uid' => $params['id']]);
+            $role->role_id = $params['role_id'];
+            $role->updated_time = time();
+            if (!$role->save()) {
+                UException::dealAR($role);
+            }
+        }
+
+        return true;
+    }
+
+
 }

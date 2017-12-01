@@ -8,6 +8,7 @@
 
 namespace common\models\ar;
 
+use components\ArrayUtil;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
@@ -216,6 +217,7 @@ class UyeEUser extends UActiveRecord implements IdentityInterface
             'updated_at' => 'Updated Time',
         ];
     }
+
 
 
 }
