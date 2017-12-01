@@ -23,6 +23,6 @@ use dmstr\widgets\Alert;
     <?= $content ?>
 </div>
 
-<footer class="main-footer">
+<footer class="main-footer" style="position: fixed;bottom: 0;">
     <strong>Copyright &copy; <?= date('Y') ?> <?= Yii::$app->params['company_name']; ?></strong>
 </footer>

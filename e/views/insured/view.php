@@ -4,13 +4,11 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use common\models\ar\UyeInsuredOrder;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\UyeInsuredOrder */
-
 $this->title = "保单详情";
 $this->params['breadcrumbs'][] = ['label' => '保单列表', 'url' => ['list']];
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
+$usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
 ?>
 <div class="row">
     <div class="col-lg-12">
@@ -18,7 +16,7 @@ $this->params['menu'] = $this->title;
             <div class="panel-heading">
                 <?= UyeInsuredOrder::$insuredType[$insured_order['insured_type']] . ":" . $insured_order['insured_order']; ?>
                 <span class="tools pull-right">
-                    <a href="<?= \yii\helpers\Url::toRoute('/insured/list') ?>" class="fa fa-reply"></a>
+                    <a href="<?php echo $usi; ?>" class="fa fa-reply"></a>
                  </span>
             </div>
             <div class="panel-body">

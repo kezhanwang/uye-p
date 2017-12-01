@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use \common\models\ar\UyeInsuredOrder;
 
 $insuredStatus = UyeInsuredOrder::getInsuredStatusDesp('', UyeInsuredOrder::CLIENT_ORG);
-$this->title = '订单审批列表';
+$this->title = '订单列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 \e\assets\AppAsset::addCss($this, "/js/bootstrap-datepicker/css/datepicker-custom.css");
@@ -28,9 +28,13 @@ $this->params['menu'] = $this->title;
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>订单状态</label>
-                            <select class="form-control" name="insured_status" readonly>
-                                <option value="<?php echo INSURED_STATUS_VERIFY_PASS; ?>"
-                                        selected><?php echo INSURED_STATUS_VERIFY_PASS_CONTENT_ORG; ?></option>
+                            <select class="form-control" name="insured_status">
+                                <option value="">请选择状态</option>
+                                <?php foreach ($insuredStatus as $key => $val) { ?>
+                                    <option value="<?= $key ?>" <?php if (Yii::$app->request->get('insured_status' == $key)) {
+                                        echo "selected";
+                                    } ?>><?= $val; ?></option>
+                                <?php } ?>
                             </select>
                         </div>
                     </div>

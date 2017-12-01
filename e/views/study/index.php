@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use \common\models\ar\UyeInsuredOrder;
 
 $insuredStatus = UyeInsuredOrder::getInsuredStatusDesp('', UyeInsuredOrder::CLIENT_ORG);
-$this->title = '订单审批列表';
+$this->title = '学习进展-审批列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 \e\assets\AppAsset::addCss($this, "/js/bootstrap-datepicker/css/datepicker-custom.css");
@@ -29,8 +29,8 @@ $this->params['menu'] = $this->title;
                         <div class="form-group">
                             <label>订单状态</label>
                             <select class="form-control" name="insured_status" readonly>
-                                <option value="<?php echo INSURED_STATUS_VERIFY_PASS; ?>"
-                                        selected><?php echo INSURED_STATUS_VERIFY_PASS_CONTENT_ORG; ?></option>
+                                <option value="<?php echo INSURED_STATUS_PAYMENT ?>"
+                                        selected><?= INSURED_STATUS_PAYMENT_CONTENT_ORG; ?></option>
                             </select>
                         </div>
                     </div>
@@ -110,15 +110,6 @@ $this->params['menu'] = $this->title;
                             <td><?= "￥" . number_format(($datum['tuition'] / 100), 2) ?></td>
                             <td><?= "￥" . number_format(($datum['premium_amount'] / 100), 2) ?></td>
                             <td>
-                                <?php if ($datum['insured_status'] == INSURED_STATUS_VERIFY_PASS) { ?>
-                                    <button class="btn btn-success btn-sm"
-                                            onclick="pay(<?= $datum['id']; ?>,<?= $datum['insured_order'] ?>,<?= $datum['premium_amount'] ?>);">
-                                        支付
-                                    </button>
-                                    <button class="btn btn-danger btn-sm" onclick="refuse_pay(<?= $datum['id']; ?>);">
-                                        拒绝
-                                    </button>
-                                <?php } ?>
                                 <a href="<?= \yii\helpers\Url::toRoute(['/insured/view', 'id' => $datum['id']]) ?>"
                                    class="btn btn-info btn-sm">查看</a>
                             </td>
@@ -133,45 +124,6 @@ $this->params['menu'] = $this->title;
     </div>
 </div>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">提示窗</h4>
-            </div>
-            <div class="modal-body row">
-                <div class="col-md-12">
-                    <h4 align="center">您确定取消投保？</h4>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger btn-sm" id="refuse_pay" type="button">拒绝投保</button>
-                <button class="btn btn-info btn-sm" type="button" data-dismiss="modal" aria-hidden="true">取消操作</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title">提示窗</h4>
-            </div>
-            <div class="modal-body row">
-                <div class="col-md-12">
-                    <h4 align="center" id="pay_msg"></h4>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-danger btn-sm" id="pay" type="button">继续支付</button>
-                <button class="btn btn-info btn-sm" type="button" data-dismiss="modal" aria-hidden="true">取消操作</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
     window.__async.push(
         function () {
@@ -181,59 +133,4 @@ $this->params['menu'] = $this->title;
             });
         }
     );
-
-    function refuse_pay(id) {
-        $('#myModal').modal('show');
-        var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        $('#refuse_pay').click(function () {
-            $.ajax({
-                type: "GET",
-                url: '/insured/refusepay',
-                data: {'id': id, '_csrf': csrfToken},
-                dataType: "json",
-                success: function (responseData) {
-                    if (responseData.code == 1000) {
-                        $('#myModal').modal('hide');
-                        alert("操作成功", "提示", function () {
-                            history.go(0);
-                        });
-                    } else {
-                        $('#myModal').modal('hide');
-                        alert(responseData.msg, "提示", function () {
-                            history.go(0);
-                        });
-                    }
-                }
-            });
-        })
-    }
-
-    function pay(id, order, money) {
-        $('#pay_msg').html("正在支付订单" + order + ",服务费金额" + money / 100 + "元");
-        $('#myModal2').modal('show');
-        var csrfToken = $('meta[name="csrf-token"]').attr("content");
-        $('#pay').click(function () {
-            showLoading("处理中，请稍候");
-            $('#pay_msg').html("");
-            $('#myModal2').modal('hide');
-            $.ajax({
-                type: "GET",
-                url: '/insured/pay',
-                data: {'id': id, '_csrf': csrfToken},
-                dataType: "json",
-                success: function (responseData) {
-                    hideLoading();
-                    if (responseData.code == 1000) {
-                        alert("操作成功", "提示", function () {
-                            history.go(0);
-                        });
-                    } else {
-                        alert(responseData.msg, "提示", function () {
-                            history.go(0);
-                        });
-                    }
-                }
-            });
-        })
-    }
 </script>

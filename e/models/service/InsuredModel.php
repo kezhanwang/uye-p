@@ -44,8 +44,10 @@ class InsuredModel
             $data->andWhere("io.insured_order LIKE '%{$params['key']}%' OR ui.full_name LIKE '%{$params['key']}%' OR ui.auth_mobile LIKE '%{$params['key']}%' OR ui.id_card LIKE '%{$params['key']}%'");
         }
 
-        if ($params['insured_status']) {
+        if (is_numeric($params['insured_status'])) {
             $data->andWhere('io.insured_status=:insured_status', [':insured_status' => $params['insured_status']]);
+        } else if (is_array($params['insured_status'])) {
+            $data->andWhere('io.insured_status IN (' . implode(',', $params['insured_status']) . ')');
         }
 
         if ($params['beginDate']) {
