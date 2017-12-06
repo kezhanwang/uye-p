@@ -116,7 +116,7 @@ $this->params['menu'] = $this->title;
                     </tr>
                     <tr>
                         <td>月收入</td>
-                        <td><?= number_format(($expre['monthly_income'] / 100), 2); ?></td>
+                        <td><?= $expre['monthly_income']; ?></td>
                         <td>住房情况</td>
                         <td><?= $expre['housing_situation']; ?></td>
                     </tr>
