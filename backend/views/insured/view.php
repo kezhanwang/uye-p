@@ -155,7 +155,7 @@ $this->params['menu'] = $this->title;
                                 <td><?= $item['date_start'] . '~' . $item['date_end']; ?></td>
                                 <td><?= $item['work_name']; ?></td>
                                 <td><?= $item['work_position']; ?></td>
-                                <td><?= number_format(($item['work_salary'] / 100), 2); ?></td>
+                                <td><?= $item['work_salary']; ?></td>
                             </tr>
                         <?php } ?>
                     <?php } else { ?>
