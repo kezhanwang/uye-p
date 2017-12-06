@@ -93,7 +93,7 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                             </tr>
                                             <tr>
                                                 <td>月收入</td>
-                                                <td><?= number_format(($expre['monthly_income'] / 100), 2); ?></td>
+                                                <td><?= $expre['monthly_income']; ?></td>
                                                 <td>住房情况</td>
                                                 <td><?= $expre['housing_situation']; ?></td>
                                             </tr>
@@ -132,7 +132,7 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                                         <td><?= $item['date_start'] . '~' . $item['date_end']; ?></td>
                                                         <td><?= $item['work_name']; ?></td>
                                                         <td><?= $item['work_position']; ?></td>
-                                                        <td><?= number_format(($item['work_salary'] / 100), 2); ?></td>
+                                                        <td><?= $item['work_salary'] ; ?></td>
                                                     </tr>
                                                 <?php } ?>
                                             <?php } else { ?>
