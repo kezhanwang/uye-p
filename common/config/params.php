@@ -6,6 +6,7 @@ $params = [
     'supportEmail' => 'support@example.com',
     'user.passwordResetTokenExpire' => 3600,
     'company_name' => '北京中腾汇达投资管理有限公司',
+    'case_number' => '京ICP备17053228号-1',
     'pageSize' => 10,
     'company_phone' => '400-1231-2323',
 ];

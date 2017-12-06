@@ -24,5 +24,5 @@ use dmstr\widgets\Alert;
 </div>
 
 <footer class="main-footer" style="position: fixed;bottom: 0;">
-    <strong>Copyright &copy; <?= date('Y') ?> <?= Yii::$app->params['company_name']; ?></strong>
+    <strong>Copyright &copy; <?= date('Y') ?> <?= Yii::$app->params['company_name']; ?>  <?= Yii::$app->params['case_number']; ?></strong>
 </footer>

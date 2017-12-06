@@ -238,18 +238,47 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                         <table class="table table-hover table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <td colspan="4" align="center">学习进展记录</td>
+                                                <td colspan="7" align="center">学习进展记录</td>
+                                            </tr>
+                                            <tr>
+                                                <td>时间</td>
+                                                <td>操作人</td>
+                                                <td>进展</td>
+                                                <td>班级排名</td>
+                                                <td>测试分数</td>
+                                                <td>评语</td>
+                                                <td>资料</td>
                                             </tr>
                                             </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="7" align="center">暂无学习进展记录</td>
+                                            </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div class="tab-pane fade" id="work">
                                         <table class="table table-hover table-bordered table-striped">
                                             <thead>
                                             <tr>
-                                                <td colspan="4" align="center">就业进展记录</td>
+                                                <td colspan="8" align="center">就业进展记录</td>
+                                            </tr>
+                                            <tr>
+                                                <td>时间</td>
+                                                <td>操作人</td>
+                                                <td>进展</td>
+                                                <td>地点</td>
+                                                <td>单位</td>
+                                                <td>职位</td>
+                                                <td>薪资</td>
+                                                <td>资料</td>
                                             </tr>
                                             </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="8" align="center">暂无就业进展记录</td>
+                                            </tr>
+                                            </tbody>
                                         </table>
                                     </div>
                                     <div class="tab-pane fade" id="repay">

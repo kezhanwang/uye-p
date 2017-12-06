@@ -110,7 +110,7 @@ AppAsset::register($this);
         <div class="container">
             <div class="copyright">
                 <p> &copy; <?= date('Y'); ?> Bjzhongteng.com <?= Yii::$app->params['company_name']; ?>
-                    京ICP备17053228号-1</p>
+                    <?= Yii::$app->params['case_number']; ?></p>
             </div>
         </div>
     </div>

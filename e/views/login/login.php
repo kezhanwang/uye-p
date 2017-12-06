@@ -9,7 +9,7 @@ use yii\widgets\ActiveForm;
     <?php $form = ActiveForm::begin(['id' => 'login-form', 'action' => ['/login/login'], 'method' => 'post', 'options' => ['class' => 'form-signin']]); ?>
     <!--    <form class="form-signin" action="" method="post">-->
     <div class="form-signin-heading text-center">
-        <h1 class="sign-title">登录</h1>
+        <h1 class="sign-title"><?= Yii::$app->name;?>-登录</h1>
         <img src="/images/logo-login.png" alt=""/>
     </div>
     <div class="login-wrap">
@@ -32,4 +32,8 @@ use yii\widgets\ActiveForm;
     </div>
     <!--    </form>-->
     <?php ActiveForm::end(); ?>
+    <div class="row" align="center">
+        <p> &copy; <?= date('Y'); ?>
+            Bjzhongteng.com <?= Yii::$app->params['company_name']; ?> <?= Yii::$app->params['case_number']; ?>
+    </div>
 </div>
