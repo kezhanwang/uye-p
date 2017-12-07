@@ -44,4 +44,9 @@ $fieldOptions2 = [
         </div>
         <?php ActiveForm::end(); ?>
     </div>
+
+</div>
+<div class="row" align="center">
+    <p> &copy; <?= date('Y'); ?>
+        Bjzhongteng.com <?= Yii::$app->params['company_name']; ?> <?= Yii::$app->params['case_number']; ?>
 </div>

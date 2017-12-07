@@ -201,6 +201,7 @@ class InsuredModel
         UyeInsuredLog::_addLog($id, $insuredOrder['insured_order'], $insuredOrder['insured_status'], INSURED_STATUS_PAY, \Yii::$app->user->getId(), json_encode($update), "机构支付，进入培训中");
         $water = [
             'uid' => \Yii::$app->user->getId(),
+            'org_id' => $org_id,
             'user_type' => UyeInsuredWater::USER_TYPE_ORG,
             'insured_id' => $insuredOrder['id'],
             'pay_amount' => $insuredOrder['premium_amount'],
