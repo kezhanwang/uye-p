@@ -232,13 +232,13 @@ class InsuredModel
         ];
 
         $insuredUpdate = [
-            'insured_status' => INSURED_STATUS_PAYMENT
+            'insured_status' => INSURED_STATUS_STUDYING
         ];
         
 
         UyeInsuredOrder::_update($insured['id'], $insuredUpdate);
         UyeInsuredWater::_update($id, $waterUpdate);
-        UyeInsuredLog::_addLog($insured['id'], $insured['insured_order'], $insured['insured_status'], INSURED_STATUS_PAYMENT, \Yii::$app->user->getId(), json_encode($waterUpdate), '保单服务费核算，进入培训期');
+        UyeInsuredLog::_addLog($insured['id'], $insured['insured_order'], $insured['insured_status'], INSURED_STATUS_STUDYING, \Yii::$app->user->getId(), json_encode($waterUpdate), '保单服务费核算，进入培训期');
         return true;
     }
 }
