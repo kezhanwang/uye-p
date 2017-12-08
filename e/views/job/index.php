@@ -5,7 +5,7 @@ use yii\widgets\Pjax;
 use \common\models\ar\UyeInsuredOrder;
 
 $insuredStatus = UyeInsuredOrder::getInsuredStatusDesp('', UyeInsuredOrder::CLIENT_ORG);
-$this->title = '学习进展-审批列表';
+$this->title = '就业进展-审批列表';
 $this->params['breadcrumbs'][] = $this->title;
 $this->params['menu'] = $this->title;
 \e\assets\AppAsset::addCss($this, "/js/bootstrap-datepicker/css/datepicker-custom.css");
