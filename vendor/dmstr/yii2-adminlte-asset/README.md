@@ -24,15 +24,44 @@ The preferred way to install this extension is through [composer](http://getcomp
 To install AdminLTE v2 run:
 
 ```
-php composer.phar require dmstr/yii2-adminlte-asset "2.*"
+composer require dmstr/yii2-adminlte-asset "^2.1"
 ```
 
 To install AdminLTE v1 run:
 
 ```
-php composer.phar require dmstr/yii2-adminlte-asset "1.*"
+composer require dmstr/yii2-adminlte-asset "^1"
 ```
 
+FAQ
+---
+
+### Web-font usage
+
+AdminLTE dropped web-font inclusion in `2.4.0`, so you need to include your desired font manually, ie.
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+> Inclusion via CDN is not recommended for production, please adjust this to your project's asset-bundling workflow.
+
+For details see [#140](https://github.com/dmstr/yii2-adminlte-asset/issues/140).
+
+### Upgrading
+
+When upgrading please see the [AdminLTE upgrade guide](https://adminlte.io/docs/2.4/upgrade-guide) for adjustments you need to make in your views.
+
+### Composer installation
+
+- For issues with `DmitryBaranovskiy/eve.git`, please see [#113](https://github.com/dmstr/yii2-adminlte-asset/issues/133#issuecomment-337179853).
+
+### Compatibility matrix
+
+| yii2-adminlte-asset | AdminLTE |
+|---|---|
+| 2.4 | 2.0 - 2.3 |
+| 2.5 | 2.4 |
+
+> For other [issues](https://github.com/dmstr/yii2-adminlte-asset/issues?utf8=%E2%9C%93&q=is%3Aissue), please search GitHub first.
 
 
 Quick Start
@@ -62,7 +91,7 @@ For [phd5](https://github.com/dmstr/phd5-app) application
     'view' => [
         'theme' => [
             'pathMap' => [
-                '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/phundament/app'
+                '@app/views' => '@vendor/dmstr/yii2-adminlte-asset/example-views/testing/app'
             ],
         ],
     ],
@@ -235,6 +264,23 @@ if (YII_ENV_DEV) {
     ];
 }
 ```
+
+Testing
+-------
+
+Go to the tests folder and start the testing stack
+
+    cd tests
+    docker-compose up -d
+    
+Install `yii2-adminlte-asset` in the testing application
+
+    docker-compose exec php composer install
+    
+Open testing URLs in your browser
+
+    http://docker.local:20580/test
+    http://docker.local:20580/test/login    
 
 
 Further Information

@@ -1,6 +1,14 @@
 Change Log: `bootstrap-fileinput`
 =================================
 
+## version 4.4.7 (_under development_)
+
+**Date:** _work in progress_
+
+- (enh #1131): New public method `readFiles` to allow input & preview of file objects programmatically.
+- (enh #1128, #1129): Update rubaxa sortable plugin to fix Chrome support errors.
+- (enh #1127): Update Italian Translations.
+
 ## version 4.4.6
 
 **Date:** 13-Nov-2017

@@ -16,6 +16,7 @@ use common\models\ar\UyeOrgInfo;
 use common\models\opensearch\OrgSearch;
 use common\models\udcredit\NotifyHandle;
 use common\models\udcredit\UdcreditNotify;
+use components\MpdfUtil;
 use yii\console\Controller;
 
 class TestController extends Controller
@@ -57,5 +58,15 @@ class TestController extends Controller
         $work_end = date('Y-m-d', strtotime('+180 days', strtotime($work_start)));
         var_dump($work_start);
         var_dump($work_end);
+    }
+
+    public function actionPdf()
+    {
+        $viewPath = PATH_CONSOLE . '/views/contract/v100/contract.html';
+        ob_start();
+        require $viewPath;
+        $content = ob_get_clean();
+        $file = PATH_UPLOAD . '/test-' . time() . '.pdf';
+        MpdfUtil::createPDF('协议', $content, $file,MpdfUtil::DEST_FILE);
     }
 }

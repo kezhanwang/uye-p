@@ -1,7 +1,27 @@
 Yii Framework 2 debug extension Change Log
 ==========================================
 
-2.0.11 under development
+2.0.13 December 5, 2017
+-----------------------
+
+- Bug #284: Fixed "TypeError: input.substr is not a function" (leopold537)
+- Bug #290: Fixed "fetch request profile link" (leopold537)
+- Enh #274: Made user component configurable for `UserSwitch` and `UserPanel` (samdark)
+- Enh #283: Send debug headers in AJAX requests in order to be able to link to debug panel from single page apps (glendemon)
+- Enh #283: Duplicated queries count on DB panel (pistej)
+- Enh #294: Added a "General Info" table to the Request panel (brandonkelly)
+- Chg #292: Added PHP 7.2 compatibility (brandonkelly)
+- Chg: Changed `default/view` not to depend on `db` panel (silverfire)
+
+
+2.0.12 October 09, 2017
+-----------------------
+
+- Bug #271: Fixed regression in 2.0.11 causing debug fail with some custom classes implementing IdentityInterface (zertex)
+- Bug #279: Fixed incomplete initialization of path aliases while using non-web application (samdark)
+
+
+2.0.11 September 06, 2017
 ------------------------
 
 - Bug #262: Fixed issue when identity ID is stored in a field different from `id` (samdark)
