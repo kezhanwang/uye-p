@@ -12,6 +12,7 @@ namespace e\models\service;
 use common\models\ar\UyeAreas;
 use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
+use common\models\ar\UyeInsuredStudy;
 use common\models\ar\UyeInsuredWater;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
@@ -133,6 +134,14 @@ class InsuredModel
             $area = UyeAreas::findOne($contact['home_area'])->getAttributes();
             $contact['address'] = str_replace(',', '', $area['joinname']);
         }
+
+        $study = UyeInsuredStudy::find()
+            ->select('*')
+            ->from(UyeInsuredStudy::TABLE_NAME)
+            ->where('insured_id=:insured_id', [':insured_id' => $insuredInfo['id']])
+            ->orderBy('id ASC')
+            ->asArray()->all();
+
         return [
             'insured_order' => $insuredInfo,
             'mobile' => $mobileArr,
@@ -140,7 +149,8 @@ class InsuredModel
             'workExpre' => $workExpre,
             'studyExpre' => $studyExpre,
             'contact' => $contact,
-            'log' => $log
+            'log' => $log,
+            'study' => $study,
         ];
     }
 

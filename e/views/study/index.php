@@ -112,7 +112,7 @@ $this->params['menu'] = $this->title;
                                 <td><?= "￥" . number_format(($datum['premium_amount'] / 100), 2) ?></td>
                                 <td>
                                     <a class="btn btn-info btn-sm" onclick="graduation(<?= $datum['id']; ?>)">已毕业</a>
-                                    <a class="btn btn-info btn-sm">学习进展</a>
+                                    <a class="btn btn-info btn-sm" href="<?= \yii\helpers\Url::to(['/study/add','id'=>$datum['id']])?>">学习进展</a>
                                     <a href="<?= \yii\helpers\Url::toRoute(['/insured/view', 'id' => $datum['id']]) ?>"
                                        class="btn btn-info btn-sm">查看</a>
 
