@@ -10,6 +10,7 @@ namespace app\modules\app\actions;
 
 
 use app\modules\app\components\AppAction;
+use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeInsuredWork;
 use components\Output;
@@ -59,11 +60,26 @@ class WorkAction extends AppAction
             if ($insuredInfo['uid'] != $this->uid) {
                 throw new UException(ERROR_INSURED_NOT_EXISTS_CONTENT, ERROR_INSURED_NOT_EXISTS);
             }
-            $params['add_type'] = 1;
+
+            if ($insuredInfo['insured_status'] != INSURED_STATUS_JOB_SEARCH) {
+                throw new UException(ERROR_INSURED_NOT_STATUS_CONTENT, ERROR_INSURED_NOT_STATUS);
+            }
+
+            if (!in_array($params['is_hiring'], [UyeInsuredWork::IS_HIRING_SUCCESS, UyeInsuredWork::IS_HIRING_WAIT])) {
+                throw new UException(ERROR_SYS_PARAMS_CONTENT . ':is_hiring=>' . $params['is_hiring'], ERROR_SYS_PARAMS);
+            }
+
+            $params['add_type'] = UyeInsuredWork::ADD_TYPE_USER;
             $params['insured_order'] = $insuredInfo['insured_order'];
 
             UyeInsuredWork::_add($params);
-
+            if ($params['is_hiring'] == UyeInsuredWork::IS_HIRING_SUCCESS) {
+                $update = [
+                    'insured_status' => INSURED_STATUS_WORK,
+                ];
+                UyeInsuredOrder::_update($insuredInfo['id'], $update);
+                UyeInsuredLog::_addLog($insuredInfo['id'], $insuredInfo['insured_order'], $insuredInfo['insured_status'], INSURED_STATUS_WORK, $this->uid, json_encode($update), '');
+            }
             Output::info(SUCCESS, SUCCESS);
         } catch (UException $exception) {
             Output::err($exception->getCode(), $exception->getMessage());

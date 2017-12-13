@@ -111,6 +111,8 @@ $this->params['menu'] = $this->title;
                             <td><?= "￥" . number_format(($datum['tuition'] / 100), 2) ?></td>
                             <td><?= "￥" . number_format(($datum['premium_amount'] / 100), 2) ?></td>
                             <td>
+                                <a href="<?= \yii\helpers\Url::to(['/job/add', 'id' => $datum['id']]); ?>"
+                                   class="btn btn-info btn-sm">就业进展</a>
                                 <a href="<?= \yii\helpers\Url::toRoute(['/insured/view', 'id' => $datum['id']]) ?>"
                                    class="btn btn-info btn-sm">查看</a>
 

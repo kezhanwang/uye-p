@@ -14,6 +14,7 @@ use common\models\ar\UyeInsuredLog;
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeInsuredStudy;
 use common\models\ar\UyeInsuredWater;
+use common\models\ar\UyeInsuredWork;
 use common\models\ar\UyeOrg;
 use common\models\ar\UyeOrgCourse;
 use common\models\ar\UyeUser;
@@ -142,6 +143,13 @@ class InsuredModel
             ->orderBy('id ASC')
             ->asArray()->all();
 
+        $work = UyeInsuredWork::find()
+            ->select('*')
+            ->from(UyeInsuredWork::TABLE_NAME)
+            ->where('insured_id=:insured_id', [':insured_id' => $insuredInfo['id']])
+            ->orderBy('id ASC')
+            ->asArray()->all();
+
         return [
             'insured_order' => $insuredInfo,
             'mobile' => $mobileArr,
@@ -151,6 +159,7 @@ class InsuredModel
             'contact' => $contact,
             'log' => $log,
             'study' => $study,
+            'work' => $work
         ];
     }
 

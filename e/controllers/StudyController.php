@@ -71,7 +71,7 @@ class StudyController extends EController
     {
         try {
             $insured_id = $this->getParams('id');
-            StudyModel::graduation($insured_id, $this->user['uid'], $this->org_id);
+            StudyModel::graduation($insured_id, $this->user['id'], $this->org_id);
             EOutput::info(SUCCESS, SUCCESS_CONTENT);
         } catch (UException $exception) {
             EOutput::err($exception->getCode(), $exception->getMessage());
@@ -88,7 +88,7 @@ class StudyController extends EController
         if ($type == '_add') {
             $params = $_POST;
             try {
-                StudyModel::addStudyList($params, $this->user['uid'], $this->org_id);
+                StudyModel::addStudyList($params, $this->user['id'], $this->org_id);
                 EOutput::info(SUCCESS, SUCCESS_CONTENT);
             } catch (UException $exception) {
                 EOutput::err($exception->getCode(), $exception->getMessage());

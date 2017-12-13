@@ -2,6 +2,7 @@
 
 use common\models\ar\UyeInsuredOrder;
 use common\models\ar\UyeInsuredStudy;
+use common\models\ar\UyeInsuredWork;
 
 $this->title = "保单详情";
 $this->params['breadcrumbs'][] = ['label' => '保单列表', 'url' => ['list']];
@@ -264,7 +265,9 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                                         <td><?= $item['fraction']; ?></td>
                                                         <td><?= $item['remark']; ?></td>
                                                         <td>
-                                                            <button onclick="show('<?= $item['id']; ?>')" class="btn btn-sm btn-info" id="show">查看</button>
+                                                            <button onclick="show('<?= $item['id']; ?>')"
+                                                                    class="btn btn-sm btn-info" id="show_<?= $item['id']; ?>">查看
+                                                            </button>
                                                         </td>
                                                     </tr>
                                                     <tr style="display: none" id="<?= $item['id']; ?>">
@@ -274,9 +277,9 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                                                     <?php $pic = json_decode($item['pic'], true); ?>
                                                                     <?php if (!empty($pic)) { ?>
                                                                         <?php foreach ($pic as $item) { ?>
-                                                                            <div class="images item " >
+                                                                            <div class="images item ">
                                                                                 <a href="#myModal" data-toggle="modal">
-                                                                                    <img src="<?= $item;?>" alt="" />
+                                                                                    <img src="<?= $item; ?>" alt=""/>
                                                                                 </a>
                                                                             </div>
                                                                         <?php } ?>
@@ -308,9 +311,47 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td colspan="8" align="center">暂无就业进展记录</td>
-                                            </tr>
+                                            <?php if (empty($work)) { ?>
+                                                <tr>
+                                                    <td colspan="8" align="center">暂无就业进展记录</td>
+                                                </tr>
+                                            <?php } else { ?>
+                                                <?php foreach ($work as $item) { ?>
+                                                    <tr>
+                                                        <td><?= $item['date']; ?></td>
+                                                        <td><?= UyeInsuredWork::$addType[$item['add_type']]; ?></td>
+                                                        <td><?= UyeInsuredWork::$hiring[$item['is_hiring']]; ?></td>
+                                                        <td><?= $item['work_address']; ?></td>
+                                                        <td><?= $item['work_name']; ?></td>
+                                                        <td><?= $item['position']; ?></td>
+                                                        <td><?= $item['monthly_income']; ?></td>
+                                                        <td>
+                                                            <button onclick="showWrok('<?= $item['id']; ?>')"
+                                                                    class="btn btn-sm btn-info" id="work_show_<?= $item['id']; ?>">查看
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="display: none" id="work_<?= $item['id']; ?>">
+                                                        <td colspan="8">
+                                                            <div class="panel-body">
+                                                                <div id="gallery" class="media-gal">
+                                                                    <?php $pic = json_decode($item['pic_json'], true); ?>
+                                                                    <?php if (!empty($pic)) { ?>
+                                                                        <?php foreach ($pic as $item) { ?>
+                                                                            <div class="images item ">
+                                                                                <a href="#myModal" data-toggle="modal">
+                                                                                    <img src="<?= $item; ?>" alt=""/>
+                                                                                </a>
+                                                                            </div>
+                                                                        <?php } ?>
+                                                                    <?php } ?>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php } ?>
+                                            <?php } ?>
+
                                             </tbody>
                                         </table>
                                     </div>
@@ -362,15 +403,24 @@ $usi = $_SERVER['HTTP_REFERER'] ? $_SERVER['HTTP_REFERER'] : '/insured/index';
 </div>
 <script type="text/javascript">
     function show(id) {
-        console.log(id);
         var display = $('#' + id).css('display');
-        console.log(display);
         if (display == 'none') {
-            $('#show').html("收起");
+            $('#show_'+id).html('收起');
             $('#' + id).css('display', 'table-row');
         } else {
-            $('#show').html("查看");
+            $('#show_'+id).html('查看');
             $('#' + id).css('display', 'none');
+        }
+    }
+
+    function showWrok(id) {
+        var display = $('#work_' + id).css('display');
+        if (display == 'none') {
+            $('#work_show_'+id).html('收起');
+            $('#work_' + id).css('display', 'table-row');
+        } else {
+            $('#work_show_'+id).html('查看');
+            $('#work_' + id).css('display', 'none');
         }
     }
 </script>

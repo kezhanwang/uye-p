@@ -27,67 +27,68 @@ $this->params['menu'] = $this->title;
                 单号：<?= $insured['insured_order']; ?>
             </header>
             <form class="form-horizontal adminex-form">
-            <input type="hidden" name="id" value="<?= $insured['id']; ?>">
-            <div class="panel-body">
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">进展</label>
-                    <div class="col-lg-10">
-                        <label class="checkbox-inline">
-                            <input type="radio" id="status" value="1" name="status"> 学习中
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" id="status" value="2" name="status"> 已毕业
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" id="status" value="3" name="status"> 再培训
-                        </label>
+                <input type="hidden" name="id" value="<?= $insured['id']; ?>">
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">进展</label>
+                        <div class="col-lg-10">
+                            <label class="checkbox-inline">
+                                <input type="radio" id="status" value="1" name="status"> 学习中
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" id="status" value="2" name="status"> 已毕业
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="radio" id="status" value="3" name="status"> 再培训
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group" id="train_time" style="display: none">
-                    <label class="col-sm-2 col-sm-2 control-label">再培训</label>
-                    <div class="col-md-4">
-                        <div class="input-group input-large custom-date-range" data-date-format="yyyy-mm-dd">
-                            <input type="text" class="form-control dpd1" name="start" data-date-format="yyyy-mm-dd">
-                            <span class="input-group-addon">至</span>
-                            <input type="text" class="form-control dpd2" name="end" data-date-format="yyyy-mm-dd">
+                    <div class="form-group" id="train_time" style="display: none">
+                        <label class="col-sm-2 col-sm-2 control-label">再培训</label>
+                        <div class="col-md-4">
+                            <div class="input-group input-large custom-date-range" data-date-format="yyyy-mm-dd">
+                                <input type="text" class="form-control dpd1" name="start" data-date-format="yyyy-mm-dd">
+                                <span class="input-group-addon">至</span>
+                                <input type="text" class="form-control dpd2" name="end" data-date-format="yyyy-mm-dd">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">班级排名</label>
+                        <div class="col-sm-10">
+                            <select class="form-control m-bot15" id="ranking" name="ranking">
+                                <option value="">请选择班级排名</option>
+                                <option value="1">较差</option>
+                                <option value="2">一般</option>
+                                <option value="3">良好</option>
+                                <option value="4">优秀</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">测试分数</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control tooltips" placeholder="请填写测试分数" name="fraction"
+                                   value="" maxlength="10">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">评语</label>
+                        <div class="col-sm-10">
+                            <textarea class="form-control popovers" maxlength="255" name="remark"
+                                      id="remark"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 col-sm-2 control-label">推荐资料</label>
+                        <div class="col-sm-10">
+                            <div id="uploader">
+                                <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
+                            </div>
+                            <input type="hidden" name="pic">
                         </div>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">班级排名</label>
-                    <div class="col-sm-10">
-                        <select class="form-control m-bot15" id="ranking" name="ranking">
-                            <option value="">请选择班级排名</option>
-                            <option value="1">较差</option>
-                            <option value="2">一般</option>
-                            <option value="3">良好</option>
-                            <option value="4">优秀</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">测试分数</label>
-                    <div class="col-sm-10">
-                        <input type="number" class="form-control tooltips" placeholder="请填写测试分数" name="fraction"
-                               value="" maxlength="10">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">评语</label>
-                    <div class="col-sm-10">
-                        <textarea class="form-control popovers" maxlength="255" name="remark" id="remark"></textarea>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 col-sm-2 control-label">推荐资料</label>
-                    <div class="col-sm-10">
-                        <div id="uploader">
-                            <p>Your browser doesn't have Flash, Silverlight or HTML5 support.</p>
-                        </div>
-                        <input type="hidden" name="pic">
-                    </div>
-                </div>
-            </div>
             </form>
             <div class="panel-footer">
                 <a class="bth btn-info btn-sm" href="javascript:void(0) " onclick="submit();">提交</a>
@@ -227,14 +228,14 @@ $this->params['menu'] = $this->title;
             url: '/study/add',
             data: {
                 'id': $("input[name='id']").val(),
-                status: status,
-                startTime: startTime,
-                endTime: endTime,
-                ranking: ranking,
-                fraction: fraction,
-                remark: remark,
-                pic: pic,
-                type: '_add',
+                'status': status,
+                'startTime': startTime,
+                'endTime': endTime,
+                'ranking': ranking,
+                'fraction': fraction,
+                'remark': remark,
+                'pic': pic,
+                'type': '_add',
                 '_csrf': csrfToken
             },
             dataType: "json",
@@ -243,7 +244,7 @@ $this->params['menu'] = $this->title;
                     if (responseData.code == 1000) {
                         $('#myModal').modal('hide');
                         alert("操作成功", "提示", function () {
-                            history.go(0);
+                            window.location.href = '/insured/view?id=' + $("input[name='id']").val();
                         });
                     } else {
                         $('#myModal').modal('hide');

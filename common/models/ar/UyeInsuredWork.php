@@ -24,6 +24,14 @@ class UyeInsuredWork extends UActiveRecord
         self::IS_HIRING_WAIT => '待定'
     ];
 
+    const ADD_TYPE_USER = 1;
+    const ADD_TYPE_ORG = 2;
+
+    public static $addType = [
+        self::ADD_TYPE_USER => '用户添加',
+        self::ADD_TYPE_ORG => '机构添加'
+    ];
+
     public static function tableName()
     {
         return self::TABLE_NAME;
