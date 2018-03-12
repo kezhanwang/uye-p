@@ -111,7 +111,7 @@ class OrgController extends UAdminController
     }
 
 
-    public function actionUpdate($id)
+    public function actionUpdate()
     {
         $id = $this->getParams('id');
         $type = $this->getParams('type');
@@ -120,9 +120,12 @@ class OrgController extends UAdminController
             if (empty($params)) {
                 throw new UException(ERROR_SYS_PARAMS_CONTENT, ERROR_SYS_PARAMS);
             }
-
-            $result = OrgModel::createOrg($params);
-            return $this->render(['view', 'id' => $id]);
+            if (!empty($params['id'])) {
+                $result = OrgModel::updateOrg($params);
+            } else {
+                $result = OrgModel::createOrg($params);
+            }
+            return $this->render(['view', 'id' => $result['id']]);
         } else {
             $info = OrgModel::getOrgInfo($id);
 
